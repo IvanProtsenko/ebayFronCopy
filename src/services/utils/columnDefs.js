@@ -68,6 +68,12 @@ const columnDefsAccounts = [
   //   enableRowGroup: true,
   // },
   {
+    field: 'initialResponse',
+    headerName: 'Initial response',
+    editable: true,
+    enableRowGroup: true,
+  },
+  {
     field: 'status',
     headerName: 'Status',
     editable: true,
