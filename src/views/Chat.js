@@ -44,7 +44,7 @@ export default class Chat extends Component {
       <div className="app">
         <div className="header">
           <h3>
-            Emails for <i>{this.state.chatId}</i>
+            Chat for {this.state.chatId}
           </h3>
         </div>
         <div className="mailReader">
