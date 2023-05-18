@@ -85,6 +85,12 @@ const columnDefsAccounts = [
     editable: true,
     enableRowGroup: true,
   },
+  {
+    field: 'created_at',
+    headerName: 'Created',
+    editable: true,
+    enableRowGroup: true,
+  },
 ];
 
 export default columnDefsAccounts;
