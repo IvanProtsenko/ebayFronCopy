@@ -24,6 +24,7 @@ const GET_ADVERTS = gql`
       title
       tradeAllowed
       statusDescription
+      viewed
     }
   }
 `;
@@ -44,6 +45,7 @@ const GET_ADVERT_BY_ID = gql`
       status
       statusDescription
       title
+      viewed
     }
   }
 `
@@ -71,6 +73,7 @@ const SUBSCRIBE_ADVERTS = gql`
       title
       tradeAllowed
       statusDescription
+      viewed
     }
   }
 `;

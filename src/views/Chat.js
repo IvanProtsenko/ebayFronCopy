@@ -58,6 +58,7 @@ export default class Chat extends Component {
     });
     const messages = await apiService.getMessagesByAdvertId(chatId);
     const advert = await apiService.getAdvertById(chatId)
+    await apiService.updateAdvertByPk({adItemId: chatId, viewed: true})
     this.setState(() => {
       return { messages: messages };
     });
