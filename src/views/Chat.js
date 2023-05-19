@@ -137,6 +137,62 @@ export default class Chat extends Component {
                     placeholder="Status description"
                   />
                 </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    value={"location: " + this.state.advert.location}
+                    disabled
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    value={"controllers count: " + this.state.advert.controllersCount}
+                    disabled
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    value={"generation: " + this.state.advert.consoleGeneration}
+                    disabled
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    value={"trade allowed: " + this.state.advert.tradeAllowed}
+                    disabled
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    value={"buy now allowed: " + this.state.advert.buyNowAllowed}
+                    disabled
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    value={"delivery allowed: " + this.state.advert.deliveryAllowed}
+                    disabled
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    value={"offer allowed: " + this.state.advert.offerAllowed}
+                    disabled
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="text"
+                    value={"defect: " + this.state.advert.hasDefect}
+                    disabled
+                  />
+                </Form.Group>
                 <div className="d-grid gap-2">
                   <Button className="modalButton" variant="primary" type="submit">
                     Сохранить
