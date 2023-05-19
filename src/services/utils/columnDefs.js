@@ -74,6 +74,12 @@ const columnDefsAccounts = [
     enableRowGroup: true,
   },
   {
+    field: 'consoleGeneration',
+    headerName: 'Generation',
+    editable: true,
+    enableRowGroup: true,
+  },
+  {
     field: 'status',
     headerName: 'Status',
     editable: true,

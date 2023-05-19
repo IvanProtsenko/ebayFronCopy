@@ -86,7 +86,7 @@ export default class Chat extends Component {
               <div
                 className={"message"+(msg.is_owner ? '-right' : '')}
                 key={msg.id + i}
-                onClick={() => this.openMessage(msg.id)}
+                // onClick={() => this.openMessage(msg.id)}
               >
                 <div className="date">{msg.sent_at}</div>
                 <div className="from">{msg.is_owner}</div>
@@ -98,16 +98,12 @@ export default class Chat extends Component {
             {this.state.advert ? (
               <Form noValidate onSubmit={this.handleSubmit}>
                 <Form.Group className="mb-3">
-                  <Form.Control
-                    type="text"
-                    value={"title: " + this.state.advert.title}
-                    disabled
-                  />
+                  <a href={this.state.advert.link}>{this.state.advert.link}</a>
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Control
                     type="text"
-                    value={"link: " + this.state.advert.link}
+                    value={"title: " + this.state.advert.title}
                     disabled
                   />
                 </Form.Group>
