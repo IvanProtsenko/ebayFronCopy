@@ -28,6 +28,26 @@ const GET_ADVERTS = gql`
   }
 `;
 
+const GET_ADVERT_BY_ID = gql`
+  query GetAdvertById($adItemId: bigint!) {
+    Adverts_by_pk(adItemId: $adItemId) {
+      adItemId
+      buyNowAllowed
+      created_at
+      description
+      initialResponse
+      link
+      location
+      offerAllowed
+      price
+      recommendedPrice
+      status
+      statusDescription
+      title
+    }
+  }
+`
+
 const SUBSCRIBE_ADVERTS = gql`
   subscription MySubscription {
     Adverts {
@@ -88,6 +108,20 @@ class ApiService {
         query: GET_ADVERTS,
       });
       return result.data.Adverts;
+    } catch (err) {
+      console.log('ERROR getAccounts:', err);
+    }
+  };
+
+  getAdvertById = async (advertId) => {
+    try {
+      const result = await this.client.query({
+        query: GET_ADVERT_BY_ID,
+        variables: {
+          adItemId: advertId
+        }
+      });
+      return result.data.Adverts_by_pk;
     } catch (err) {
       console.log('ERROR getAccounts:', err);
     }

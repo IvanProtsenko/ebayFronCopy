@@ -151,62 +151,6 @@ export default function AddAccountModal(props) {
               placeholder="Password"
             />
           </Form.Group>
-          {/* <Form.Group className="mb-3">
-            <Form.Control
-              type="text"
-              value={firstName}
-              onChange={handleInputFirstName}
-              placeholder="First name"
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Control
-              type="text"
-              value={lastName}
-              onChange={handleInputLastName}
-              placeholder="Last name"
-            />
-          </Form.Group> */}
-          {/* <Form.Group className="mb-3">
-            <Form.Control
-              type="text"
-              value={region}
-              onChange={handleInputRegion}
-              placeholder="Region"
-            />
-          </Form.Group> */}
-          {/* <Row>
-            <Col>
-              <Form.Group className="mb-3">
-                <Form.Control
-                  type="number"
-                  value={day}
-                  onChange={handleInputDay}
-                  placeholder="Day of birth"
-                />
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Control
-                  type="number"
-                  value={month}
-                  onChange={handleInputMonth}
-                  placeholder="Month of birth"
-                />
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Control
-                  type="number"
-                  value={year}
-                  onChange={handleInputYear}
-                  placeholder="Year of birth"
-                />
-              </Form.Group>
-            </Col>
-          </Row> */}
           <Row>
             <Col>
               <Form.Group className="mb-3">
