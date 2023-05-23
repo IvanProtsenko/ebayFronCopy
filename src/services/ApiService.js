@@ -34,17 +34,24 @@ const GET_ADVERT_BY_ID = gql`
     Adverts_by_pk(adItemId: $adItemId) {
       adItemId
       buyNowAllowed
+      consoleGeneration
+      controllersCount
       created_at
+      deliveryAllowed
       description
+      hasDefect
       initialResponse
+      isPS4
       link
       location
       offerAllowed
       price
+      publishDate
       recommendedPrice
       status
-      statusDescription
       title
+      tradeAllowed
+      statusDescription
       viewed
     }
   }
