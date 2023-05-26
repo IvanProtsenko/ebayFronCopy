@@ -13,7 +13,6 @@ const GET_ADVERTS = gql`
       description
       hasDefect
       initialResponse
-      isPS4
       link
       location
       offerAllowed
@@ -41,7 +40,6 @@ const GET_ADVERT_BY_ID = gql`
       description
       hasDefect
       initialResponse
-      isPS4
       link
       location
       offerAllowed
@@ -69,7 +67,6 @@ const SUBSCRIBE_ADVERTS = gql`
       description
       hasDefect
       initialResponse
-      isPS4
       link
       location
       offerAllowed
