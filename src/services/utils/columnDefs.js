@@ -31,6 +31,12 @@ const columnDefsAccounts = [
     enableRowGroup: true,
   },
   {
+    field: 'recommendedPrice',
+    headerName: 'Recommended',
+    editable: true,
+    enableRowGroup: true,
+  },
+  {
     field: 'link',
     headerName: 'Link',
     // editable: true,
@@ -76,6 +82,12 @@ const columnDefsAccounts = [
   {
     field: 'consoleGeneration',
     headerName: 'Generation',
+    editable: true,
+    enableRowGroup: true,
+  },
+  {
+    field: 'controllersCount',
+    headerName: 'Controllers',
     editable: true,
     enableRowGroup: true,
   },
