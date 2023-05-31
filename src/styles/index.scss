@@ -32,6 +32,15 @@ code {
     monospace;
 }
 
+.modalButtonConv {
+  margin-left: 20px;
+}
+
+a.conversationLink:link {
+    color: white;
+    text-decoration: none;
+}
+
 .app {
   width: 100vv;
   height: 100vh;
@@ -51,13 +60,13 @@ code {
   .mailReader {
     width: 100%;
     display: flex;
-    height: calc(100% - 25px);
+    height: calc(100% - 100px);
 
     .messageBox {
       flex: 0.4;
       overflow-x: hidden;
       overflow-y: auto;
-      height: 100%;
+      height: 95%;
       border-right: 2px solid gainsboro;
 
       .message {
@@ -80,6 +89,36 @@ code {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+        }
+
+        .subject {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .message-unread {
+        width: 100%;
+        padding: 2px 10px;
+        border-bottom: 1px solid rgb(150, 150, 255);
+
+        cursor: pointer;
+
+        &:hover {
+          background-color: #eeeeee;
+        }
+
+        .date {
+          color: grey;
+          font-size: 10px;
+          font-weight: 500;
+        }
+
+        .from {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-weight: 500;
         }
 
         .subject {
@@ -115,7 +154,6 @@ code {
         .subject {
           overflow: hidden;
           text-overflow: ellipsis;
-          font-weight: 500;
         }
       }
     }

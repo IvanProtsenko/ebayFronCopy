@@ -55,6 +55,113 @@ const GET_ADVERT_BY_ID = gql`
   }
 `
 
+const GET_CONVERSATIONS = gql`
+  query GetConversations($status: String) {
+    Conversations(where: {customStatus: {_eq: $status}}) {
+      adDetailsAvailable
+      adEligibleForPayment
+      adId
+      adImage
+      adL1CategoryId
+      adL2CategoryId
+      adPriceInEuroCent
+      adPriceType
+      adStatus
+      adTitle
+      adType
+      attachmentsEnabled
+      buyNowPossible
+      buyerInitials
+      buyerName
+      flaggingEnabled
+      id
+      linksEnabled
+      numUnread
+      paymentBanner
+      paymentPossible
+      ratingPossible
+      role
+      sellerInitials
+      sellerName
+      userActionRequired
+      userIdBuyer
+      userIdBuyerHash
+      userIdSeller
+      userIdSellerHash
+      Messages {
+        viewed
+      }
+    }
+  }
+`
+
+const GET_MESSAGES_BY_CONV_ID = gql`
+  query GetMessagesByConvId($convId: String) {
+    Messages(where: {conversationId: {_eq: $convId}}) {
+      active
+      boundness
+      buyerFeeInEuroCent
+      carrierId
+      conversationId
+      messageId
+      offerId
+      offeredPriceInEuroCent
+      paymentAndShippingMessageType
+      paymentMethod
+      promotionInEuroCent
+      receivedDate
+      shippingCostInEuroCent
+      shippingType
+      text
+      textShort
+      title
+      totalInEuroCent
+      type
+      viewed
+    }
+  }
+`
+
+const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
+  subscription ConversationsWithMessages {
+    Conversations {
+      customStatus
+      Messages {
+        viewed
+      }
+      adId
+    }
+  }
+`
+
+const GET_CONVERSATIONS_WITH_MESSAGES = gql`
+  query ConversationsWithMessages {
+    Conversations {
+      customStatus
+      Messages {
+        viewed
+      }
+      adId
+    }
+  }
+`
+
+const MARK_MESSAGES_AS_VIEWED = gql`
+  mutation MarkMessagesAsViewed($conversationId: String) {
+    update_Messages(where: {conversationId: {_eq: $conversationId}}, _set: {viewed: true}) {
+      affected_rows
+    }
+  }
+`
+
+const MARK_CONV_AS_PROCESSED = gql`
+  mutation MarkConvAsProcessed($id: String!) {
+    update_Conversations_by_pk(pk_columns: {id: $id}, _set: {customStatus: "Диалог (обработано)"}) {
+      id
+    }
+  }
+`
+
 const SUBSCRIBE_ADVERTS = gql`
   subscription MySubscription {
     Adverts {
@@ -134,6 +241,45 @@ class ApiService {
     }
   };
 
+  getConversationsByStatus = async (status) => {
+    try {
+      const result = await this.client.query({
+        query: GET_CONVERSATIONS,
+        variables: {
+          status
+        }
+      });
+      return result.data.Conversations;
+    } catch (err) {
+      console.log('ERROR getConversationsByStatus:', err);
+    }
+  };
+
+  getMessagesByConvId = async (convId) => {
+    try {
+      const result = await this.client.query({
+        query: GET_MESSAGES_BY_CONV_ID,
+        variables: {
+          convId
+        }
+      });
+      return result.data.Messages;
+    } catch (err) {
+      console.log('ERROR getMessagesByConvId:', err);
+    }
+  };
+
+  getConversationsWithMessages = async () => {
+    try {
+      const result = await this.client.query({
+        query: GET_CONVERSATIONS_WITH_MESSAGES,
+      });
+      return result.data.Conversations;
+    } catch (err) {
+      console.log('ERROR getConversationsWithMessage:', err);
+    }
+  };
+
   getMessagesByAdvertId = async (advertId) => {
     try {
       const result = await this.client.query({
@@ -145,6 +291,32 @@ class ApiService {
       return result.data.Messages;
     } catch (err) {
       console.log('ERROR getMessagesByAdvertId:', err);
+    }
+  };
+
+  markMessagesInConvViewed = async (convId) => {
+    try {
+      await this.client.mutate({
+        mutation: MARK_MESSAGES_AS_VIEWED,
+        variables: {
+          conversationId: convId
+        }
+      });
+    } catch (err) {
+      console.log('ERROR markMessagesInConvViewed:', err);
+    }
+  };
+
+  markConvAsProcessed = async (convId) => {
+    try {
+      await this.client.mutate({
+        mutation: MARK_CONV_AS_PROCESSED,
+        variables: {
+          id: convId
+        }
+      });
+    } catch (err) {
+      console.log('ERROR markConvAsProcessed:', err);
     }
   };
 
@@ -168,4 +340,4 @@ const client = makeApolloClient(
   process.env.REACT_APP_API_WS_URL
 );
 const apiService = new ApiService(client);
-export { client, apiService, SUBSCRIBE_ADVERTS };
+export { client, apiService, SUBSCRIBE_ADVERTS, SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES };

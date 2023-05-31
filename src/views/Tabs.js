@@ -7,7 +7,7 @@ import Conversations from './Conversations';
 function JustifiedExample() {
   return (
     <Tabs
-      defaultActiveKey="adverts"
+      defaultActiveKey="conversations"
       id="justify-tab-example"
       className="mb-3"
       justify
