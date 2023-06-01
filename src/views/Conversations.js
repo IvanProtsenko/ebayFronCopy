@@ -15,6 +15,7 @@ import OutdatedOffer from './ConversationFilters/OutdatedOffer';
 import OutdatedShipping from './ConversationFilters/OutdatedShipping';
 import RejectedOffer from './ConversationFilters/RejectedOffer';
 import TransactionReserved from './ConversationFilters/TransactionReserved';
+import Undecided from './ConversationFilters/Undecided';
 import { apiService, client, SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES } from '../services/ApiService';
 
 // DIALOG = 'Диалог',
@@ -38,6 +39,7 @@ const Conversations = () => {
     const [itemShipped = 0, setItemShipped] = useState();
     const [outdatedShipping = 0, setOutdatedShipping] = useState();
     const [itemReceived = 0, setItemReceived] = useState();
+    const [undecided = 0, setUndecided] = useState();
 
     const addUnreadToStatus = (status) => {
         if(status == 'Диалог') {
@@ -60,6 +62,8 @@ const Conversations = () => {
             setOutdatedShipping(outdatedShipping+1)
         } else if(status == 'Получено') {
             setItemReceived(itemReceived+1)
+        } else if(status == 'Нераспределенные') {
+            setUndecided(undecided+1)
         }
     }
 
@@ -131,6 +135,9 @@ const Conversations = () => {
                         <Nav.Item>
                             <Nav.Link eventKey="item_marked_as_received">Получено ({itemReceived})</Nav.Link>
                         </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey="undecided">Нереспределенные ({undecided})</Nav.Link>
+                        </Nav.Item>
                     </Nav>
                 </Col>
                 <Col sm={9}>
@@ -164,6 +171,9 @@ const Conversations = () => {
                         </Tab.Pane>
                         <Tab.Pane eventKey="item_marked_as_received">
                             <ItemReceived />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="undecided">
+                            <Undecided />
                         </Tab.Pane>
                     </Tab.Content>
                 </Col>
