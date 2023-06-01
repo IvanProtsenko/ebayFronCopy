@@ -227,6 +227,8 @@ export default class Table extends Component {
       location: event.data.location,
       status: event.data.status,
       statusDescription: event.data.statusDescription,
+      consoleGeneration: event.data.consoleGeneration,
+      controllersCount: event.data.controllersCount,
     };
     await new Promise(r => setTimeout(r, Math.random() * 1000));
     await apiService.updateAdvertByPk(newAdvert);
