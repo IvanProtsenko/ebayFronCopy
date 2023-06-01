@@ -108,7 +108,7 @@ export default class Dialog extends Component {
               {this.state.convChosen ? (
                 this.state.messages.map((msg) => (
                   <div
-                    className={"message"}
+                    className={"message"+(msg.boundness == "OUTBOUND" ? '-right' : '')}
                     key={msg.messageId}
                   >
                     <div className="date">{msg.receivedDate}</div>

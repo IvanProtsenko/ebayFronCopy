@@ -57,29 +57,9 @@ export default class DialogProcessed extends Component {
 
   async componentDidMount() {
     const conversations = await apiService.getConversationsByStatus('Диалог (обработано)')
-    console.log(conversations)
-    // let chatId = window.location.href.substring(
-    //   window.location.href.lastIndexOf('/') + 1
-    // );
-    // console.log(chatId)
-    // this.setState(() => {
-    //   return { chatId: chatId };
-    // });
-    // const messages = await apiService.getMessagesByAdvertId(chatId);
-    // const advert = await apiService.getAdvertById(chatId)
-    // await apiService.updateAdvertByPk({adItemId: chatId, viewed: true})
     this.setState(() => {
       return { conversations: conversations };
     });
-    // this.setState(() => {
-    //   return { advert: advert };
-    // });
-    // this.setState(() => {
-    //   return { advertStatus: advert.status };
-    // });
-    // this.setState(() => {
-    //   return { advertStatusDesc: advert.statusDescription };
-    // });
   }
 
   render() {
@@ -104,7 +84,7 @@ export default class DialogProcessed extends Component {
               {this.state.convChosen ? (
                 this.state.messages.map((msg) => (
                   <div
-                    className={"message"}
+                    className={"message"+(msg.boundness == "OUTBOUND" ? '-right' : '')}
                     key={msg.messageId}
                   >
                     <div className="date">{msg.receivedDate}</div>
