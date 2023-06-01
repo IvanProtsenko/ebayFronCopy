@@ -56,7 +56,7 @@ export default class Undecided extends Component {
     }
 
     async componentDidMount() {
-        const conversations = await apiService.getConversationsByStatus('Нереспределенные')
+        const conversations = await apiService.getConversationsByStatus('Нераспределенные')
         this.setState(() => {
             return { conversations: conversations };
         });

@@ -136,7 +136,7 @@ const Conversations = () => {
                             <Nav.Link eventKey="item_marked_as_received">Получено ({itemReceived})</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link eventKey="undecided">Нереспределенные ({undecided})</Nav.Link>
+                            <Nav.Link eventKey="undecided">Нераспределенные ({undecided})</Nav.Link>
                         </Nav.Item>
                     </Nav>
                 </Col>
