@@ -40,31 +40,53 @@ const Conversations = () => {
     const [outdatedShipping = 0, setOutdatedShipping] = useState();
     const [itemReceived = 0, setItemReceived] = useState();
     const [undecided = 0, setUndecided] = useState();
+    let dialogUnreadFunc = 0
+    let dialogProcessedUnreadFunc = 0
+    let offerMadeFunc = 0
+    let rejectedOfferFunc = 0
+    let offerAcceptedFunc = 0
+    let outdatedOfferFunc = 0
+    let transactionReservedFunc = 0
+    let itemShippedFunc = 0
+    let outdatedShippingFunc = 0
+    let itemReceivedFunc = 0
+    let undecidedFunc = 0
 
     const addUnreadToStatus = (status) => {
         if(status == 'Диалог') {
-            setDialogUnread(dialogUnread+1)
+            dialogUnreadFunc++
         } else if(status == 'Диалог (обработано)') {
-            setDialogProcessedUnread(dialogProcessedUnread+1)
+            dialogProcessedUnreadFunc++
         } else if(status == 'Запрос отправлен') {
-            setOfferMade(offerMade+1)
+            offerMadeFunc++
         } else if(status == 'Запрос отклонён') {
-            setRejectedOffer(rejectedOffer+1)
+            rejectedOfferFunc++
         } else if(status == 'Запрос принят') {
-            setOfferAccepted(offerAccepted+1)
+            offerAcceptedFunc++
         } else if(status == 'Оплачено') {
-            setTransactionReserved(transactionReserved+1)
+            transactionReservedFunc++
         } else if(status == 'Посылка отправлена') {
-            setItemShipped(itemShipped+1)
+            itemShippedFunc++
         } else if(status == 'Запрос просрочен') {
-            setOutdatedOffer(outdatedOffer+1)
+            outdatedOfferFunc++
         } else if(status == 'Посылка не доставлена') {
-            setOutdatedShipping(outdatedShipping+1)
+            outdatedShippingFunc++
         } else if(status == 'Получено') {
-            setItemReceived(itemReceived+1)
+            itemReceivedFunc++
         } else if(status == 'Нераспределенные') {
-            setUndecided(undecided+1)
+            undecidedFunc++
         }
+        setDialogUnread(dialogUnreadFunc)
+        setDialogProcessedUnread(dialogProcessedUnreadFunc)
+        setOfferMade(offerMadeFunc)
+        setRejectedOffer(rejectedOfferFunc)
+        setOfferAccepted(offerAcceptedFunc)
+        setTransactionReserved(transactionReservedFunc)
+        setItemShipped(itemShippedFunc)
+        setOutdatedOffer(outdatedOfferFunc)
+        setOutdatedShipping(outdatedShippingFunc)
+        setItemReceived(itemReceivedFunc)
+        setUndecided(undecidedFunc)
     }
 
     const calculateUnreadMessages = (conversations) => {
