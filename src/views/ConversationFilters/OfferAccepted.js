@@ -89,7 +89,7 @@ export default class OfferAccepted extends Component {
                                     >
                                         <div className="date">{msg.receivedDate}</div>
                                         <div className="from">{msg.title}</div>
-                                        <div className="subject">{msg.text}</div>
+                                        <div className="subject">{msg.type == 'MESSAGE'} ? {msg.textShort} : {msg.text})</div>
                                     </div>
                                 ))
                             ) : ''}
