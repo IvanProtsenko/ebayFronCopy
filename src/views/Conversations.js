@@ -17,6 +17,7 @@ import RejectedOffer from './ConversationFilters/RejectedOffer';
 import TransactionReserved from './ConversationFilters/TransactionReserved';
 import Undecided from './ConversationFilters/Undecided';
 import { apiService, client, SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES } from '../services/ApiService';
+import getCustomStatus from '../services/utils/getCustomStatus';
 
 // DIALOG = 'Диалог',
 // OFFER_MADE = 'Запрос отправлен',
@@ -90,11 +91,15 @@ const Conversations = () => {
     }
 
     const calculateUnreadMessages = (conversations) => {
-        conversations.forEach(conv => {
+        conversations.forEach(async conv => {
+            const status = getCustomStatus(conv)
+            if(!conv.customStatus) {
+                console.log(status)
+                await apiService.updateCustomStatus(conv.id, status)
+            }
             conv.Messages.every(msg => {
-                console.log(msg)
                 if(!msg.viewed) {
-                    addUnreadToStatus(conv.customStatus)
+                    addUnreadToStatus(status)
                     return false
                 }
                 return true

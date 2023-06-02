@@ -125,11 +125,59 @@ const GET_MESSAGES_BY_CONV_ID = gql`
 const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
   subscription ConversationsWithMessages {
     Conversations {
+      adDetailsAvailable
+      adEligibleForPayment
+      adId
+      adImage
+      adL1CategoryId
+      adL2CategoryId
+      adPriceInEuroCent
+      adPriceType
+      adStatus
+      adTitle
+      adType
+      attachmentsEnabled
+      buyNowPossible
+      buyerInitials
+      buyerName
+      flaggingEnabled
+      id
+      linksEnabled
+      numUnread
+      paymentBanner
+      paymentPossible
+      ratingPossible
+      role
+      sellerInitials
+      sellerName
+      userActionRequired
+      userIdBuyer
+      userIdBuyerHash
+      userIdSeller
+      userIdSellerHash
       customStatus
       Messages {
         viewed
+        active
+        boundness
+        buyerFeeInEuroCent
+        carrierId
+        conversationId
+        messageId
+        offerId
+        offeredPriceInEuroCent
+        paymentAndShippingMessageType
+        paymentMethod
+        promotionInEuroCent
+        receivedDate
+        shippingCostInEuroCent
+        shippingType
+        text
+        textShort
+        title
+        totalInEuroCent
+        type
       }
-      adId
     }
   }
 `
@@ -137,11 +185,59 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
 const GET_CONVERSATIONS_WITH_MESSAGES = gql`
   query ConversationsWithMessages {
     Conversations {
+      adDetailsAvailable
+      adEligibleForPayment
+      adId
+      adImage
+      adL1CategoryId
+      adL2CategoryId
+      adPriceInEuroCent
+      adPriceType
+      adStatus
+      adTitle
+      adType
+      attachmentsEnabled
+      buyNowPossible
+      buyerInitials
+      buyerName
+      flaggingEnabled
+      id
+      linksEnabled
+      numUnread
+      paymentBanner
+      paymentPossible
+      ratingPossible
+      role
+      sellerInitials
+      sellerName
+      userActionRequired
+      userIdBuyer
+      userIdBuyerHash
+      userIdSeller
+      userIdSellerHash
       customStatus
       Messages {
         viewed
+        active
+        boundness
+        buyerFeeInEuroCent
+        carrierId
+        conversationId
+        messageId
+        offerId
+        offeredPriceInEuroCent
+        paymentAndShippingMessageType
+        paymentMethod
+        promotionInEuroCent
+        receivedDate
+        shippingCostInEuroCent
+        shippingType
+        text
+        textShort
+        title
+        totalInEuroCent
+        type
       }
-      adId
     }
   }
 `
@@ -158,6 +254,14 @@ const MARK_CONV_AS_PROCESSED = gql`
   mutation MarkConvAsProcessed($id: String!) {
     update_Conversations_by_pk(pk_columns: {id: $id}, _set: {customStatus: "Диалог (обработано)"}) {
       id
+    }
+  }
+`
+
+const UPDATE_CUSTOM_STATUS = gql`
+  mutation UpdateCustomStatus($id: String!, $status: String) {
+    update_Conversations_by_pk(pk_columns: {id: $id}, _set: {customStatus: $status}) {
+      adId
     }
   }
 `
@@ -317,6 +421,20 @@ class ApiService {
       });
     } catch (err) {
       console.log('ERROR markConvAsProcessed:', err);
+    }
+  };
+
+  updateCustomStatus = async (convId, status) => {
+    try {
+      await this.client.mutate({
+        mutation: UPDATE_CUSTOM_STATUS,
+        variables: {
+          id: convId,
+          status
+        }
+      });
+    } catch (err) {
+      console.log('ERROR updateCustomStatus:', err);
     }
   };
 
