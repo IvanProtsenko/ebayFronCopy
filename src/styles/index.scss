@@ -97,6 +97,35 @@ a.conversationLink:link {
         }
       }
 
+      .message-active, .message-right-active {
+        width: 100%;
+        padding: 2px 10px;
+        border-bottom: 1px solid rgb(150, 150, 255);
+        background-color: #9dd5f5;
+
+        cursor: pointer;
+
+        &:hover {
+          background-color: #eeeeee;
+        }
+
+        .date {
+          color: grey;
+          font-size: 10px;
+        }
+
+        .from {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .subject {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
       .message-unread {
         width: 100%;
         padding: 2px 10px;

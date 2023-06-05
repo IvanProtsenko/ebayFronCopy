@@ -69,7 +69,8 @@ export default class OutdatedOffer extends Component {
                     <div className="messageBox">
                         {this.state.conversations.map((conv) => (
                             <div
-                                className={"message"+(conv.Messages.filter(msg => msg.viewed == false).length > 0 ? '-unread' : '')}
+                                className={"message"+(conv.Messages.filter(msg => msg.viewed == false).length > 0 ? '-unread' : '')
+                                + (conv.id == this.state.convChosenId ? '-active' : '')}
                                 key={conv.id}
                                 onClick={() => this.openConversation(conv.id)}
                             >
