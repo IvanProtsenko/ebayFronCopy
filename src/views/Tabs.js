@@ -3,6 +3,7 @@ import Tabs from 'react-bootstrap/Tabs';
 
 import Table from './Table';
 import Conversations from './Conversations';
+import Search from './Search'
 
 function JustifiedExample() {
   return (
@@ -17,6 +18,9 @@ function JustifiedExample() {
       </Tab>
       <Tab eventKey="conversations" title="Переписки">
         <Conversations />
+      </Tab>
+      <Tab eventKey="search" title="Поиск">
+        <Search />
       </Tab>
     </Tabs>
   );

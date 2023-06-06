@@ -92,18 +92,18 @@ const Conversations = () => {
 
     const calculateUnreadMessages = (conversations) => {
         conversations.forEach(async conv => {
-            const status = getCustomStatus(conv)
-            // if(!conv.customStatus) {
+            if(conv.Messages.length > 0) {
+                const status = getCustomStatus(conv)
             //     console.log(status)
                 await apiService.updateCustomStatus(conv.id, status)
-            // }
-            conv.Messages.every(msg => {
-                if(!msg.viewed) {
-                    addUnreadToStatus(status)
-                    return false
-                }
-                return true
-            })
+                conv.Messages.every(msg => {
+                    if(!msg.viewed) {
+                        addUnreadToStatus(status)
+                        return false
+                    }
+                    return true
+                })
+            }
         });
     }
 

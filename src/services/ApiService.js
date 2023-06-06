@@ -182,6 +182,47 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
   }
 `
 
+const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
+  query GetConversationsBySellerName($sellerName: String) {
+    Conversations(where: {sellerName: {_eq: $sellerName}}) {
+      adDetailsAvailable
+      adEligibleForPayment
+      adId
+      adImage
+      adL1CategoryId
+      adL2CategoryId
+      adPriceInEuroCent
+      adPriceType
+      adStatus
+      adTitle
+      adType
+      attachmentsEnabled
+      buyNowPossible
+      buyerInitials
+      buyerName
+      flaggingEnabled
+      id
+      linksEnabled
+      numUnread
+      paymentBanner
+      paymentPossible
+      ratingPossible
+      role
+      sellerInitials
+      sellerName
+      userActionRequired
+      userIdBuyer
+      userIdBuyerHash
+      userIdSeller
+      userIdSellerHash
+      customStatus
+      Messages {
+        viewed
+      }
+    }
+  }
+`
+
 const GET_CONVERSATIONS_WITH_MESSAGES = gql`
   query ConversationsWithMessages {
     Conversations {
@@ -381,6 +422,20 @@ class ApiService {
       return result.data.Conversations;
     } catch (err) {
       console.log('ERROR getConversationsWithMessage:', err);
+    }
+  };
+
+  getConversationsBySellerName = async (sellerName) => {
+    try {
+      const result = await this.client.query({
+        query: GET_CONVERSATIONS_BY_SELLER_NAME,
+        variables: {
+          sellerName
+        }
+      });
+      return result.data.Conversations;
+    } catch (err) {
+      console.log('ERROR getConversationsBySellerName:', err);
     }
   };
 
