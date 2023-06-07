@@ -132,6 +132,8 @@ const Conversations = () => {
       outdatedShippingUnreadFunc++;
     } else if (status == 'Получено') {
       itemReceivedUnreadFunc++;
+    } else if (status == 'Возврат средств') {
+      chargedBackUnreadFunc++;
     } else if (status == 'Нераспределенные') {
       undecidedUnreadFunc++;
     } else if (status == 'Отложенные') {
