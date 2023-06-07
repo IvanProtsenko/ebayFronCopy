@@ -63,7 +63,6 @@ export default class Dialog extends Component {
 
   async componentDidMount() {
     const conversations = await apiService.getConversationsByStatus('Диалог');
-    console.log(conversations);
     // let chatId = window.location.href.substring(
     //   window.location.href.lastIndexOf('/') + 1
     // );

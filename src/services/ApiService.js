@@ -53,11 +53,11 @@ const GET_ADVERT_BY_ID = gql`
       viewed
     }
   }
-`
+`;
 
 const GET_CONVERSATIONS = gql`
   query GetConversations($status: String) {
-    Conversations(where: {customStatus: {_eq: $status}}) {
+    Conversations(where: { customStatus: { _eq: $status } }) {
       adDetailsAvailable
       adEligibleForPayment
       adId
@@ -93,11 +93,11 @@ const GET_CONVERSATIONS = gql`
       }
     }
   }
-`
+`;
 
 const GET_MESSAGES_BY_CONV_ID = gql`
   query GetMessagesByConvId($convId: String) {
-    Messages(where: {conversationId: {_eq: $convId}}) {
+    Messages(where: { conversationId: { _eq: $convId } }) {
       active
       boundness
       buyerFeeInEuroCent
@@ -120,7 +120,7 @@ const GET_MESSAGES_BY_CONV_ID = gql`
       viewed
     }
   }
-`
+`;
 
 const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
   subscription ConversationsWithMessages {
@@ -180,11 +180,11 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
       }
     }
   }
-`
+`;
 
 const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
   query GetConversationsBySellerName($sellerName: String) {
-    Conversations(where: {sellerName: {_eq: $sellerName}}) {
+    Conversations(where: { sellerName: { _eq: $sellerName } }) {
       adDetailsAvailable
       adEligibleForPayment
       adId
@@ -221,7 +221,7 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
       }
     }
   }
-`
+`;
 
 const GET_CONVERSATIONS_WITH_MESSAGES = gql`
   query ConversationsWithMessages {
@@ -281,31 +281,50 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
       }
     }
   }
-`
+`;
 
-const MARK_MESSAGES_AS_VIEWED = gql`
-  mutation MarkMessagesAsViewed($conversationId: String) {
-    update_Messages(where: {conversationId: {_eq: $conversationId}}, _set: {viewed: true}) {
+const UPDATE_CUSTOM_STATUS_MANY = gql`
+  mutation UpdateCustomStatusMany($ids: [String], $status: String) {
+    update_Conversations_many(
+      updates: { where: { id: { _in: $ids } }, _set: { customStatus: $status } }
+    ) {
       affected_rows
     }
   }
-`
+`;
+
+const MARK_MESSAGES_AS_VIEWED = gql`
+  mutation MarkMessagesAsViewed($conversationId: String) {
+    update_Messages(
+      where: { conversationId: { _eq: $conversationId } }
+      _set: { viewed: true }
+    ) {
+      affected_rows
+    }
+  }
+`;
 
 const MARK_CONV_AS_PROCESSED = gql`
   mutation MarkConvAsProcessed($id: String!) {
-    update_Conversations_by_pk(pk_columns: {id: $id}, _set: {customStatus: "Диалог (обработано)"}) {
+    update_Conversations_by_pk(
+      pk_columns: { id: $id }
+      _set: { customStatus: "Диалог (обработано)" }
+    ) {
       id
     }
   }
-`
+`;
 
 const UPDATE_CUSTOM_STATUS = gql`
   mutation UpdateCustomStatus($id: String!, $status: String) {
-    update_Conversations_by_pk(pk_columns: {id: $id}, _set: {customStatus: $status}) {
+    update_Conversations_by_pk(
+      pk_columns: { id: $id }
+      _set: { customStatus: $status }
+    ) {
       adId
     }
   }
-`
+`;
 
 const SUBSCRIBE_ADVERTS = gql`
   subscription MySubscription {
@@ -336,7 +355,7 @@ const SUBSCRIBE_ADVERTS = gql`
 
 const GET_MESSAGES_BY_ADVERT_ID = gql`
   query GetMessagesByAdvertId($advertId: bigint) {
-    Messages(where: {advert_id: {_eq: $advertId}}) {
+    Messages(where: { advert_id: { _eq: $advertId } }) {
       id
       is_owner
       text
@@ -344,15 +363,15 @@ const GET_MESSAGES_BY_ADVERT_ID = gql`
       sent_at
     }
   }
-`
+`;
 
 const UPDATE_ADVERT_BY_PK = gql`
   mutation MyMutation2($id: bigint!, $_set: Adverts_set_input) {
-    update_Adverts_by_pk(pk_columns: {adItemId: $id}, _set: $_set) {
+    update_Adverts_by_pk(pk_columns: { adItemId: $id }, _set: $_set) {
       adItemId
     }
   }
-`
+`;
 
 class ApiService {
   client;
@@ -377,8 +396,8 @@ class ApiService {
       const result = await this.client.query({
         query: GET_ADVERT_BY_ID,
         variables: {
-          adItemId: advertId
-        }
+          adItemId: advertId,
+        },
       });
       return result.data.Adverts_by_pk;
     } catch (err) {
@@ -391,8 +410,8 @@ class ApiService {
       const result = await this.client.query({
         query: GET_CONVERSATIONS,
         variables: {
-          status
-        }
+          status,
+        },
       });
       return result.data.Conversations;
     } catch (err) {
@@ -405,8 +424,8 @@ class ApiService {
       const result = await this.client.query({
         query: GET_MESSAGES_BY_CONV_ID,
         variables: {
-          convId
-        }
+          convId,
+        },
       });
       return result.data.Messages;
     } catch (err) {
@@ -430,8 +449,8 @@ class ApiService {
       const result = await this.client.query({
         query: GET_CONVERSATIONS_BY_SELLER_NAME,
         variables: {
-          sellerName
-        }
+          sellerName,
+        },
       });
       return result.data.Conversations;
     } catch (err) {
@@ -444,8 +463,8 @@ class ApiService {
       const result = await this.client.query({
         query: GET_MESSAGES_BY_ADVERT_ID,
         variables: {
-          advertId
-        }
+          advertId,
+        },
       });
       return result.data.Messages;
     } catch (err) {
@@ -458,8 +477,8 @@ class ApiService {
       await this.client.mutate({
         mutation: MARK_MESSAGES_AS_VIEWED,
         variables: {
-          conversationId: convId
-        }
+          conversationId: convId,
+        },
       });
     } catch (err) {
       console.log('ERROR markMessagesInConvViewed:', err);
@@ -471,8 +490,8 @@ class ApiService {
       await this.client.mutate({
         mutation: MARK_CONV_AS_PROCESSED,
         variables: {
-          id: convId
-        }
+          id: convId,
+        },
       });
     } catch (err) {
       console.log('ERROR markConvAsProcessed:', err);
@@ -485,11 +504,25 @@ class ApiService {
         mutation: UPDATE_CUSTOM_STATUS,
         variables: {
           id: convId,
-          status
-        }
+          status,
+        },
       });
     } catch (err) {
       console.log('ERROR updateCustomStatus:', err);
+    }
+  };
+
+  updateCustomStatusMany = async (convIds, status) => {
+    try {
+      await this.client.mutate({
+        mutation: UPDATE_CUSTOM_STATUS_MANY,
+        variables: {
+          ids: convIds,
+          status,
+        },
+      });
+    } catch (err) {
+      console.log('ERROR updateCustomStatusMany:', err);
     }
   };
 
@@ -499,8 +532,8 @@ class ApiService {
         mutation: UPDATE_ADVERT_BY_PK,
         variables: {
           id: data.adItemId,
-          _set: data
-        }
+          _set: data,
+        },
       });
     } catch (err) {
       console.log('ERROR updateAdvertByPk:', err);
@@ -513,4 +546,9 @@ const client = makeApolloClient(
   process.env.REACT_APP_API_WS_URL
 );
 const apiService = new ApiService(client);
-export { client, apiService, SUBSCRIBE_ADVERTS, SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES };
+export {
+  client,
+  apiService,
+  SUBSCRIBE_ADVERTS,
+  SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
+};
