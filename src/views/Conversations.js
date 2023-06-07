@@ -4,24 +4,13 @@ import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
-
-import Dialog from './ConversationFilters/Dialog';
-import DialogProcessed from './ConversationFilters/DialogProcessed';
-import ItemReceived from './ConversationFilters/ItemReceived';
-import ItemShipped from './ConversationFilters/ItemShipped';
-import OfferAccepted from './ConversationFilters/OfferAccepted';
-import OfferMade from './ConversationFilters/OfferMade';
-import OutdatedOffer from './ConversationFilters/OutdatedOffer';
-import OutdatedShipping from './ConversationFilters/OutdatedShipping';
-import RejectedOffer from './ConversationFilters/RejectedOffer';
-import TransactionReserved from './ConversationFilters/TransactionReserved';
-import Undecided from './ConversationFilters/Undecided';
 import {
   apiService,
   client,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
 } from '../services/ApiService';
 import getCustomStatus from '../services/utils/getCustomStatus';
+import Chat from './ConversationFilters/Chat';
 
 // DIALOG = 'Диалог',
 // OFFER_MADE = 'Запрос отправлен',
@@ -44,7 +33,10 @@ const Conversations = () => {
   const [itemShipped, setItemShipped] = useState(0);
   const [outdatedShipping, setOutdatedShipping] = useState(0);
   const [itemReceived, setItemReceived] = useState(0);
+  const [chargedBack, setChargedBack] = useState(0);
   const [undecided, setUndecided] = useState(0);
+  const [delayed, setDelayed] = useState(0);
+
   const [dialogUnread, setDialogUnread] = useState(0);
   const [dialogProcessedUnread, setDialogProcessedUnread] = useState(0);
   const [offerMadeUnread, setOfferMadeUnread] = useState(0);
@@ -55,7 +47,9 @@ const Conversations = () => {
   const [itemShippedUnread, setItemShippedUnread] = useState(0);
   const [outdatedShippingUnread, setOutdatedShippingUnread] = useState(0);
   const [itemReceivedUnread, setItemReceivedUnread] = useState(0);
+  const [chargedBackUnread, setChargedBackUnread] = useState(0);
   const [undecidedUnread, setUndecidedUnread] = useState(0);
+  const [delayedUnread, setDelayedUnread] = useState(0);
 
   let dialogUnreadFunc = 0;
   let dialogProcessedUnreadFunc = 0;
@@ -67,7 +61,9 @@ const Conversations = () => {
   let outdatedOfferUnreadFunc = 0;
   let outdatedShippingUnreadFunc = 0;
   let itemReceivedUnreadFunc = 0;
+  let chargedBackUnreadFunc = 0;
   let undecidedUnreadFunc = 0;
+  let delayedUnreadFunc = 0;
 
   const dialogToUpdate = [];
   const dialogProcessedToUpdate = [];
@@ -79,7 +75,9 @@ const Conversations = () => {
   const outdatedOfferToUpdate = [];
   const outdatedShippingUpdate = [];
   const itemReceivedToUpdate = [];
+  const chargedBackToUpdate = [];
   const undecidedToUpdate = [];
+  const delayedToUpdate = [];
 
   const markAllStatuses = () => {
     setDialog(dialogToUpdate.length);
@@ -92,7 +90,9 @@ const Conversations = () => {
     setOutdatedOffer(outdatedOfferToUpdate.length);
     setOutdatedShipping(outdatedShippingUpdate.length);
     setItemReceived(itemReceivedToUpdate.length);
+    setChargedBack(chargedBackToUpdate.length);
     setUndecided(undecidedToUpdate.length);
+    setDelayed(delayedToUpdate.length);
   };
 
   const markAllStatusesUnread = () => {
@@ -106,7 +106,9 @@ const Conversations = () => {
     setOutdatedOfferUnread(outdatedOfferUnreadFunc);
     setOutdatedShippingUnread(outdatedShippingUnreadFunc);
     setItemReceivedUnread(itemReceivedUnreadFunc);
+    setChargedBackUnread(chargedBackUnreadFunc);
     setUndecidedUnread(undecidedUnreadFunc);
+    setDelayedUnread(delayedUnreadFunc);
   };
 
   const setUnread = async (status) => {
@@ -132,6 +134,8 @@ const Conversations = () => {
       itemReceivedUnreadFunc++;
     } else if (status == 'Нераспределенные') {
       undecidedUnreadFunc++;
+    } else if (status == 'Отложенные') {
+      delayedUnreadFunc++;
     }
   };
 
@@ -171,9 +175,14 @@ const Conversations = () => {
     );
     await apiService.updateCustomStatusMany(itemReceivedToUpdate, 'Получено');
     await apiService.updateCustomStatusMany(
+      chargedBackToUpdate,
+      'Возврат средств'
+    );
+    await apiService.updateCustomStatusMany(
       undecidedToUpdate,
       'Нераспределенные'
     );
+    await apiService.updateCustomStatusMany(delayedToUpdate, 'Отложенные');
   };
 
   const calculateUnreadMessages = async (conversations) => {
@@ -200,8 +209,12 @@ const Conversations = () => {
           outdatedShippingUpdate.push(conv.id);
         } else if (status == 'Получено') {
           itemReceivedToUpdate.push(conv.id);
+        } else if (status == 'Возврат средств') {
+          chargedBackToUpdate.push(conv.id);
         } else if (status == 'Нераспределенные') {
           undecidedToUpdate.push(conv.id);
+        } else if (status == 'Отложенные') {
+          delayedToUpdate.push(conv.id);
         }
         for (let i = 0; i < conv.Messages.length; i++) {
           if (!conv.Messages[i].viewed) {
@@ -294,8 +307,18 @@ const Conversations = () => {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
+              <Nav.Link eventKey="charged_back">
+                Возврат средств ({chargedBack} / {chargedBackUnread})
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
               <Nav.Link eventKey="undecided">
                 Нераспределенные ({undecided} / {undecidedUnread})
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="later">
+                Отложенные ({delayed} / {delayedUnread})
               </Nav.Link>
             </Nav.Item>
           </Nav>
@@ -303,37 +326,43 @@ const Conversations = () => {
         <Col sm={9}>
           <Tab.Content>
             <Tab.Pane eventKey="dialog">
-              <Dialog />
+              <Chat status="Диалог" />
             </Tab.Pane>
             <Tab.Pane eventKey="dialogProcessed">
-              <DialogProcessed />
+              <Chat status="Диалог (обработано)" />
             </Tab.Pane>
             <Tab.Pane eventKey="offer_made">
-              <OfferMade />
+              <Chat status="Запрос отправлен" />
             </Tab.Pane>
             <Tab.Pane eventKey="rejected_offer">
-              <RejectedOffer />
+              <Chat status="Запрос отклонён" />
             </Tab.Pane>
             <Tab.Pane eventKey="offer_accepted">
-              <OfferAccepted />
+              <Chat status="Запрос принят" />
             </Tab.Pane>
             <Tab.Pane eventKey="outdated_offer">
-              <OutdatedOffer />
+              <Chat status="Запрос просрочен" />
             </Tab.Pane>
             <Tab.Pane eventKey="transaction_reserved">
-              <TransactionReserved />
+              <Chat status="Оплачено" />
             </Tab.Pane>
             <Tab.Pane eventKey="item_marked_as_shipped">
-              <ItemShipped />
+              <Chat status="Посылка отправлена" />
             </Tab.Pane>
             <Tab.Pane eventKey="outdated_shipping">
-              <OutdatedShipping />
+              <Chat status="Посылка не доставлена" />
             </Tab.Pane>
             <Tab.Pane eventKey="item_marked_as_received">
-              <ItemReceived />
+              <Chat status="Получено" />
+            </Tab.Pane>
+            <Tab.Pane eventKey="charged_back">
+              <Chat status="Возврат средств" />
             </Tab.Pane>
             <Tab.Pane eventKey="undecided">
-              <Undecided />
+              <Chat status="Нераспределенные" />
+            </Tab.Pane>
+            <Tab.Pane eventKey="later">
+              <Chat status="Отложенные" />
             </Tab.Pane>
           </Tab.Content>
         </Col>

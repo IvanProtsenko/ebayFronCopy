@@ -500,13 +500,14 @@ class ApiService {
 
   updateCustomStatus = async (convId, status) => {
     try {
-      await this.client.mutate({
+      const result = await this.client.mutate({
         mutation: UPDATE_CUSTOM_STATUS,
         variables: {
           id: convId,
           status,
         },
       });
+      console.log(result);
     } catch (err) {
       console.log('ERROR updateCustomStatus:', err);
     }
