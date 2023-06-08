@@ -58,6 +58,7 @@ export default class ShippingAndPaymentMessage extends Component {
     return (
       <Card className="shippingMessage">
         <Card.Body>
+          <div className="date">{this.state.msg.receivedDate}</div>
           {renderShipping()}
           <Card.Text>{this.state.msg.text}</Card.Text>
         </Card.Body>
