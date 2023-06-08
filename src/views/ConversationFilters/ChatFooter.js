@@ -60,6 +60,9 @@ export default class ChatFooter extends Component {
               <option value="Посылка не доставлена">
                 Посылка не доставлена
               </option>
+              <option value="Подтвердите получение">
+                Подтвердите получение
+              </option>
               <option value="Получено">Получено</option>
               <option value="Возврат средств">Возврат средств</option>
               <option value="Платеж не прошел">Платеж не прошел</option>

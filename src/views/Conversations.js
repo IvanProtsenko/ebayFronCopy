@@ -32,6 +32,7 @@ const Conversations = () => {
   const [transactionReserved, setTransactionReserved] = useState(0);
   const [itemShipped, setItemShipped] = useState(0);
   const [outdatedShipping, setOutdatedShipping] = useState(0);
+  const [itemDelivered, setItemDelivered] = useState(0);
   const [itemReceived, setItemReceived] = useState(0);
   const [chargedBack, setChargedBack] = useState(0);
   const [transactionExpired, setTransactionExpired] = useState(0);
@@ -47,6 +48,7 @@ const Conversations = () => {
   const [transactionReservedUnread, setTransactionReservedUnread] = useState(0);
   const [itemShippedUnread, setItemShippedUnread] = useState(0);
   const [outdatedShippingUnread, setOutdatedShippingUnread] = useState(0);
+  const [itemDeliveredUnread, setItemDeliveredUnread] = useState(0);
   const [itemReceivedUnread, setItemReceivedUnread] = useState(0);
   const [chargedBackUnread, setChargedBackUnread] = useState(0);
   const [transactionExpiredUnread, setTransactionExpiredUnread] = useState(0);
@@ -62,6 +64,7 @@ const Conversations = () => {
   let itemShippedUnreadFunc = 0;
   let outdatedOfferUnreadFunc = 0;
   let outdatedShippingUnreadFunc = 0;
+  let itemDeliveredUnreadFunc = 0;
   let itemReceivedUnreadFunc = 0;
   let chargedBackUnreadFunc = 0;
   let transactionExpiredUnreadFunc = 0;
@@ -77,6 +80,7 @@ const Conversations = () => {
   const itemShippedToUpdate = [];
   const outdatedOfferToUpdate = [];
   const outdatedShippingUpdate = [];
+  const itemDeliveredToUpdate = [];
   const itemReceivedToUpdate = [];
   const chargedBackToUpdate = [];
   const transactionExpiredToUpdate = [];
@@ -93,6 +97,7 @@ const Conversations = () => {
     setItemShipped(itemShippedToUpdate.length);
     setOutdatedOffer(outdatedOfferToUpdate.length);
     setOutdatedShipping(outdatedShippingUpdate.length);
+    setItemDelivered(itemDeliveredToUpdate.length);
     setItemReceived(itemReceivedToUpdate.length);
     setChargedBack(chargedBackToUpdate.length);
     setTransactionExpired(transactionExpiredToUpdate.length);
@@ -110,6 +115,7 @@ const Conversations = () => {
     setItemShippedUnread(itemShippedUnreadFunc);
     setOutdatedOfferUnread(outdatedOfferUnreadFunc);
     setOutdatedShippingUnread(outdatedShippingUnreadFunc);
+    setItemDeliveredUnread(itemDeliveredUnreadFunc);
     setItemReceivedUnread(itemReceivedUnreadFunc);
     setChargedBackUnread(chargedBackUnreadFunc);
     setTransactionExpiredUnread(transactionExpiredUnreadFunc);
@@ -136,6 +142,8 @@ const Conversations = () => {
       outdatedOfferUnreadFunc++;
     } else if (status == 'Посылка не доставлена') {
       outdatedShippingUnreadFunc++;
+    } else if (status == 'Подтвердите получение') {
+      itemDeliveredUnreadFunc++;
     } else if (status == 'Получено') {
       itemReceivedUnreadFunc++;
     } else if (status == 'Возврат средств') {
@@ -183,6 +191,10 @@ const Conversations = () => {
       outdatedShippingUpdate,
       'Посылка не доставлена'
     );
+    await apiService.updateCustomStatusMany(
+      itemDeliveredToUpdate,
+      'Подтвердите получение'
+    );
     await apiService.updateCustomStatusMany(itemReceivedToUpdate, 'Получено');
     await apiService.updateCustomStatusMany(
       transactionExpiredToUpdate,
@@ -202,7 +214,16 @@ const Conversations = () => {
   const calculateUnreadMessages = async (conversations) => {
     conversations.forEach(async (conv) => {
       if (conv.Messages.length > 0) {
-        const status = getCustomStatus(conv);
+        let status = '';
+        if (
+          conv.manualUpdatedDate <
+            conv.Messages[conv.Messages.length - 1].receivedDate ||
+          !conv.manualUpdatedDate
+        ) {
+          status = getCustomStatus(conv);
+        } else {
+          status = conv.customStatus;
+        }
         if (status == 'Диалог') {
           dialogToUpdate.push(conv.id);
         } else if (status == 'Диалог (обработано)') {
@@ -221,6 +242,8 @@ const Conversations = () => {
           outdatedOfferToUpdate.push(conv.id);
         } else if (status == 'Посылка не доставлена') {
           outdatedShippingUpdate.push(conv.id);
+        } else if (status == 'Подтвердите получение') {
+          itemDeliveredToUpdate.push(conv.id);
         } else if (status == 'Получено') {
           itemReceivedToUpdate.push(conv.id);
         } else if (status == 'Возврат средств') {
@@ -318,6 +341,11 @@ const Conversations = () => {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
+              <Nav.Link eventKey="item_delivered">
+                Подтвердите получение ({itemDelivered} / {itemDeliveredUnread})
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
               <Nav.Link eventKey="item_marked_as_received">
                 Получено ({itemReceived} / {itemReceivedUnread})
               </Nav.Link>
@@ -373,6 +401,9 @@ const Conversations = () => {
             </Tab.Pane>
             <Tab.Pane eventKey="outdated_shipping">
               <Chat status="Посылка не доставлена" />
+            </Tab.Pane>
+            <Tab.Pane eventKey="item_delivered">
+              <Chat status="Подтвердите получение" />
             </Tab.Pane>
             <Tab.Pane eventKey="item_marked_as_received">
               <Chat status="Получено" />

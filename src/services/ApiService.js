@@ -88,6 +88,7 @@ const GET_CONVERSATIONS = gql`
       userIdBuyerHash
       userIdSeller
       userIdSellerHash
+      manualUpdatedDate
       Messages {
         viewed
       }
@@ -97,7 +98,10 @@ const GET_CONVERSATIONS = gql`
 
 const GET_MESSAGES_BY_CONV_ID = gql`
   query GetMessagesByConvId($convId: String) {
-    Messages(where: { conversationId: { _eq: $convId } }) {
+    Messages(
+      where: { conversationId: { _eq: $convId } }
+      order_by: { receivedDate: asc }
+    ) {
       active
       boundness
       buyerFeeInEuroCent
@@ -156,6 +160,7 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
       userIdSeller
       userIdSellerHash
       customStatus
+      manualUpdatedDate
       Messages {
         viewed
         active
@@ -216,6 +221,7 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
       userIdSeller
       userIdSellerHash
       customStatus
+      manualUpdatedDate
       Messages {
         viewed
       }
@@ -257,6 +263,7 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
       userIdSeller
       userIdSellerHash
       customStatus
+      manualUpdatedDate
       Messages {
         viewed
         active
@@ -316,12 +323,12 @@ const MARK_CONV_AS_PROCESSED = gql`
 `;
 
 const UPDATE_CUSTOM_STATUS = gql`
-  mutation UpdateCustomStatus($id: String!, $status: String) {
+  mutation UpdateCustomStatus($id: String!, $status: String, $date: String) {
     update_Conversations_by_pk(
       pk_columns: { id: $id }
-      _set: { customStatus: $status }
+      _set: { customStatus: $status, manualUpdatedDate: $date }
     ) {
-      adId
+      id
     }
   }
 `;
@@ -500,11 +507,14 @@ class ApiService {
 
   updateCustomStatus = async (convId, status) => {
     try {
+      const date = new Date();
+      const dateInFormat = date.toISOString();
       const result = await this.client.mutate({
         mutation: UPDATE_CUSTOM_STATUS,
         variables: {
           id: convId,
           status,
+          date: dateInFormat,
         },
       });
       console.log(result);
