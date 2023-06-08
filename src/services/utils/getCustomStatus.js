@@ -10,6 +10,7 @@ const CustomStatus = {
   ITEM_MARKED_AS_RECEIVED: 'Получено',
   UNDEFINED: 'Нераспределенные',
   ITEM_CHARGEBACK: 'Возврат средств',
+  TRANSACTION_EXPIRED: 'Платеж не прошел',
 };
 
 export default function getCustomStatus(conversation) {
@@ -99,6 +100,17 @@ export default function getCustomStatus(conversation) {
     )
   ) {
     return CustomStatus.ITEM_CHARGEBACK;
+  }
+
+  if (
+    // 10. Платеж не прошел!
+    messages.find(
+      (msg) =>
+        msg.type === 'PAYMENT_AND_SHIPPING_MESSAGE' &&
+        msg.paymentAndShippingMessageType === 'TRANSACTION_EXPIRED_MESSAGE'
+    )
+  ) {
+    return CustomStatus.TRANSACTION_EXPIRED;
   }
 
   if (

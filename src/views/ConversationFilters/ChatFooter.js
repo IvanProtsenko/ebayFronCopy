@@ -62,6 +62,7 @@ export default class ChatFooter extends Component {
               </option>
               <option value="Получено">Получено</option>
               <option value="Возврат средств">Возврат средств</option>
+              <option value="Платеж не прошел">Платеж не прошел</option>
               <option value="Нераспределенные">Нераспределенные</option>
               <option value="Отложенные">Отложенные</option>
             </Form.Control>

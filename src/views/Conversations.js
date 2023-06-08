@@ -34,6 +34,7 @@ const Conversations = () => {
   const [outdatedShipping, setOutdatedShipping] = useState(0);
   const [itemReceived, setItemReceived] = useState(0);
   const [chargedBack, setChargedBack] = useState(0);
+  const [transactionExpired, setTransactionExpired] = useState(0);
   const [undecided, setUndecided] = useState(0);
   const [delayed, setDelayed] = useState(0);
 
@@ -48,6 +49,7 @@ const Conversations = () => {
   const [outdatedShippingUnread, setOutdatedShippingUnread] = useState(0);
   const [itemReceivedUnread, setItemReceivedUnread] = useState(0);
   const [chargedBackUnread, setChargedBackUnread] = useState(0);
+  const [transactionExpiredUnread, setTransactionExpiredUnread] = useState(0);
   const [undecidedUnread, setUndecidedUnread] = useState(0);
   const [delayedUnread, setDelayedUnread] = useState(0);
 
@@ -62,6 +64,7 @@ const Conversations = () => {
   let outdatedShippingUnreadFunc = 0;
   let itemReceivedUnreadFunc = 0;
   let chargedBackUnreadFunc = 0;
+  let transactionExpiredUnreadFunc = 0;
   let undecidedUnreadFunc = 0;
   let delayedUnreadFunc = 0;
 
@@ -76,6 +79,7 @@ const Conversations = () => {
   const outdatedShippingUpdate = [];
   const itemReceivedToUpdate = [];
   const chargedBackToUpdate = [];
+  const transactionExpiredToUpdate = [];
   const undecidedToUpdate = [];
   const delayedToUpdate = [];
 
@@ -91,6 +95,7 @@ const Conversations = () => {
     setOutdatedShipping(outdatedShippingUpdate.length);
     setItemReceived(itemReceivedToUpdate.length);
     setChargedBack(chargedBackToUpdate.length);
+    setTransactionExpired(transactionExpiredToUpdate.length);
     setUndecided(undecidedToUpdate.length);
     setDelayed(delayedToUpdate.length);
   };
@@ -107,6 +112,7 @@ const Conversations = () => {
     setOutdatedShippingUnread(outdatedShippingUnreadFunc);
     setItemReceivedUnread(itemReceivedUnreadFunc);
     setChargedBackUnread(chargedBackUnreadFunc);
+    setTransactionExpiredUnread(transactionExpiredUnreadFunc);
     setUndecidedUnread(undecidedUnreadFunc);
     setDelayedUnread(delayedUnreadFunc);
   };
@@ -134,6 +140,8 @@ const Conversations = () => {
       itemReceivedUnreadFunc++;
     } else if (status == 'Возврат средств') {
       chargedBackUnreadFunc++;
+    } else if (status == 'Платеж не прошел') {
+      transactionExpiredUnreadFunc++;
     } else if (status == 'Нераспределенные') {
       undecidedUnreadFunc++;
     } else if (status == 'Отложенные') {
@@ -177,6 +185,10 @@ const Conversations = () => {
     );
     await apiService.updateCustomStatusMany(itemReceivedToUpdate, 'Получено');
     await apiService.updateCustomStatusMany(
+      transactionExpiredToUpdate,
+      'Платеж не прошел'
+    );
+    await apiService.updateCustomStatusMany(
       chargedBackToUpdate,
       'Возврат средств'
     );
@@ -213,6 +225,8 @@ const Conversations = () => {
           itemReceivedToUpdate.push(conv.id);
         } else if (status == 'Возврат средств') {
           chargedBackToUpdate.push(conv.id);
+        } else if (status == 'Платеж не прошел') {
+          transactionExpiredToUpdate.push(conv.id);
         } else if (status == 'Нераспределенные') {
           undecidedToUpdate.push(conv.id);
         } else if (status == 'Отложенные') {
@@ -314,6 +328,12 @@ const Conversations = () => {
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
+              <Nav.Link eventKey="transaction_expired">
+                Платеж не прошел ({transactionExpired} /{' '}
+                {transactionExpiredUnread})
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
               <Nav.Link eventKey="undecided">
                 Нераспределенные ({undecided} / {undecidedUnread})
               </Nav.Link>
@@ -359,6 +379,9 @@ const Conversations = () => {
             </Tab.Pane>
             <Tab.Pane eventKey="charged_back">
               <Chat status="Возврат средств" />
+            </Tab.Pane>
+            <Tab.Pane eventKey="transaction_expired">
+              <Chat status="Платеж не прошел" />
             </Tab.Pane>
             <Tab.Pane eventKey="undecided">
               <Chat status="Нераспределенные" />
