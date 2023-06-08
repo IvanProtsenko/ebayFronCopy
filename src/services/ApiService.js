@@ -89,7 +89,7 @@ const GET_CONVERSATIONS = gql`
       userIdSeller
       userIdSellerHash
       manualUpdatedDate
-      Messages {
+      Messages(order_by: { receivedDate: asc }) {
         viewed
       }
     }
@@ -161,7 +161,7 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
       userIdSellerHash
       customStatus
       manualUpdatedDate
-      Messages {
+      Messages(order_by: { receivedDate: asc }) {
         viewed
         active
         boundness
@@ -222,7 +222,7 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
       userIdSellerHash
       customStatus
       manualUpdatedDate
-      Messages {
+      Messages(order_by: { receivedDate: asc }) {
         viewed
       }
     }
@@ -264,7 +264,7 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
       userIdSellerHash
       customStatus
       manualUpdatedDate
-      Messages {
+      Messages(order_by: { receivedDate: asc }) {
         viewed
         active
         boundness

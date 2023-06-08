@@ -23,10 +23,15 @@ export default class Chat extends Component {
   async openConversation(convId) {
     await apiService.markMessagesInConvViewed(convId);
     const messages = await apiService.getMessagesByConvId(convId);
-    this.setState(() => {
+    console.log(convId);
+    console.log(messages.length);
+    await this.setState(() => {
       return { convChosenId: convId };
     });
-    this.setState(() => {
+    await this.setState(() => {
+      return { messages: [] };
+    });
+    await this.setState(() => {
       return { messages: messages };
     });
     this.setState(() => {
