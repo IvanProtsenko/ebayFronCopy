@@ -15,8 +15,6 @@ export default class ShippingAndPaymentMessage extends Component {
   render() {
     let messageType = this.state.msg.paymentAndShippingMessageType;
 
-    console.log(messageType);
-
     const renderShipping = () => {
       if (messageType == 'BUYER_OFFER_MADE_BUYER_MESSAGE') {
         return (
