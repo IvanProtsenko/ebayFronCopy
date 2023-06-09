@@ -116,6 +116,7 @@ const GET_MESSAGES_BY_CONV_ID = gql`
       receivedDate
       shippingCostInEuroCent
       shippingType
+      attachments
       text
       textShort
       title

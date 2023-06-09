@@ -12,6 +12,14 @@ export default class Message extends Component {
   async componentDidMount() {}
 
   render() {
+    const attachment = this.state.msg.attachments;
+
+    const renderAttachments = () => {
+      if (attachment.length > 0 && attachment[0].url) {
+        return <div className="subject">Прикрепленная фотография</div>;
+      }
+    };
+
     return (
       <div
         className={
@@ -22,6 +30,7 @@ export default class Message extends Component {
         <div className="date">{this.state.msg.receivedDate}</div>
         <div className="from">{this.state.msg.title}</div>
         <div className="subject">{this.state.msg.textShort}</div>
+        {renderAttachments()}
       </div>
     );
   }
