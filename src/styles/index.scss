@@ -46,6 +46,10 @@ a.conversationLink:link {
   height: 100vh;
   overflow-y: hidden;
 
+  .translate {
+    translate: 'no';
+  }
+
   .header {
     width: 100%;
     border-bottom: 1px solid gainsboro;

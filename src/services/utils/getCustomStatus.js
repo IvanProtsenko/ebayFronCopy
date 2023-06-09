@@ -1,5 +1,6 @@
 const CustomStatus = {
   DIALOG: 'Диалог',
+  WAITING_FOR_ANSWER: 'Ждем ответа продавца',
   OFFER_MADE: 'Запрос отправлен',
   REJECTED_OFFER: 'Запрос отклонён',
   OFFER_ACCEPTED: 'Запрос принят',
@@ -131,6 +132,14 @@ export default function getCustomStatus(conversation) {
     lastMsg.boundness === 'INBOUND'
   ) {
     return CustomStatus.DIALOG;
+  }
+
+  if (
+    // Диалог
+    lastMsg.type === 'MESSAGE' &&
+    lastMsg.boundness === 'OUTBOUND'
+  ) {
+    return CustomStatus.WAITING_FOR_ANSWER;
   }
 
   return CustomStatus.UNDEFINED;

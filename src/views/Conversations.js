@@ -24,6 +24,7 @@ import Chat from './ConversationFilters/Chat';
 
 const Conversations = () => {
   const [dialog, setDialog] = useState(0);
+  const [waitingAnswer, setWaitingAnswer] = useState(0);
   const [dialogProcessed, setDialogProcessed] = useState(0);
   const [offerMade, setOfferMade] = useState(0);
   const [rejectedOffer, setRejectedOffer] = useState(0);
@@ -40,6 +41,7 @@ const Conversations = () => {
   const [delayed, setDelayed] = useState(0);
 
   const [dialogUnread, setDialogUnread] = useState(0);
+  const [waitingAnswerUnread, setWaitingAnswerUnread] = useState(0);
   const [dialogProcessedUnread, setDialogProcessedUnread] = useState(0);
   const [offerMadeUnread, setOfferMadeUnread] = useState(0);
   const [rejectedOfferUnread, setRejectedOfferUnread] = useState(0);
@@ -56,6 +58,7 @@ const Conversations = () => {
   const [delayedUnread, setDelayedUnread] = useState(0);
 
   let dialogUnreadFunc = 0;
+  let waitingAnswerUnreadFunc = 0;
   let dialogProcessedUnreadFunc = 0;
   let offerMadeUnreadFunc = 0;
   let rejectedOfferUnreadFunc = 0;
@@ -72,6 +75,7 @@ const Conversations = () => {
   let delayedUnreadFunc = 0;
 
   const dialogToUpdate = [];
+  const waitingAnswerToUpdate = [];
   const dialogProcessedToUpdate = [];
   const offerMadeToUpdate = [];
   const rejectedOfferToUpdate = [];
@@ -89,6 +93,7 @@ const Conversations = () => {
 
   const markAllStatuses = () => {
     setDialog(dialogToUpdate.length);
+    setWaitingAnswer(waitingAnswerToUpdate.length);
     setDialogProcessed(dialogProcessedToUpdate.length);
     setOfferMade(offerMadeToUpdate.length);
     setRejectedOffer(rejectedOfferToUpdate.length);
@@ -107,6 +112,7 @@ const Conversations = () => {
 
   const markAllStatusesUnread = () => {
     setDialogUnread(dialogUnreadFunc);
+    setWaitingAnswerUnread(waitingAnswerUnreadFunc);
     setDialogProcessedUnread(dialogProcessedUnreadFunc);
     setOfferMadeUnread(offerMadeUnreadFunc);
     setRejectedOfferUnread(rejectedOfferUnreadFunc);
@@ -126,6 +132,8 @@ const Conversations = () => {
   const setUnread = async (status) => {
     if (status == 'Диалог') {
       dialogUnreadFunc++;
+    } else if (status == 'Ждем ответа продавца') {
+      waitingAnswerUnreadFunc++;
     } else if (status == 'Диалог (обработано)') {
       dialogProcessedUnreadFunc++;
     } else if (status == 'Запрос отправлен') {
@@ -159,6 +167,10 @@ const Conversations = () => {
 
   const updateAllCustomStatuses = async () => {
     await apiService.updateCustomStatusMany(dialogToUpdate, 'Диалог');
+    await apiService.updateCustomStatusMany(
+      waitingAnswerToUpdate,
+      'Ждем ответа продавца'
+    );
     await apiService.updateCustomStatusMany(
       dialogProcessedToUpdate,
       'Диалог (обработано)'
@@ -226,6 +238,8 @@ const Conversations = () => {
         }
         if (status == 'Диалог') {
           dialogToUpdate.push(conv.id);
+        } else if (status == 'Ждем ответа продавца') {
+          waitingAnswerToUpdate.push(conv.id);
         } else if (status == 'Диалог (обработано)') {
           dialogProcessedToUpdate.push(conv.id);
         } else if (status == 'Запрос отправлен') {
@@ -292,10 +306,15 @@ const Conversations = () => {
     <Tab.Container id="left-tabs-example" defaultActiveKey="dialog">
       <Row>
         <Col sm={3}>
-          <Nav variant="pills" className="flex-column">
+          <Nav translate="no" variant="pills" className="flex-column">
             <Nav.Item>
               <Nav.Link eventKey="dialog">
                 Диалог ({dialog} / {dialogUnread})
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="waiting_answer">
+                Ждем ответа продавца ({waitingAnswer} / {waitingAnswerUnread})
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
@@ -377,6 +396,9 @@ const Conversations = () => {
           <Tab.Content>
             <Tab.Pane eventKey="dialog">
               <Chat status="Диалог" />
+            </Tab.Pane>
+            <Tab.Pane eventKey="waiting_answer">
+              <Chat status="Ждем ответа продавца" />
             </Tab.Pane>
             <Tab.Pane eventKey="dialogProcessed">
               <Chat status="Диалог (обработано)" />
