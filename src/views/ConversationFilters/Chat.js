@@ -44,11 +44,25 @@ export default class Chat extends Component {
   }
 
   async componentDidMount() {
-    const conversations = await apiService.getConversationsByStatus(
+    let conversations = await apiService.getConversationsByStatus(
       this.state.status
     );
+    let arrayForSort = [...conversations];
+    if (arrayForSort.length > 1)
+      // console.log(
+      //   conversations[0].Messages[conversations[0].Messages.length - 1]
+      //     .receivedDate
+      // );
+      arrayForSort.sort((conv1, conv2) => {
+        const firstDate =
+          conv1.Messages[conv1.Messages.length - 1].receivedDate;
+        const secondDate =
+          conv2.Messages[conv2.Messages.length - 1].receivedDate;
+        if (firstDate > secondDate) return -1;
+        else return 1;
+      });
     this.setState(() => {
-      return { conversations: conversations };
+      return { conversations: arrayForSort };
     });
   }
 
@@ -69,7 +83,9 @@ export default class Chat extends Component {
                 key={conv.id}
                 onClick={() => this.openConversation(conv.id)}
               >
-                <div className="date">{conv.id}</div>
+                <div className="date">
+                  {conv.Messages[conv.Messages.length - 1].receivedDate}
+                </div>
                 <div className="from">{conv.sellerName}</div>
                 <div className="subject">{conv.adTitle}</div>
               </div>

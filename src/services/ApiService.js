@@ -91,6 +91,7 @@ const GET_CONVERSATIONS = gql`
       manualUpdatedDate
       Messages(order_by: { receivedDate: asc }) {
         viewed
+        receivedDate
       }
     }
   }
