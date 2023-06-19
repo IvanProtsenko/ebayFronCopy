@@ -11,17 +11,24 @@ export default class ChatFooter extends Component {
   };
 
   constructor(props) {
-    console.log(props);
     super(props);
   }
 
   async componentDidMount() {}
 
   async updateCustomStatus() {
-    await apiService.updateCustomStatus(
-      this.state.convChosenId,
-      this.state.type
-    );
+    if (this.state.type == 'Черный список') {
+      const conversation = await apiService.getConversationById(
+        this.state.convChosenId
+      );
+      const sellerName = conversation.sellerName;
+      await apiService.addSellerToBlacklist(sellerName);
+    } else {
+      await apiService.updateCustomStatus(
+        this.state.convChosenId,
+        this.state.type
+      );
+    }
   }
 
   render() {
@@ -68,6 +75,7 @@ export default class ChatFooter extends Component {
               <option value="Платеж не прошел">Платеж не прошел</option>
               <option value="Нераспределенные">Нераспределенные</option>
               <option value="Отложенные">Отложенные</option>
+              <option value="Черный список">Черный список</option>
             </Form.Control>
           </Form.Group>
         </Col>

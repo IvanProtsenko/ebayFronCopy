@@ -13,11 +13,17 @@ const CustomStatus = {
   ITEM_CHARGEBACK: 'Возврат средств',
   TRANSACTION_EXPIRED: 'Платеж не прошел',
   ITEM_DELIVERED: 'Подтвердите получение',
+  BLACKLIST: 'Черный список',
 };
 
-export default function getCustomStatus(conversation) {
+export default function getCustomStatus(conversation, blacklistNames) {
   const messages = conversation.Messages;
   const lastMsg = messages[messages.length - 1];
+
+  if (blacklistNames.includes(conversation.sellerName)) {
+    console.log('blacklist!');
+    return CustomStatus.BLACKLIST;
+  }
 
   if (
     // Запрос отправлен

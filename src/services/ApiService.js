@@ -55,6 +55,15 @@ const GET_ADVERT_BY_ID = gql`
   }
 `;
 
+const GET_SELLERS_BLACKLIST = gql`
+  query GetSellersBlacklist {
+    sellers_blacklist {
+      created_at
+      name
+    }
+  }
+`;
+
 const GET_CONVERSATIONS = gql`
   query GetConversations($status: String) {
     Conversations(where: { customStatus: { _eq: $status } }) {
@@ -189,6 +198,45 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
   }
 `;
 
+const GET_CONVERSATION_BY_ID = gql`
+  query GetConversationById($id: String!) {
+    Conversations_by_pk(id: $id) {
+      adDetailsAvailable
+      adEligibleForPayment
+      adId
+      adImage
+      adL1CategoryId
+      adL2CategoryId
+      adPriceInEuroCent
+      adPriceType
+      adStatus
+      adTitle
+      adType
+      attachmentsEnabled
+      buyNowPossible
+      buyerInitials
+      buyerName
+      flaggingEnabled
+      id
+      linksEnabled
+      numUnread
+      paymentBanner
+      paymentPossible
+      ratingPossible
+      role
+      sellerInitials
+      sellerName
+      userActionRequired
+      userIdBuyer
+      userIdBuyerHash
+      userIdSeller
+      userIdSellerHash
+      customStatus
+      manualUpdatedDate
+    }
+  }
+`;
+
 const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
   query GetConversationsBySellerName($sellerName: String) {
     Conversations(where: { sellerName: { _eq: $sellerName } }) {
@@ -235,11 +283,8 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
   query ConversationsWithMessages {
     Conversations {
       adDetailsAvailable
-      adEligibleForPayment
       adId
       adImage
-      adL1CategoryId
-      adL2CategoryId
       adPriceInEuroCent
       adPriceType
       adStatus
@@ -253,11 +298,7 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
       id
       linksEnabled
       numUnread
-      paymentBanner
-      paymentPossible
-      ratingPossible
       role
-      sellerInitials
       sellerName
       userActionRequired
       userIdBuyer
@@ -271,14 +312,12 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
         active
         boundness
         buyerFeeInEuroCent
-        carrierId
         conversationId
         messageId
         offerId
         offeredPriceInEuroCent
         paymentAndShippingMessageType
         paymentMethod
-        promotionInEuroCent
         receivedDate
         shippingCostInEuroCent
         shippingType
@@ -331,6 +370,14 @@ const UPDATE_CUSTOM_STATUS = gql`
       _set: { customStatus: $status, manualUpdatedDate: $date }
     ) {
       id
+    }
+  }
+`;
+
+const ADD_BLACKLIST_SELLER = gql`
+  mutation AddBlacklistSeller($name: String) {
+    insert_sellers_blacklist_one(object: { name: $name }) {
+      name
     }
   }
 `;
@@ -428,6 +475,31 @@ class ApiService {
     }
   };
 
+  getConversationById = async (id) => {
+    try {
+      const result = await this.client.query({
+        query: GET_CONVERSATION_BY_ID,
+        variables: {
+          id,
+        },
+      });
+      return result.data.Conversations_by_pk;
+    } catch (err) {
+      console.log('ERROR getConversationById:', err);
+    }
+  };
+
+  getBlacklistSellerNames = async () => {
+    try {
+      const result = await this.client.query({
+        query: GET_SELLERS_BLACKLIST,
+      });
+      return result.data.sellers_blacklist;
+    } catch (err) {
+      console.log('ERROR getBlacklistSellerNames:', err);
+    }
+  };
+
   getMessagesByConvId = async (convId) => {
     try {
       const result = await this.client.query({
@@ -504,6 +576,19 @@ class ApiService {
       });
     } catch (err) {
       console.log('ERROR markConvAsProcessed:', err);
+    }
+  };
+
+  addSellerToBlacklist = async (name) => {
+    try {
+      await this.client.mutate({
+        mutation: ADD_BLACKLIST_SELLER,
+        variables: {
+          name,
+        },
+      });
+    } catch (err) {
+      console.log('ERROR addSellerToBlacklist:', err);
     }
   };
 

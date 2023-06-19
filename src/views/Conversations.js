@@ -39,6 +39,7 @@ const Conversations = () => {
   const [transactionExpired, setTransactionExpired] = useState(0);
   const [undecided, setUndecided] = useState(0);
   const [delayed, setDelayed] = useState(0);
+  const [blacklist, setBlacklist] = useState(0);
 
   const [dialogUnread, setDialogUnread] = useState(0);
   const [waitingAnswerUnread, setWaitingAnswerUnread] = useState(0);
@@ -56,6 +57,7 @@ const Conversations = () => {
   const [transactionExpiredUnread, setTransactionExpiredUnread] = useState(0);
   const [undecidedUnread, setUndecidedUnread] = useState(0);
   const [delayedUnread, setDelayedUnread] = useState(0);
+  const [blacklistUnread, setBlacklistUnread] = useState(0);
 
   let dialogUnreadFunc = 0;
   let waitingAnswerUnreadFunc = 0;
@@ -73,6 +75,7 @@ const Conversations = () => {
   let transactionExpiredUnreadFunc = 0;
   let undecidedUnreadFunc = 0;
   let delayedUnreadFunc = 0;
+  let blacklistUnreadFunc = 0;
 
   const dialogToUpdate = [];
   const waitingAnswerToUpdate = [];
@@ -90,6 +93,7 @@ const Conversations = () => {
   const transactionExpiredToUpdate = [];
   const undecidedToUpdate = [];
   const delayedToUpdate = [];
+  const blacklistToUpdate = [];
 
   const markAllStatuses = () => {
     setDialog(dialogToUpdate.length);
@@ -108,6 +112,7 @@ const Conversations = () => {
     setTransactionExpired(transactionExpiredToUpdate.length);
     setUndecided(undecidedToUpdate.length);
     setDelayed(delayedToUpdate.length);
+    setBlacklist(blacklistToUpdate.length);
   };
 
   const markAllStatusesUnread = () => {
@@ -127,6 +132,7 @@ const Conversations = () => {
     setTransactionExpiredUnread(transactionExpiredUnreadFunc);
     setUndecidedUnread(undecidedUnreadFunc);
     setDelayedUnread(delayedUnreadFunc);
+    setBlacklistUnread(blacklistUnreadFunc);
   };
 
   const setUnread = async (status) => {
@@ -162,6 +168,8 @@ const Conversations = () => {
       undecidedUnreadFunc++;
     } else if (status == 'Отложенные') {
       delayedUnreadFunc++;
+    } else if (status == 'Черный список') {
+      blacklistUnreadFunc++;
     }
   };
 
@@ -221,18 +229,22 @@ const Conversations = () => {
       'Нераспределенные'
     );
     await apiService.updateCustomStatusMany(delayedToUpdate, 'Отложенные');
+    await apiService.updateCustomStatusMany(blacklistToUpdate, 'Черный список');
   };
 
   const calculateUnreadMessages = async (conversations) => {
+    const blacklist = await apiService.getBlacklistSellerNames();
+    const blacklistNames = blacklist.map((blacklist) => blacklist.name);
     conversations.forEach(async (conv) => {
       if (conv.Messages.length > 0) {
         let status = '';
         if (
           conv.manualUpdatedDate <
             conv.Messages[conv.Messages.length - 1].receivedDate ||
-          !conv.manualUpdatedDate
+          !conv.manualUpdatedDate ||
+          blacklistNames.includes(conv.sellerName)
         ) {
-          status = getCustomStatus(conv);
+          status = getCustomStatus(conv, blacklistNames);
         } else {
           status = conv.customStatus;
         }
@@ -268,12 +280,11 @@ const Conversations = () => {
           undecidedToUpdate.push(conv.id);
         } else if (status == 'Отложенные') {
           delayedToUpdate.push(conv.id);
+        } else if (status == 'Черный список') {
+          blacklistToUpdate.push(conv.id);
         }
-        for (let i = 0; i < conv.Messages.length; i++) {
-          if (!conv.Messages[i].viewed) {
-            await setUnread(status);
-            break;
-          }
+        if (!conv.Messages[conv.Messages.length - 1].viewed) {
+          await setUnread(status);
         }
       }
     });
@@ -390,6 +401,11 @@ const Conversations = () => {
                 Отложенные ({delayed} / {delayedUnread})
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="blacklist">
+                Черный список ({blacklist} / {blacklistUnread})
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </Col>
         <Col sm={9}>
@@ -441,6 +457,9 @@ const Conversations = () => {
             </Tab.Pane>
             <Tab.Pane eventKey="later">
               <Chat status="Отложенные" />
+            </Tab.Pane>
+            <Tab.Pane eventKey="blacklist">
+              <Chat status="Черный список" />
             </Tab.Pane>
           </Tab.Content>
         </Col>
