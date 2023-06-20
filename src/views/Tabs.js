@@ -1,11 +1,14 @@
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Table from './Table';
-import Conversations from './Conversations';
-import Search from './Search'
+import NavsLeft from './ConversationFilters/NavsLeft';
+import Search from './Search';
+import Chat from './ConversationFilters/Chat';
 
-function JustifiedExample() {
+function JustifiedExample(props) {
   return (
     <Tabs
       defaultActiveKey="conversations"
@@ -17,7 +20,14 @@ function JustifiedExample() {
         <Table />
       </Tab>
       <Tab eventKey="conversations" title="Переписки">
-        <Conversations />
+        <Row>
+          <Col sm={3}>
+            <NavsLeft />
+          </Col>
+          <Col sm={9}>
+            <Chat status={props.status} />
+          </Col>
+        </Row>
       </Tab>
       <Tab eventKey="search" title="Поиск">
         <Search />

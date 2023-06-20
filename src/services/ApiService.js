@@ -67,36 +67,15 @@ const GET_SELLERS_BLACKLIST = gql`
 const GET_CONVERSATIONS = gql`
   query GetConversations($status: String) {
     Conversations(where: { customStatus: { _eq: $status } }) {
-      adDetailsAvailable
-      adEligibleForPayment
       adId
-      adImage
-      adL1CategoryId
-      adL2CategoryId
-      adPriceInEuroCent
-      adPriceType
-      adStatus
-      adTitle
-      adType
       attachmentsEnabled
       buyNowPossible
-      buyerInitials
       buyerName
-      flaggingEnabled
       id
-      linksEnabled
       numUnread
-      paymentBanner
-      paymentPossible
-      ratingPossible
       role
-      sellerInitials
       sellerName
-      userActionRequired
-      userIdBuyer
-      userIdBuyerHash
-      userIdSeller
-      userIdSellerHash
+      customStatus
       manualUpdatedDate
       Messages(order_by: { receivedDate: asc }) {
         viewed
@@ -112,27 +91,18 @@ const GET_MESSAGES_BY_CONV_ID = gql`
       where: { conversationId: { _eq: $convId } }
       order_by: { receivedDate: asc }
     ) {
+      viewed
       active
       boundness
-      buyerFeeInEuroCent
-      carrierId
-      conversationId
       messageId
-      offerId
-      offeredPriceInEuroCent
       paymentAndShippingMessageType
       paymentMethod
-      promotionInEuroCent
       receivedDate
-      shippingCostInEuroCent
-      shippingType
-      attachments
       text
       textShort
       title
       totalInEuroCent
       type
-      viewed
     }
   }
 `;
@@ -140,54 +110,55 @@ const GET_MESSAGES_BY_CONV_ID = gql`
 const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
   subscription ConversationsWithMessages {
     Conversations {
-      adDetailsAvailable
-      adEligibleForPayment
       adId
-      adImage
-      adL1CategoryId
-      adL2CategoryId
-      adPriceInEuroCent
-      adPriceType
-      adStatus
-      adTitle
-      adType
       attachmentsEnabled
       buyNowPossible
-      buyerInitials
       buyerName
-      flaggingEnabled
       id
-      linksEnabled
       numUnread
-      paymentBanner
-      paymentPossible
-      ratingPossible
       role
-      sellerInitials
       sellerName
-      userActionRequired
-      userIdBuyer
-      userIdBuyerHash
-      userIdSeller
-      userIdSellerHash
       customStatus
       manualUpdatedDate
       Messages(order_by: { receivedDate: asc }) {
         viewed
         active
         boundness
-        buyerFeeInEuroCent
-        carrierId
-        conversationId
         messageId
-        offerId
-        offeredPriceInEuroCent
         paymentAndShippingMessageType
         paymentMethod
-        promotionInEuroCent
         receivedDate
-        shippingCostInEuroCent
-        shippingType
+        text
+        textShort
+        title
+        totalInEuroCent
+        type
+      }
+    }
+  }
+`;
+
+const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
+  subscription ConversationsWithMessages($status: String) {
+    Conversations(where: { customStatus: { _eq: $status } }) {
+      adId
+      attachmentsEnabled
+      buyNowPossible
+      buyerName
+      id
+      numUnread
+      role
+      sellerName
+      customStatus
+      manualUpdatedDate
+      Messages(order_by: { receivedDate: asc }) {
+        viewed
+        active
+        boundness
+        messageId
+        paymentAndShippingMessageType
+        paymentMethod
+        receivedDate
         text
         textShort
         title
@@ -201,36 +172,14 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
 const GET_CONVERSATION_BY_ID = gql`
   query GetConversationById($id: String!) {
     Conversations_by_pk(id: $id) {
-      adDetailsAvailable
-      adEligibleForPayment
       adId
-      adImage
-      adL1CategoryId
-      adL2CategoryId
-      adPriceInEuroCent
-      adPriceType
-      adStatus
-      adTitle
-      adType
       attachmentsEnabled
       buyNowPossible
-      buyerInitials
       buyerName
-      flaggingEnabled
       id
-      linksEnabled
       numUnread
-      paymentBanner
-      paymentPossible
-      ratingPossible
       role
-      sellerInitials
       sellerName
-      userActionRequired
-      userIdBuyer
-      userIdBuyerHash
-      userIdSeller
-      userIdSellerHash
       customStatus
       manualUpdatedDate
     }
@@ -240,36 +189,14 @@ const GET_CONVERSATION_BY_ID = gql`
 const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
   query GetConversationsBySellerName($sellerName: String) {
     Conversations(where: { sellerName: { _eq: $sellerName } }) {
-      adDetailsAvailable
-      adEligibleForPayment
       adId
-      adImage
-      adL1CategoryId
-      adL2CategoryId
-      adPriceInEuroCent
-      adPriceType
-      adStatus
-      adTitle
-      adType
       attachmentsEnabled
       buyNowPossible
-      buyerInitials
       buyerName
-      flaggingEnabled
       id
-      linksEnabled
       numUnread
-      paymentBanner
-      paymentPossible
-      ratingPossible
       role
-      sellerInitials
       sellerName
-      userActionRequired
-      userIdBuyer
-      userIdBuyerHash
-      userIdSeller
-      userIdSellerHash
       customStatus
       manualUpdatedDate
       Messages(order_by: { receivedDate: asc }) {
@@ -282,45 +209,24 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
 const GET_CONVERSATIONS_WITH_MESSAGES = gql`
   query ConversationsWithMessages {
     Conversations {
-      adDetailsAvailable
       adId
-      adImage
-      adPriceInEuroCent
-      adPriceType
-      adStatus
-      adTitle
-      adType
       attachmentsEnabled
       buyNowPossible
-      buyerInitials
       buyerName
-      flaggingEnabled
       id
-      linksEnabled
       numUnread
       role
       sellerName
-      userActionRequired
-      userIdBuyer
-      userIdBuyerHash
-      userIdSeller
-      userIdSellerHash
       customStatus
       manualUpdatedDate
       Messages(order_by: { receivedDate: asc }) {
         viewed
         active
         boundness
-        buyerFeeInEuroCent
-        conversationId
         messageId
-        offerId
-        offeredPriceInEuroCent
         paymentAndShippingMessageType
         paymentMethod
         receivedDate
-        shippingCostInEuroCent
-        shippingType
         text
         textShort
         title
@@ -649,4 +555,5 @@ export {
   apiService,
   SUBSCRIBE_ADVERTS,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
+  SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
 };

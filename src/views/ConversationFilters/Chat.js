@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { apiService } from '../../services/ApiService';
+import {
+  apiService,
+  client,
+  SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
+} from '../../services/ApiService';
 import Card from 'react-bootstrap/Card';
+
 import Message from './Message';
 import ChatFooter from './ChatFooter';
 import ShippingAndPaymentMessage from './ShippingAndPaymentMessage';
+import NavsLeft from './NavsLeft';
 
 export default class Chat extends Component {
+  subscription = null;
   state = {
     chatId: '',
     conversations: [],
@@ -43,16 +50,9 @@ export default class Chat extends Component {
     });
   }
 
-  async componentDidMount() {
-    let conversations = await apiService.getConversationsByStatus(
-      this.state.status
-    );
+  async operateConversations(conversations) {
     let arrayForSort = [...conversations];
     if (arrayForSort.length > 1)
-      // console.log(
-      //   conversations[0].Messages[conversations[0].Messages.length - 1]
-      //     .receivedDate
-      // );
       arrayForSort.sort((conv1, conv2) => {
         const firstDate =
           conv1.Messages[conv1.Messages.length - 1].receivedDate;
@@ -64,6 +64,36 @@ export default class Chat extends Component {
     this.setState(() => {
       return { conversations: arrayForSort };
     });
+  }
+
+  async componentDidMount() {
+    const changeRowData = async (data) => {
+      this.operateConversations(data);
+    };
+
+    let conversations = await apiService.getConversationsByStatus(
+      this.state.status
+    );
+    this.operateConversations(conversations);
+    const observer = client.subscribe({
+      query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
+      variables: {
+        status: this.state.status,
+      },
+    });
+
+    this.subscription = observer.subscribe({
+      next(data) {
+        changeRowData(data.data.Conversations);
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
+  }
+
+  async componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   render() {

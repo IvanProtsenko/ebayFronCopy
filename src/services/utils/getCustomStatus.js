@@ -21,7 +21,6 @@ export default function getCustomStatus(conversation, blacklistNames) {
   const lastMsg = messages[messages.length - 1];
 
   if (blacklistNames.includes(conversation.sellerName)) {
-    console.log('blacklist!');
     return CustomStatus.BLACKLIST;
   }
 

@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
-import Row from 'react-bootstrap/Row';
-import Tab from 'react-bootstrap/Tab';
 import {
   apiService,
   client,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
-} from '../services/ApiService';
-import getCustomStatus from '../services/utils/getCustomStatus';
-import Chat from './ConversationFilters/Chat';
+} from '../../services/ApiService';
+import getCustomStatus from '../../services/utils/getCustomStatus';
 
 // DIALOG = 'Диалог',
 // OFFER_MADE = 'Запрос отправлен',
@@ -22,7 +18,7 @@ import Chat from './ConversationFilters/Chat';
 // OUTDATED_SHIPPING = 'Посылка не доставлена',
 // ITEM_MARKED_AS_RECEIVED = 'Получено'
 
-const Conversations = () => {
+const NavsLeft = () => {
   const [dialog, setDialog] = useState(0);
   const [waitingAnswer, setWaitingAnswer] = useState(0);
   const [dialogProcessed, setDialogProcessed] = useState(0);
@@ -77,23 +73,23 @@ const Conversations = () => {
   let delayedUnreadFunc = 0;
   let blacklistUnreadFunc = 0;
 
-  const dialogToUpdate = [];
-  const waitingAnswerToUpdate = [];
-  const dialogProcessedToUpdate = [];
-  const offerMadeToUpdate = [];
-  const rejectedOfferToUpdate = [];
-  const offerAcceptedToUpdate = [];
-  const transactionReservedToUpdate = [];
-  const itemShippedToUpdate = [];
-  const outdatedOfferToUpdate = [];
-  const outdatedShippingUpdate = [];
-  const itemDeliveredToUpdate = [];
-  const itemReceivedToUpdate = [];
-  const chargedBackToUpdate = [];
-  const transactionExpiredToUpdate = [];
-  const undecidedToUpdate = [];
-  const delayedToUpdate = [];
-  const blacklistToUpdate = [];
+  let dialogToUpdate = [];
+  let waitingAnswerToUpdate = [];
+  let dialogProcessedToUpdate = [];
+  let offerMadeToUpdate = [];
+  let rejectedOfferToUpdate = [];
+  let offerAcceptedToUpdate = [];
+  let transactionReservedToUpdate = [];
+  let itemShippedToUpdate = [];
+  let outdatedOfferToUpdate = [];
+  let outdatedShippingUpdate = [];
+  let itemDeliveredToUpdate = [];
+  let itemReceivedToUpdate = [];
+  let chargedBackToUpdate = [];
+  let transactionExpiredToUpdate = [];
+  let undecidedToUpdate = [];
+  let delayedToUpdate = [];
+  let blacklistToUpdate = [];
 
   const markAllStatuses = () => {
     setDialog(dialogToUpdate.length);
@@ -232,6 +228,46 @@ const Conversations = () => {
     await apiService.updateCustomStatusMany(blacklistToUpdate, 'Черный список');
   };
 
+  const clearAll = () => {
+    dialogToUpdate = [];
+    waitingAnswerToUpdate = [];
+    dialogProcessedToUpdate = [];
+    offerMadeToUpdate = [];
+    rejectedOfferToUpdate = [];
+    offerAcceptedToUpdate = [];
+    transactionReservedToUpdate = [];
+    itemShippedToUpdate = [];
+    outdatedOfferToUpdate = [];
+    outdatedShippingUpdate = [];
+    itemDeliveredToUpdate = [];
+    itemReceivedToUpdate = [];
+    chargedBackToUpdate = [];
+    transactionExpiredToUpdate = [];
+    undecidedToUpdate = [];
+    delayedToUpdate = [];
+    blacklistToUpdate = [];
+    markAllStatuses();
+
+    dialogUnreadFunc = 0;
+    waitingAnswerUnreadFunc = 0;
+    dialogProcessedUnreadFunc = 0;
+    offerMadeUnreadFunc = 0;
+    rejectedOfferUnreadFunc = 0;
+    offerAcceptedUnreadFunc = 0;
+    transactionReservedUnreadFunc = 0;
+    itemShippedUnreadFunc = 0;
+    outdatedOfferUnreadFunc = 0;
+    outdatedShippingUnreadFunc = 0;
+    itemDeliveredUnreadFunc = 0;
+    itemReceivedUnreadFunc = 0;
+    chargedBackUnreadFunc = 0;
+    transactionExpiredUnreadFunc = 0;
+    undecidedUnreadFunc = 0;
+    delayedUnreadFunc = 0;
+    blacklistUnreadFunc = 0;
+    markAllStatusesUnread();
+  };
+
   const calculateUnreadMessages = async (conversations) => {
     const blacklist = await apiService.getBlacklistSellerNames();
     const blacklistNames = blacklist.map((blacklist) => blacklist.name);
@@ -296,17 +332,18 @@ const Conversations = () => {
   const getUnreadMessages = async () => {
     const conversations = await apiService.getConversationsWithMessages();
     calculateUnreadMessages(conversations);
-    const observer = client.subscribe({
-      query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
-    });
-    observer.subscribe({
-      next(data) {
-        calculateUnreadMessages(data.data.Conversations);
-      },
-      error(err) {
-        console.log(err);
-      },
-    });
+    // const observer = client.subscribe({
+    //   query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
+    // });
+    // observer.subscribe({
+    //   next(data) {
+    //     clearAll();
+    //     calculateUnreadMessages(data.data.Conversations);
+    //   },
+    //   error(err) {
+    //     console.log(err);
+    //   },
+    // });
   };
 
   useEffect(() => {
@@ -314,157 +351,94 @@ const Conversations = () => {
   }, []);
 
   return (
-    // <Tab.Container id="left-tabs-example" defaultActiveKey="dialog">
-    <Row>
-      <Col sm={3}>
-        <Nav translate="no" variant="pills" className="flex-column">
-          <Nav.Item>
-            <Nav.Link eventKey="dialog">
-              Диалог ({dialog} / {dialogUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="waiting_answer">
-              Ждем ответа продавца ({waitingAnswer} / {waitingAnswerUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="dialogProcessed">
-              Диалог (обработано) ({dialogProcessed} / {dialogProcessedUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="offer_made">
-              Запрос отправлен ({offerMade} / {offerMadeUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="rejected_offer">
-              Запрос отклонён ({rejectedOffer} / {rejectedOfferUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="offer_accepted">
-              Запрос принят ({offerAccepted} / {offerAcceptedUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="outdated_offer">
-              Запрос просрочен ({outdatedOffer} / {outdatedOfferUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="transaction_reserved">
-              Оплачено ({transactionReserved} / {transactionReservedUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="item_marked_as_shipped">
-              Посылка отправлена ({itemShipped} / {itemShippedUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="outdated_shipping">
-              Посылка не доставлена ({outdatedShipping} /{' '}
-              {outdatedShippingUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="item_delivered">
-              Подтвердите получение ({itemDelivered} / {itemDeliveredUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="item_marked_as_received">
-              Получено ({itemReceived} / {itemReceivedUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="charged_back">
-              Возврат средств ({chargedBack} / {chargedBackUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="transaction_expired">
-              Платеж не прошел ({transactionExpired} /{' '}
-              {transactionExpiredUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="undecided">
-              Нераспределенные ({undecided} / {undecidedUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="later">
-              Отложенные ({delayed} / {delayedUnread})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="blacklist" eventKey="blacklist">
-              Черный список ({blacklist} / {blacklistUnread})
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-      </Col>
-      {/* <Col sm={9}>
-        <Tab.Content>
-          <Tab.Pane eventKey="dialog">
-            <Chat status="Диалог" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="waiting_answer">
-            <Chat status="Ждем ответа продавца" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="dialogProcessed">
-            <Chat status="Диалог (обработано)" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="offer_made">
-            <Chat status="Запрос отправлен" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="rejected_offer">
-            <Chat status="Запрос отклонён" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="offer_accepted">
-            <Chat status="Запрос принят" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="outdated_offer">
-            <Chat status="Запрос просрочен" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="transaction_reserved">
-            <Chat status="Оплачено" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="item_marked_as_shipped">
-            <Chat status="Посылка отправлена" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="outdated_shipping">
-            <Chat status="Посылка не доставлена" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="item_delivered">
-            <Chat status="Подтвердите получение" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="item_marked_as_received">
-            <Chat status="Получено" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="charged_back">
-            <Chat status="Возврат средств" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="transaction_expired">
-            <Chat status="Платеж не прошел" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="undecided">
-            <Chat status="Нераспределенные" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="later">
-            <Chat status="Отложенные" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="blacklist">
-            <Chat status="Черный список" />
-          </Tab.Pane>
-        </Tab.Content>
-      </Col> */}
-    </Row>
-    // </Tab.Container>
+    <Nav translate="no" variant="pills" className="flex-column">
+      <Nav.Item>
+        <Nav.Link href="dialog">
+          Диалог ({dialog} / {dialogUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="waiting_answer">
+          Ждем ответа продавца ({waitingAnswer} / {waitingAnswerUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="dialogProcessed">
+          Диалог (обработано) ({dialogProcessed} / {dialogProcessedUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="offer_made">
+          Запрос отправлен ({offerMade} / {offerMadeUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="rejected_offer">
+          Запрос отклонён ({rejectedOffer} / {rejectedOfferUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="offer_accepted">
+          Запрос принят ({offerAccepted} / {offerAcceptedUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="outdated_offer">
+          Запрос просрочен ({outdatedOffer} / {outdatedOfferUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="transaction_reserved">
+          Оплачено ({transactionReserved} / {transactionReservedUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="item_marked_as_shipped">
+          Посылка отправлена ({itemShipped} / {itemShippedUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="outdated_shipping">
+          Посылка не доставлена ({outdatedShipping} / {outdatedShippingUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="item_delivered">
+          Подтвердите получение ({itemDelivered} / {itemDeliveredUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="item_marked_as_received">
+          Получено ({itemReceived} / {itemReceivedUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="charged_back">
+          Возврат средств ({chargedBack} / {chargedBackUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="transaction_expired">
+          Платеж не прошел ({transactionExpired} / {transactionExpiredUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="undecided">
+          Нераспределенные ({undecided} / {undecidedUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="later">
+          Отложенные ({delayed} / {delayedUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="blacklist">
+          Черный список ({blacklist} / {blacklistUnread})
+        </Nav.Link>
+      </Nav.Item>
+    </Nav>
   );
 };
 
-export default Conversations;
+export default NavsLeft;

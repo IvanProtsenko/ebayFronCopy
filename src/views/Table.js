@@ -80,24 +80,24 @@ export default class Table extends Component {
   async componentDidMount() {
     const adminSecret = localStorage.getItem('userToken');
     if (!adminSecret) window.location.href = '/';
-    const changeRowData = async (data) => {
-      this.setState(() => {
-        return { rowData: data };
-      });
-      // await this.setFilters();
-    };
+    // const changeRowData = async (data) => {
+    //   this.setState(() => {
+    //     return { rowData: data };
+    //   });
+    //   // await this.setFilters();
+    // };
 
-    const observer = client.subscribe({
-      query: SUBSCRIBE_ADVERTS,
-    });
-    observer.subscribe({
-      next(data) {
-        changeRowData(data.data.Adverts);
-      },
-      error(err) {
-        console.log(err);
-      },
-    });
+    // const observer = client.subscribe({
+    //   query: SUBSCRIBE_ADVERTS,
+    // });
+    // observer.subscribe({
+    //   next(data) {
+    //     changeRowData(data.data.Adverts);
+    //   },
+    //   error(err) {
+    //     console.log(err);
+    //   },
+    // });
     const adverts = await apiService.getAdverts();
     console.log(adverts);
     this.setState(() => {
