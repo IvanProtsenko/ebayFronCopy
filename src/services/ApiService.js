@@ -192,15 +192,16 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
       adId
       attachmentsEnabled
       buyNowPossible
-      buyerName
       id
       numUnread
       role
       sellerName
       customStatus
       manualUpdatedDate
+      customStatus
       Messages(order_by: { receivedDate: asc }) {
         viewed
+        receivedDate
       }
     }
   }
@@ -212,7 +213,6 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
       adId
       attachmentsEnabled
       buyNowPossible
-      buyerName
       id
       numUnread
       role
