@@ -34,13 +34,28 @@ const Search = () => {
   const [convChosenId, setConvChosenId] = useState(0);
   const [status, setStatus] = useState('');
 
+  const operateConversations = (conversations) => {
+    let arrayForSort = [...conversations];
+    if (arrayForSort.length > 1)
+      arrayForSort.sort((conv1, conv2) => {
+        const firstDate =
+          conv1.Messages[conv1.Messages.length - 1].receivedDate;
+        const secondDate =
+          conv2.Messages[conv2.Messages.length - 1].receivedDate;
+        if (firstDate > secondDate) return -1;
+        else return 1;
+      });
+    setSellerConversationsTable(arrayForSort);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('done');
     const sellerConversations = await apiService.getConversationsBySellerName(
       nameToSearch
     );
-    setSellerConversationsTable(sellerConversations);
+    operateConversations(sellerConversations);
+    // setSellerConversationsTable(sellerConversations);
   };
 
   const handleInputNameSearch = (event) => {
