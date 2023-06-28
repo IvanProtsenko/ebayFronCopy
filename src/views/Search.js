@@ -28,6 +28,7 @@ import {
 
 const Search = () => {
   const [nameToSearch = '', setNameToSearch] = useState();
+  const [idToSearch = '', setIdToSearch] = useState();
   const [sellerConversationsTable, setSellerConversationsTable] = useState([]);
   const [messages, setMessages] = useState([]);
   const [convChosen, setConvChosen] = useState(false);
@@ -50,12 +51,23 @@ const Search = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('done');
     const sellerConversations = await apiService.getConversationsBySellerName(
       nameToSearch
     );
-    operateConversations(sellerConversations);
+    if (sellerConversations) operateConversations(sellerConversations);
+  };
+
+  const handleSubmitId = async (event) => {
+    event.preventDefault();
+    const sellerConversation = await apiService.getConversationByAdId(
+      idToSearch
+    );
+    if (sellerConversation) operateConversations(sellerConversation);
     // setSellerConversationsTable(sellerConversations);
+  };
+
+  const handleInputIdSearch = (event) => {
+    setIdToSearch(event.target.value);
   };
 
   const handleInputNameSearch = (event) => {
@@ -97,13 +109,28 @@ const Search = () => {
     <Tab.Container id="left-tabs-example" defaultActiveKey="dialog">
       <Row>
         <Col sm={3}>
-          <Form noValidate onSubmit={handleSubmit}>
+          <Form className="formSearch" noValidate onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Control
                 type="text"
                 value={nameToSearch}
                 onChange={handleInputNameSearch}
                 placeholder="Введите имя продавца"
+              />
+            </Form.Group>
+            <div className="d-grid gap-2">
+              <Button className="modalButton" variant="primary" type="submit">
+                Найти
+              </Button>
+            </div>
+          </Form>
+          <Form noValidate onSubmit={handleSubmitId}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control
+                type="text"
+                value={idToSearch}
+                onChange={handleInputIdSearch}
+                placeholder="Введите adId диалога"
               />
             </Form.Group>
             <div className="d-grid gap-2">

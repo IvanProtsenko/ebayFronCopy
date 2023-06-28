@@ -85,6 +85,27 @@ const GET_CONVERSATIONS = gql`
   }
 `;
 
+const GET_CONVERSATIONS_BY_AD_ID = gql`
+  query GetConversations($adId: String) {
+    Conversations(where: { adId: { _eq: $adId } }) {
+      adId
+      attachmentsEnabled
+      buyNowPossible
+      buyerName
+      id
+      numUnread
+      role
+      sellerName
+      customStatus
+      manualUpdatedDate
+      Messages(order_by: { receivedDate: asc }) {
+        viewed
+        receivedDate
+      }
+    }
+  }
+`;
+
 const GET_MESSAGES_BY_CONV_ID = gql`
   query GetMessagesByConvId($convId: String) {
     Messages(
@@ -378,6 +399,20 @@ class ApiService {
       return result.data.Conversations;
     } catch (err) {
       console.log('ERROR getConversationsByStatus:', err);
+    }
+  };
+
+  getConversationByAdId = async (adId) => {
+    try {
+      const result = await this.client.query({
+        query: GET_CONVERSATIONS_BY_AD_ID,
+        variables: {
+          adId,
+        },
+      });
+      return result.data.Conversations;
+    } catch (err) {
+      console.log('ERROR getConversationsByAdId:', err);
     }
   };
 
