@@ -160,7 +160,10 @@ const Search = () => {
                     <div className="date">
                       {conv.Messages[conv.Messages.length - 1].receivedDate}
                     </div>
-                    <div className="from">{conv.sellerName}</div>
+                    <div className="from">
+                      {conv.sellerName +
+                        (conv.adStatus == 'DELETED' ? ' (Удалено)' : '')}
+                    </div>
                     <div className="subject">{conv.adTitle}</div>
                   </div>
                 ))}

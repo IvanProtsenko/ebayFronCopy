@@ -68,6 +68,7 @@ const GET_CONVERSATIONS = gql`
   query GetConversations($status: String) {
     Conversations(where: { customStatus: { _eq: $status } }) {
       adId
+      adStatus
       attachmentsEnabled
       buyNowPossible
       buyerName
@@ -89,6 +90,7 @@ const GET_CONVERSATIONS_BY_AD_ID = gql`
   query GetConversations($adId: String) {
     Conversations(where: { adId: { _eq: $adId } }) {
       adId
+      adStatus
       attachmentsEnabled
       buyNowPossible
       buyerName
@@ -132,6 +134,7 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
   subscription ConversationsWithMessages {
     Conversations {
       adId
+      adStatus
       attachmentsEnabled
       buyNowPossible
       buyerName
@@ -163,6 +166,7 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
   subscription ConversationsWithMessages($status: String) {
     Conversations(where: { customStatus: { _eq: $status } }) {
       adId
+      adStatus
       attachmentsEnabled
       buyNowPossible
       buyerName
@@ -194,6 +198,7 @@ const GET_CONVERSATION_BY_ID = gql`
   query GetConversationById($id: String!) {
     Conversations_by_pk(id: $id) {
       adId
+      adStatus
       attachmentsEnabled
       buyNowPossible
       buyerName
@@ -211,6 +216,7 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
   query GetConversationsBySellerName($sellerName: String) {
     Conversations(where: { sellerName: { _eq: $sellerName } }) {
       adId
+      adStatus
       attachmentsEnabled
       buyNowPossible
       id
@@ -232,6 +238,7 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
   query ConversationsWithMessages {
     Conversations {
       adId
+      adStatus
       attachmentsEnabled
       buyNowPossible
       id
