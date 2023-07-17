@@ -1,5 +1,6 @@
 const CustomStatus = {
   DIALOG: 'Диалог',
+  DIALOG_PROCESSED: 'Диалог (обработано)',
   WAITING_FOR_ANSWER: 'Ждем ответа продавца',
   OFFER_MADE: 'Запрос отправлен',
   REJECTED_OFFER: 'Запрос отклонён',
@@ -22,6 +23,11 @@ export default function getCustomStatus(conversation, blacklistNames) {
 
   if (blacklistNames.includes(conversation.sellerName)) {
     return CustomStatus.BLACKLIST;
+  }
+
+  if (lastMsg.receivedDate < Date.now() - 1000 * 60 * 60 * 24 * 6) {
+    console.log('outdated');
+    return CustomStatus.DIALOG_PROCESSED;
   }
 
   if (

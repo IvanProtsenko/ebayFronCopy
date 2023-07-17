@@ -407,63 +407,7 @@ const Conversations = () => {
           </Nav.Item>
         </Nav>
       </Col>
-      {/* <Col sm={9}>
-        <Tab.Content>
-          <Tab.Pane eventKey="dialog">
-            <Chat status="Диалог" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="waiting_answer">
-            <Chat status="Ждем ответа продавца" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="dialogProcessed">
-            <Chat status="Диалог (обработано)" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="offer_made">
-            <Chat status="Запрос отправлен" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="rejected_offer">
-            <Chat status="Запрос отклонён" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="offer_accepted">
-            <Chat status="Запрос принят" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="outdated_offer">
-            <Chat status="Запрос просрочен" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="transaction_reserved">
-            <Chat status="Оплачено" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="item_marked_as_shipped">
-            <Chat status="Посылка отправлена" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="outdated_shipping">
-            <Chat status="Посылка не доставлена" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="item_delivered">
-            <Chat status="Подтвердите получение" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="item_marked_as_received">
-            <Chat status="Получено" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="charged_back">
-            <Chat status="Возврат средств" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="transaction_expired">
-            <Chat status="Платеж не прошел" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="undecided">
-            <Chat status="Нераспределенные" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="later">
-            <Chat status="Отложенные" />
-          </Tab.Pane>
-          <Tab.Pane eventKey="blacklist">
-            <Chat status="Черный список" />
-          </Tab.Pane>
-        </Tab.Content>
-      </Col> */}
     </Row>
-    // </Tab.Container>
   );
 };
 
