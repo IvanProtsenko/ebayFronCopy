@@ -25,8 +25,7 @@ export default function getCustomStatus(conversation, blacklistNames) {
     return CustomStatus.BLACKLIST;
   }
 
-  if (lastMsg.receivedDate < Date.now() - 1000 * 60 * 60 * 24 * 6) {
-    console.log('outdated');
+  if (Date.parse(lastMsg.receivedDate) < Date.now() - 1000 * 60 * 60 * 24 * 7) {
     return CustomStatus.DIALOG_PROCESSED;
   }
 
