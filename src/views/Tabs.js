@@ -16,9 +16,9 @@ function JustifiedExample(props) {
       className="mb-3"
       justify
     >
-      {/* <Tab eventKey="adverts" title="Предложения">
+      <Tab eventKey="adverts" title="Предложения">
         <Table />
-      </Tab> */}
+      </Tab>
       <Tab eventKey="conversations" title="Переписки">
         <Row>
           <Col sm={3}>
