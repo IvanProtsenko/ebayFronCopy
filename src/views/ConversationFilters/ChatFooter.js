@@ -109,7 +109,8 @@ export default class ChatFooter extends Component {
               }}
               options={[
                 { value: 'Цена', label: 'Цена' },
-                { value: 'Человек не захотел', label: 'Человек не захотел' },
+                { value: 'Самовывоз', label: 'Самовывоз' },
+                { value: 'Не походит метод', label: 'Не походит метод' },
               ]}
             />
           </Col>
