@@ -2,8 +2,39 @@ import makeApolloClient from './utils/makeApolloClient';
 import gql from 'graphql-tag';
 
 const GET_ADVERTS = gql`
-  query GetAdverts {
-    Adverts(limit: 400, order_by: { created_at: desc }) {
+  query GetAdverts($limit: Int) {
+    Adverts(limit: $limit, order_by: { created_at: desc }) {
+      adItemId
+      buyNowAllowed
+      consoleGeneration
+      controllersCount
+      created_at
+      deliveryAllowed
+      description
+      hasDefect
+      initialResponse
+      link
+      location
+      offerAllowed
+      price
+      publishDate
+      recommendedPrice
+      status
+      title
+      tradeAllowed
+      statusDescription
+      viewed
+    }
+  }
+`;
+
+const GET_ADVERTS_WITH_DATE = gql`
+  query GetAdverts($limit: Int, $date: timestamp) {
+    Adverts(
+      limit: $limit
+      order_by: { created_at: desc }
+      where: { created_at: { _gt: $date } }
+    ) {
       adItemId
       buyNowAllowed
       consoleGeneration
@@ -390,11 +421,27 @@ class ApiService {
     this.client = client;
   }
 
-  getAdverts = async () => {
+  getAdverts = async (limit_adverts, date) => {
     try {
-      const result = await this.client.query({
-        query: GET_ADVERTS,
-      });
+      const limit = Number(limit_adverts);
+      console.log(date);
+      let result = null;
+      if (date) {
+        result = await this.client.query({
+          query: GET_ADVERTS_WITH_DATE,
+          variables: {
+            limit,
+            date,
+          },
+        });
+      } else {
+        result = await this.client.query({
+          query: GET_ADVERTS,
+          variables: {
+            limit,
+          },
+        });
+      }
       return result.data.Adverts;
     } catch (err) {
       console.log('ERROR getAccounts:', err);

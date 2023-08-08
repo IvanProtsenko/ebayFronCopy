@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { apiService, client, SUBSCRIBE_ADVERTS } from '../services/ApiService';
 import columnDefsAccounts from '../services/utils/columnDefs';
+import { Button } from 'react-bootstrap';
 import 'ag-grid-enterprise';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -16,6 +17,8 @@ export default class Table extends Component {
     gridApi: null,
     rowData: [],
     columnDefs: columnDefsAccounts,
+    numberOfAdverts: 400,
+    lastDayOfAdverts: '',
     defaultColDef: {
       resizable: true,
       sortable: true,
@@ -80,6 +83,12 @@ export default class Table extends Component {
   async componentDidMount() {
     const adminSecret = localStorage.getItem('userToken');
     if (!adminSecret) window.location.href = '/';
+    await this.changeNumberOfAdverts(
+      Number(localStorage.getItem('numberOfAdverts')) || 400
+    );
+    await this.changeLastDayOfAdverts(
+      localStorage.getItem('lastDayOfAdverts') || ''
+    );
     // const changeRowData = async (data) => {
     //   this.setState(() => {
     //     return { rowData: data };
@@ -98,7 +107,7 @@ export default class Table extends Component {
     //     console.log(err);
     //   },
     // });
-    const adverts = await apiService.getAdverts();
+    const adverts = await apiService.getAdverts(this.state.numberOfAdverts);
     console.log(adverts);
     this.setState(() => {
       return { rowData: adverts };
@@ -110,9 +119,62 @@ export default class Table extends Component {
     return params.data.adItemId;
   }
 
+  changeNumberOfAdverts = async (number) => {
+    this.setState(() => {
+      return { numberOfAdverts: number };
+    });
+    localStorage.setItem('numberOfAdverts', number);
+  };
+
+  changeLastDayOfAdverts = async (date) => {
+    this.setState(() => {
+      return { lastDayOfAdverts: date };
+    });
+    localStorage.setItem('lastDayOfAdverts', date);
+  };
+
+  applyFilters = async () => {
+    console.log(this.state.lastDayOfAdverts);
+    const adverts = await apiService.getAdverts(
+      this.state.numberOfAdverts,
+      this.state.lastDayOfAdverts
+    );
+
+    this.setState(() => {
+      return { rowData: adverts };
+    });
+  };
+
   render() {
     return (
       <div>
+        <input
+          className="input"
+          type="number"
+          placeholder="Number of max adverts"
+          value={this.state.numberOfAdverts}
+          onChange={(event) => {
+            this.changeNumberOfAdverts(event.target.value);
+          }}
+        />
+        <input
+          className="input"
+          type="date"
+          placeholder="Show adverts after"
+          value={this.state.lastDayOfAdverts}
+          onChange={(event) => {
+            this.changeLastDayOfAdverts(event.target.value);
+          }}
+        />
+        <Button
+          className="input"
+          onClick={() => {
+            this.applyFilters();
+          }}
+          variant="primary"
+        >
+          Применить фильтры
+        </Button>
         <div className="ag-theme-alpine" style={{ height: 800, width: '100%' }}>
           <AgGridReact
             rowData={this.state.rowData}
