@@ -308,6 +308,26 @@ const UPDATE_CUSTOM_STATUS = gql`
   }
 `;
 
+const UPDATE_CUSTOM_STATUS_AND_REASON = gql`
+  mutation UpdateCustomStatus(
+    $id: String!
+    $status: String
+    $date: String
+    $reason: String
+  ) {
+    update_Conversations_by_pk(
+      pk_columns: { id: $id }
+      _set: {
+        customStatus: $status
+        manualUpdatedDate: $date
+        deny_reason: $reason
+      }
+    ) {
+      id
+    }
+  }
+`;
+
 const ADD_BLACKLIST_SELLER = gql`
   mutation AddBlacklistSeller($name: String) {
     insert_sellers_blacklist_one(object: { name: $name }) {
@@ -555,6 +575,25 @@ class ApiService {
       console.log(result);
     } catch (err) {
       console.log('ERROR updateCustomStatus:', err);
+    }
+  };
+
+  updateCustomStatusAndDenyReason = async (convId, status, reason) => {
+    try {
+      const date = new Date();
+      const dateInFormat = date.toISOString();
+      const result = await this.client.mutate({
+        mutation: UPDATE_CUSTOM_STATUS_AND_REASON,
+        variables: {
+          id: convId,
+          status,
+          date: dateInFormat,
+          reason,
+        },
+      });
+      console.log(result);
+    } catch (err) {
+      console.log('ERROR updateCustomStatusAndDenyReason:', err);
     }
   };
 

@@ -20,9 +20,16 @@ const CustomStatus = {
 export default function getCustomStatus(conversation, blacklistNames) {
   const messages = conversation.Messages;
   const lastMsg = messages[messages.length - 1];
+  const incomingLastMsg = messages.filter((msg) => msg.boundness == 'INBOUND')[
+    messages.length - 1
+  ];
 
   if (blacklistNames.includes(conversation.sellerName)) {
     return CustomStatus.BLACKLIST;
+  }
+
+  if (!messages.map((message) => message.boundness).includes('INBOUND')) {
+    return CustomStatus.DIALOG_PROCESSED;
   }
 
   if (Date.parse(lastMsg.receivedDate) < Date.now() - 1000 * 60 * 60 * 24 * 7) {

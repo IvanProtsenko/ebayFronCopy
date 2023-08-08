@@ -3,11 +3,14 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { apiService } from '../../services/ApiService';
 import { Row, Col } from 'react-bootstrap';
+import CreatableSelect from 'react-select/creatable';
 
 export default class ChatFooter extends Component {
   state = {
     convChosenId: this.props.convChosenId,
     type: this.props.type,
+    choosingDenyReason: false,
+    denyReason: {},
   };
 
   constructor(props) {
@@ -23,6 +26,12 @@ export default class ChatFooter extends Component {
       );
       const sellerName = conversation.sellerName;
       await apiService.addSellerToBlacklist(sellerName);
+    } else if (this.state.type == 'Запрос отклонён') {
+      await apiService.updateCustomStatusAndDenyReason(
+        this.state.convChosenId,
+        this.state.type,
+        this.state.denyReason.value
+      );
     } else {
       await apiService.updateCustomStatus(
         this.state.convChosenId,
@@ -45,7 +54,7 @@ export default class ChatFooter extends Component {
             </a>
           </Button>
         </Col>
-        <Col sm={6}>
+        <Col sm={3}>
           <Form.Group controlId="formBasicSelect">
             <Form.Control
               as="select"
@@ -54,6 +63,15 @@ export default class ChatFooter extends Component {
                 this.setState(() => {
                   return { type: e.target.value };
                 });
+                if (e.target.value == 'Запрос отклонён') {
+                  this.setState(() => {
+                    return { choosingDenyReason: true };
+                  });
+                } else {
+                  this.setState(() => {
+                    return { choosingDenyReason: false };
+                  });
+                }
               }}
             >
               <option value="Диалог">Диалог</option>
@@ -79,6 +97,25 @@ export default class ChatFooter extends Component {
             </Form.Control>
           </Form.Group>
         </Col>
+        {this.state.choosingDenyReason ? (
+          <Col sm={3}>
+            <CreatableSelect
+              isClearable={true}
+              menuPlacement="top"
+              onChange={(choice) => {
+                this.setState(() => {
+                  return { denyReason: choice };
+                });
+              }}
+              options={[
+                { value: 'Цена', label: 'Цена' },
+                { value: 'Человек не захотел', label: 'Человек не захотел' },
+              ]}
+            />
+          </Col>
+        ) : (
+          ''
+        )}
         <Col sm={3}>
           <Button
             className="modalButtonConv"
