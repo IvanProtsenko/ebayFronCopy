@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 
 const GET_ADVERTS = gql`
   query GetAdverts {
-    Adverts(limit: 100, order_by: { created_at: desc }) {
+    Adverts(limit: 400, order_by: { created_at: desc }) {
       adItemId
       buyNowAllowed
       consoleGeneration
