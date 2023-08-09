@@ -6,6 +6,7 @@ import {
 } from '../../services/ApiService';
 import Card from 'react-bootstrap/Card';
 
+import MessageSender from './MessageSender';
 import Message from './Message';
 import ChatFooter from './ChatFooter';
 import ShippingAndPaymentMessage from './ShippingAndPaymentMessage';
@@ -100,7 +101,7 @@ export default class Chat extends Component {
     return (
       <div className="app">
         <div className="mailReader">
-          <div className="messageBox">
+          <div className="messageBoxConv">
             {this.state.conversations.map((conv) => (
               <div
                 className={
@@ -136,6 +137,11 @@ export default class Chat extends Component {
                   )
                 : ''}
             </div>
+            {this.state.convChosen ? (
+              <MessageSender convId={this.state.convChosenId} />
+            ) : (
+              ''
+            )}
             {this.state.convChosen ? (
               <ChatFooter
                 type={this.state.status}

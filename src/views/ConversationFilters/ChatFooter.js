@@ -42,7 +42,7 @@ export default class ChatFooter extends Component {
 
   render() {
     return (
-      <Row>
+      <Row className="chatFooter">
         <Col sm={3}>
           <Button className="modalButtonConv" variant="primary" type="submit">
             <a
@@ -110,7 +110,9 @@ export default class ChatFooter extends Component {
               options={[
                 { value: 'Цена', label: 'Цена' },
                 { value: 'Самовывоз', label: 'Самовывоз' },
-                { value: 'Не походит метод', label: 'Не походит метод' },
+                { value: 'Оплата Ебей', label: 'Оплата Ебей' },
+                { value: 'Оплата нал', label: 'Оплата нал' },
+                { value: 'Без причины', label: 'Без причины' },
               ]}
             />
           </Col>

@@ -44,6 +44,10 @@ code {
   margin-bottom: 50px;
 }
 
+.chatFooter {
+  margin-top: 10px;
+}
+
 a.conversationLink:link {
   color: white;
   text-decoration: none;
@@ -80,6 +84,139 @@ a.conversationLink:link {
     height: calc(100% - 100px);
 
     .messageBox {
+      flex: 0.4;
+      overflow-x: hidden;
+      overflow-y: auto;
+      height: 80%;
+      border-right: 2px solid gainsboro;
+
+      .shippingMessage {
+        width: 100%;
+        padding: 2px 10px;
+        border-bottom: 1px solid rgb(150, 150, 255);
+      }
+
+      .message {
+        width: 100%;
+        padding: 2px 10px;
+        border-bottom: 1px solid rgb(150, 150, 255);
+
+        cursor: pointer;
+
+        &:hover {
+          background-color: #eeeeee;
+        }
+
+        .date {
+          color: grey;
+          font-size: 10px;
+        }
+
+        .from {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .subject {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .message-active,
+      .message-right-active,
+      .message-unread-active {
+        width: 100%;
+        padding: 2px 10px;
+        border-bottom: 1px solid rgb(150, 150, 255);
+        background-color: #9dd5f5;
+
+        cursor: pointer;
+
+        &:hover {
+          background-color: #eeeeee;
+        }
+
+        .date {
+          color: grey;
+          font-size: 10px;
+        }
+
+        .from {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .subject {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .message-unread {
+        width: 100%;
+        padding: 2px 10px;
+        border-bottom: 1px solid rgb(150, 150, 255);
+
+        cursor: pointer;
+
+        &:hover {
+          background-color: #eeeeee;
+        }
+
+        .date {
+          color: grey;
+          font-size: 10px;
+          font-weight: 500;
+        }
+
+        .from {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-weight: 500;
+        }
+
+        .subject {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-weight: 500;
+        }
+      }
+
+      .message-right {
+        width: 100%;
+        padding: 2px 10px;
+        border-bottom: 1px solid rgb(150, 150, 255);
+        text-align: right;
+
+        cursor: pointer;
+
+        &:hover {
+          background-color: #eeeeee;
+        }
+
+        .date {
+          color: grey;
+          font-size: 10px;
+        }
+
+        .from {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .subject {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    .messageBoxConv {
       flex: 0.4;
       overflow-x: hidden;
       overflow-y: auto;

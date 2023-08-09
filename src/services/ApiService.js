@@ -229,6 +229,7 @@ const GET_CONVERSATION_BY_ID = gql`
   query GetConversationById($id: String!) {
     Conversations_by_pk(id: $id) {
       adId
+      adTitle
       adStatus
       attachmentsEnabled
       buyNowPossible
