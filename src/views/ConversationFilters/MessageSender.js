@@ -27,18 +27,13 @@ export default class MessageSender extends Component {
   };
 
   async sendMessage() {
-    console.log(this.state.convChosenId);
-    const conversation = await apiService.getConversationById(
-      this.state.convChosenId
-    );
-    const advert = await apiService.getAdvertById(conversation.adId);
     const messageToAdd = {
       text: this.state.messageText,
       url: `https://www.kleinanzeigen.de/m-nachrichten.html?conversationId=${this.state.convChosenId}`,
     };
     console.log(messageToAdd);
     const response = await apiServiceCustomResolvers.sendMessage(messageToAdd);
-    if (response && response.success) {
+    if (response && response.send_success) {
       this.setState(() => {
         return { messageResponse: 'Успешно отправлено' };
       });

@@ -5,7 +5,8 @@ const SEND_MESSAGE = gql`
   mutation SendMessage($payload: messageRequest) {
     sendMessage(payload: $payload) {
       errorMsg
-      success
+      send_success
+      update_success
     }
   }
 `;
