@@ -128,7 +128,7 @@ const Search = () => {
   };
 
   useEffect(() => {
-    getUnreadMessages();
+    // getUnreadMessages();
   }, []);
 
   return (
