@@ -9,11 +9,13 @@ import Form from 'react-bootstrap/Form';
 import Message from './ConversationFilters/Message';
 import ShippingAndPaymentMessage from './ConversationFilters/ShippingAndPaymentMessage';
 import ChatFooter from './ConversationFilters/ChatFooter';
+import MessageSender from '../views/ConversationFilters/MessageSender';
 
 import {
   apiService,
   client,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
+  SUBSCRIBE_MESSAGES,
 } from '../services/ApiService';
 
 // DIALOG = 'Диалог',
@@ -37,6 +39,7 @@ const Search = () => {
 
   const operateConversations = (conversations) => {
     let arrayForSort = [...conversations];
+    // console.log(arrayForSort[0]);
     if (arrayForSort.length > 1)
       arrayForSort.sort((conv1, conv2) => {
         const firstDate =
@@ -46,10 +49,13 @@ const Search = () => {
         if (firstDate > secondDate) return -1;
         else return 1;
       });
+    setSellerConversationsTable([]);
     setSellerConversationsTable(arrayForSort);
+    // console.log(sellerConversationsTable);
   };
 
   const handleSubmit = async (event) => {
+    setIdToSearch(null);
     event.preventDefault();
     const sellerConversations = await apiService.getConversationsBySellerName(
       nameToSearch
@@ -57,7 +63,30 @@ const Search = () => {
     if (sellerConversations) operateConversations(sellerConversations);
   };
 
+  const handleSubscribe = async (data) => {
+    // console.log(
+    //   data.filter((conv) => {
+    //     return nameToSearch == conv.sellerName;
+    //   })
+    // );
+    console.log('handle subscribe');
+    if (nameToSearch !== '') {
+      console.log('handle subscribe name');
+      const sellerConversations = await apiService.getConversationsBySellerName(
+        nameToSearch
+      );
+      if (sellerConversations) operateConversations(sellerConversations);
+    } else {
+      console.log('handle subscribe id');
+      const sellerConversation = await apiService.getConversationByAdId(
+        idToSearch
+      );
+      if (sellerConversation) operateConversations(sellerConversation);
+    }
+  };
+
   const handleSubmitId = async (event) => {
+    setNameToSearch('');
     event.preventDefault();
     const sellerConversation = await apiService.getConversationByAdId(
       idToSearch
@@ -75,7 +104,6 @@ const Search = () => {
   };
 
   const openConversation = async (convId, status) => {
-    console.log(status);
     await apiService.markMessagesInConvViewed(convId);
     const messages = await apiService.getMessagesByConvId(convId);
     setConvChosen(false);
@@ -86,19 +114,17 @@ const Search = () => {
   };
 
   const getUnreadMessages = async () => {
-    const conversations = await apiService.getConversationsWithMessages();
-    // calculateUnreadMessages(conversations);
-    // const observer = client.subscribe({
-    //     query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
-    // });
-    // observer.subscribe({
-    //     next(data) {
-    //         calculateUnreadMessages(data.data.Conversations);
-    //     },
-    //     error(err) {
-    //         console.log(err);
-    //     },
-    // });
+    const observer = client.subscribe({
+      query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
+    });
+    observer.subscribe({
+      next(data) {
+        handleSubscribe(data);
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
   };
 
   useEffect(() => {
@@ -143,7 +169,7 @@ const Search = () => {
         <Col sm={9}>
           <div className="app">
             <div className="mailReader">
-              <div className="messageBox">
+              <div className="messageBoxConv">
                 {sellerConversationsTable.map((conv) => (
                   <div
                     className={
@@ -180,6 +206,7 @@ const Search = () => {
                       )
                     : ''}
                 </div>
+                {convChosen ? <MessageSender convId={convChosenId} /> : ''}
                 {convChosen ? (
                   <ChatFooter type={status} convChosenId={convChosenId} />
                 ) : (

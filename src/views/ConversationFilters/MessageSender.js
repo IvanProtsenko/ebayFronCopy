@@ -11,6 +11,7 @@ export default class MessageSender extends Component {
   state = {
     convChosenId: this.props.convId,
     messageText: '',
+    messageResponse: '',
   };
 
   constructor(props) {
@@ -33,16 +34,25 @@ export default class MessageSender extends Component {
     const advert = await apiService.getAdvertById(conversation.adId);
     const messageToAdd = {
       text: this.state.messageText,
-      url: advert.link,
+      url: `https://www.kleinanzeigen.de/m-nachrichten.html?conversationId=${this.state.convChosenId}`,
     };
     console.log(messageToAdd);
-    await apiServiceCustomResolvers.sendMessage(messageToAdd);
+    const response = await apiServiceCustomResolvers.sendMessage(messageToAdd);
+    if (response && response.success) {
+      this.setState(() => {
+        return { messageResponse: 'Успешно отправлено' };
+      });
+    } else {
+      this.setState(() => {
+        return { messageResponse: 'Ошибка отправки' };
+      });
+    }
   }
 
   render() {
     return (
       <Row className="chatFooter">
-        <Col sm={{ span: 8, offset: 0 }} className="input">
+        <Col sm={{ span: 6, offset: 0 }} className="input">
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Control
               as="textarea"
@@ -52,7 +62,8 @@ export default class MessageSender extends Component {
             />
           </Form.Group>
         </Col>
-        <Col sm={3}>
+
+        <Col sm={2}>
           <Button
             className="modalButtonConv"
             onClick={() => this.sendMessage()}
@@ -62,6 +73,21 @@ export default class MessageSender extends Component {
             Отправить
           </Button>
         </Col>
+        {this.state.messageResponse ? (
+          <Col sm={{ span: 3, offset: 0 }} className="input">
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Control
+                value={this.state.messageResponse}
+                disabled={true}
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          ''
+        )}
       </Row>
     );
   }

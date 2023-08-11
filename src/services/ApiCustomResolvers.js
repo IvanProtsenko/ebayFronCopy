@@ -3,7 +3,10 @@ import gql from 'graphql-tag';
 
 const SEND_MESSAGE = gql`
   mutation SendMessage($payload: messageRequest) {
-    sendMessage(payload: $payload)
+    sendMessage(payload: $payload) {
+      errorMsg
+      success
+    }
   }
 `;
 
@@ -23,9 +26,10 @@ class ApiServiceCustomerResolvers {
         },
       });
       console.log(result);
-      return result.data;
+      return result.data.sendMessage;
     } catch (err) {
       console.log('ERROR:', err);
+      return null;
     }
   };
 }

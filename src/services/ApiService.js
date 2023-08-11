@@ -225,6 +225,25 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
   }
 `;
 
+const SUBSCRIBE_MESSAGES = gql`
+  subscription Messages {
+    Messages {
+      viewed
+      active
+      boundness
+      messageId
+      paymentAndShippingMessageType
+      paymentMethod
+      receivedDate
+      text
+      textShort
+      title
+      totalInEuroCent
+      type
+    }
+  }
+`;
+
 const GET_CONVERSATION_BY_ID = gql`
   query GetConversationById($id: String!) {
     Conversations_by_pk(id: $id) {
@@ -685,4 +704,5 @@ export {
   SUBSCRIBE_ADVERTS,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
+  SUBSCRIBE_MESSAGES,
 };
