@@ -14,7 +14,7 @@ function getToken() {
 
 function getHttpLink(httpURL) {
   const token = getToken();
-  console.log(token)
+  console.log(token);
   return new HttpLink({
     uri: httpURL,
     fetch,

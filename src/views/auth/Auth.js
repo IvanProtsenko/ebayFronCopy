@@ -25,17 +25,12 @@ export default class Auth extends Component {
   async login(event) {
     event.preventDefault();
     try {
-      const customerId = await apiServiceCustomResolvers.getUserIdBySecretKey(
-        this.state.secret
-      );
-      localStorage.setItem('userPassword', this.state.secret);
-      localStorage.setItem('userId', customerId);
       // const token = await apiServiceCustomResolvers.getUserJWT(
       //   this.state.secret
       // );
       // console.log(token);
       localStorage.setItem('userToken', this.state.secret);
-      window.location.href = '/main';
+      window.location.href = '/dialog';
     } catch (err) {
       console.log('err while login: ', err);
     }
