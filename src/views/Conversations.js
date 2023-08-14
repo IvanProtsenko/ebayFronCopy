@@ -296,17 +296,17 @@ const Conversations = () => {
   const getUnreadMessages = async () => {
     const conversations = await apiService.getConversationsWithMessages();
     calculateUnreadMessages(conversations);
-    const observer = client.subscribe({
-      query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
-    });
-    observer.subscribe({
-      next(data) {
-        calculateUnreadMessages(data.data.Conversations);
-      },
-      error(err) {
-        console.log(err);
-      },
-    });
+    // const observer = client.subscribe({
+    //   query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
+    // });
+    // observer.subscribe({
+    //   next(data) {
+    //     calculateUnreadMessages(data.data.Conversations);
+    //   },
+    //   error(err) {
+    //     console.log(err);
+    //   },
+    // });
   };
 
   useEffect(() => {

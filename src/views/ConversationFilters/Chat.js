@@ -68,33 +68,33 @@ export default class Chat extends Component {
   }
 
   async componentDidMount() {
-    const changeRowData = async (data) => {
-      this.operateConversations(data);
-    };
+    // const changeRowData = async (data) => {
+    //   this.operateConversations(data);
+    // };
 
     let conversations = await apiService.getConversationsByStatus(
       this.state.status
     );
     this.operateConversations(conversations);
-    const observer = client.subscribe({
-      query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
-      variables: {
-        status: this.state.status,
-      },
-    });
+    // const observer = client.subscribe({
+    //   query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
+    //   variables: {
+    //     status: this.state.status,
+    //   },
+    // });
 
-    this.subscription = observer.subscribe({
-      next(data) {
-        changeRowData(data.data.Conversations);
-      },
-      error(err) {
-        console.log(err);
-      },
-    });
+    // this.subscription = observer.subscribe({
+    //   next(data) {
+    //     changeRowData(data.data.Conversations);
+    //   },
+    //   error(err) {
+    //     console.log(err);
+    //   },
+    // });
   }
 
   async componentWillUnmount() {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   render() {
