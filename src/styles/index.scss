@@ -33,7 +33,7 @@ code {
 }
 
 .modalButtonConv {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .input {
@@ -49,6 +49,11 @@ code {
 }
 
 a.conversationLink:link {
+  color: white;
+  text-decoration: none;
+}
+
+a.conversationLink:visited {
   color: white;
   text-decoration: none;
 }

@@ -11,13 +11,20 @@ export default class ChatFooter extends Component {
     type: this.props.type,
     choosingDenyReason: false,
     denyReason: {},
+    advertLink: null,
   };
 
   constructor(props) {
     super(props);
   }
 
-  async componentDidMount() {}
+  async componentDidMount() {
+    const conv = await apiService.getConversationById(this.state.convChosenId);
+    const advert = await apiService.getAdvertById(conv.adId);
+    this.setState(() => {
+      return { advertLink: advert.link };
+    });
+  }
 
   async updateCustomStatus() {
     if (this.state.type == 'Черный список') {
@@ -43,14 +50,25 @@ export default class ChatFooter extends Component {
   render() {
     return (
       <Row className="chatFooter">
-        <Col sm={3}>
+        <Col sm={2}>
           <Button className="modalButtonConv" variant="primary" type="submit">
             <a
               target="_blank"
               className="conversationLink"
               href={`https://www.kleinanzeigen.de/m-nachrichten.html?conversationId=${this.state.convChosenId}`}
             >
-              Перейти в диалог
+              В диалог
+            </a>
+          </Button>
+        </Col>
+        <Col sm={2}>
+          <Button variant="primary" type="submit">
+            <a
+              target="_blank"
+              className="conversationLink"
+              href={`${this.state.advertLink}`}
+            >
+              К консоли
             </a>
           </Button>
         </Col>
@@ -119,7 +137,7 @@ export default class ChatFooter extends Component {
         ) : (
           ''
         )}
-        <Col sm={3}>
+        <Col sm={2}>
           <Button
             className="modalButtonConv"
             onClick={() => this.updateCustomStatus()}
