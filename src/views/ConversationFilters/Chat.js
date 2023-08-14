@@ -68,9 +68,9 @@ export default class Chat extends Component {
   }
 
   async componentDidMount() {
-    // const changeRowData = async (data) => {
-    //   this.operateConversations(data);
-    // };
+    const changeRowData = async (data) => {
+      this.operateConversations(data);
+    };
 
     let conversations = await apiService.getConversationsByStatus(
       this.state.status

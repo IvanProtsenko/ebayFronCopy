@@ -175,20 +175,7 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
       sellerName
       customStatus
       manualUpdatedDate
-      Messages(order_by: { receivedDate: asc }) {
-        viewed
-        active
-        boundness
-        messageId
-        paymentAndShippingMessageType
-        paymentMethod
-        receivedDate
-        text
-        textShort
-        title
-        totalInEuroCent
-        type
-      }
+      customUnread
     }
   }
 `;
@@ -298,20 +285,7 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
       sellerName
       customStatus
       manualUpdatedDate
-      Messages(order_by: { receivedDate: asc }) {
-        viewed
-        active
-        boundness
-        messageId
-        paymentAndShippingMessageType
-        paymentMethod
-        receivedDate
-        text
-        textShort
-        title
-        totalInEuroCent
-        type
-      }
+      customUnread
     }
   }
 `;

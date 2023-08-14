@@ -6,7 +6,6 @@ import {
   client,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
 } from '../../services/ApiService';
-import getCustomStatus from '../../services/utils/getCustomStatus';
 
 // DIALOG = 'Диалог',
 // OFFER_MADE = 'Запрос отправлен',
@@ -169,65 +168,6 @@ const NavsLeft = () => {
     }
   };
 
-  const updateAllCustomStatuses = async () => {
-    await apiService.updateCustomStatusMany(dialogToUpdate, 'Диалог');
-    await apiService.updateCustomStatusMany(
-      waitingAnswerToUpdate,
-      'Ждем ответа продавца'
-    );
-    await apiService.updateCustomStatusMany(
-      dialogProcessedToUpdate,
-      'Диалог (обработано)'
-    );
-    await apiService.updateCustomStatusMany(
-      offerMadeToUpdate,
-      'Запрос отправлен'
-    );
-    await apiService.updateCustomStatusMany(
-      rejectedOfferToUpdate,
-      'Запрос отклонён'
-    );
-    await apiService.updateCustomStatusMany(
-      offerAcceptedToUpdate,
-      'Запрос принят'
-    );
-    await apiService.updateCustomStatusMany(
-      transactionReservedToUpdate,
-      'Оплачено'
-    );
-    await apiService.updateCustomStatusMany(
-      itemShippedToUpdate,
-      'Посылка отправлена'
-    );
-    await apiService.updateCustomStatusMany(
-      outdatedOfferToUpdate,
-      'Запрос просрочен'
-    );
-    await apiService.updateCustomStatusMany(
-      outdatedShippingUpdate,
-      'Посылка не доставлена'
-    );
-    await apiService.updateCustomStatusMany(
-      itemDeliveredToUpdate,
-      'Подтвердите получение'
-    );
-    await apiService.updateCustomStatusMany(itemReceivedToUpdate, 'Получено');
-    await apiService.updateCustomStatusMany(
-      transactionExpiredToUpdate,
-      'Платеж не прошел'
-    );
-    await apiService.updateCustomStatusMany(
-      chargedBackToUpdate,
-      'Возврат средств'
-    );
-    await apiService.updateCustomStatusMany(
-      undecidedToUpdate,
-      'Нераспределенные'
-    );
-    await apiService.updateCustomStatusMany(delayedToUpdate, 'Отложенные');
-    await apiService.updateCustomStatusMany(blacklistToUpdate, 'Черный список');
-  };
-
   const clearAll = () => {
     dialogToUpdate = [];
     waitingAnswerToUpdate = [];
@@ -269,81 +209,66 @@ const NavsLeft = () => {
   };
 
   const calculateUnreadMessages = async (conversations) => {
-    const blacklist = await apiService.getBlacklistSellerNames();
-    const blacklistNames = blacklist.map((blacklist) => blacklist.name);
     conversations.forEach(async (conv) => {
-      if (conv.Messages.length > 0) {
-        let status = '';
-        if (
-          conv.manualUpdatedDate <
-            conv.Messages[conv.Messages.length - 1].receivedDate ||
-          !conv.manualUpdatedDate ||
-          blacklistNames.includes(conv.sellerName)
-        ) {
-          status = getCustomStatus(conv, blacklistNames);
-        } else {
-          status = conv.customStatus;
-        }
-        if (status == 'Диалог') {
-          dialogToUpdate.push(conv.id);
-        } else if (status == 'Ждем ответа продавца') {
-          waitingAnswerToUpdate.push(conv.id);
-        } else if (status == 'Диалог (обработано)') {
-          dialogProcessedToUpdate.push(conv.id);
-        } else if (status == 'Запрос отправлен') {
-          offerMadeToUpdate.push(conv.id);
-        } else if (status == 'Запрос отклонён') {
-          rejectedOfferToUpdate.push(conv.id);
-        } else if (status == 'Запрос принят') {
-          offerAcceptedToUpdate.push(conv.id);
-        } else if (status == 'Оплачено') {
-          transactionReservedToUpdate.push(conv.id);
-        } else if (status == 'Посылка отправлена') {
-          itemShippedToUpdate.push(conv.id);
-        } else if (status == 'Запрос просрочен') {
-          outdatedOfferToUpdate.push(conv.id);
-        } else if (status == 'Посылка не доставлена') {
-          outdatedShippingUpdate.push(conv.id);
-        } else if (status == 'Подтвердите получение') {
-          itemDeliveredToUpdate.push(conv.id);
-        } else if (status == 'Получено') {
-          itemReceivedToUpdate.push(conv.id);
-        } else if (status == 'Возврат средств') {
-          chargedBackToUpdate.push(conv.id);
-        } else if (status == 'Платеж не прошел') {
-          transactionExpiredToUpdate.push(conv.id);
-        } else if (status == 'Нераспределенные') {
-          undecidedToUpdate.push(conv.id);
-        } else if (status == 'Отложенные') {
-          delayedToUpdate.push(conv.id);
-        } else if (status == 'Черный список') {
-          blacklistToUpdate.push(conv.id);
-        }
-        if (!conv.Messages[conv.Messages.length - 1].viewed) {
-          await setUnread(status);
-        }
+      let status = conv.customStatus;
+      if (status == 'Диалог') {
+        dialogToUpdate.push(conv.id);
+      } else if (status == 'Ждем ответа продавца') {
+        waitingAnswerToUpdate.push(conv.id);
+      } else if (status == 'Диалог (обработано)') {
+        dialogProcessedToUpdate.push(conv.id);
+      } else if (status == 'Запрос отправлен') {
+        offerMadeToUpdate.push(conv.id);
+      } else if (status == 'Запрос отклонён') {
+        rejectedOfferToUpdate.push(conv.id);
+      } else if (status == 'Запрос принят') {
+        offerAcceptedToUpdate.push(conv.id);
+      } else if (status == 'Оплачено') {
+        transactionReservedToUpdate.push(conv.id);
+      } else if (status == 'Посылка отправлена') {
+        itemShippedToUpdate.push(conv.id);
+      } else if (status == 'Запрос просрочен') {
+        outdatedOfferToUpdate.push(conv.id);
+      } else if (status == 'Посылка не доставлена') {
+        outdatedShippingUpdate.push(conv.id);
+      } else if (status == 'Подтвердите получение') {
+        itemDeliveredToUpdate.push(conv.id);
+      } else if (status == 'Получено') {
+        itemReceivedToUpdate.push(conv.id);
+      } else if (status == 'Возврат средств') {
+        chargedBackToUpdate.push(conv.id);
+      } else if (status == 'Платеж не прошел') {
+        transactionExpiredToUpdate.push(conv.id);
+      } else if (status == 'Нераспределенные') {
+        undecidedToUpdate.push(conv.id);
+      } else if (status == 'Отложенные') {
+        delayedToUpdate.push(conv.id);
+      } else if (status == 'Черный список') {
+        blacklistToUpdate.push(conv.id);
+      }
+      if (conv.customUnread) {
+        await setUnread(status);
       }
     });
     markAllStatuses();
     markAllStatusesUnread();
-    await updateAllCustomStatuses();
   };
 
   const getUnreadMessages = async () => {
     const conversations = await apiService.getConversationsWithMessages();
     calculateUnreadMessages(conversations);
-    // const observer = client.subscribe({
-    //   query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
-    // });
-    // observer.subscribe({
-    //   next(data) {
-    //     clearAll();
-    //     calculateUnreadMessages(data.data.Conversations);
-    //   },
-    //   error(err) {
-    //     console.log(err);
-    //   },
-    // });
+    const observer = client.subscribe({
+      query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
+    });
+    observer.subscribe({
+      next(data) {
+        clearAll();
+        calculateUnreadMessages(data.data.Conversations);
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
   };
 
   useEffect(() => {
