@@ -109,10 +109,7 @@ const GET_CONVERSATIONS = gql`
       sellerName
       customStatus
       manualUpdatedDate
-      Messages(order_by: { receivedDate: asc }) {
-        viewed
-        receivedDate
-      }
+      customLastUpdate
     }
   }
 `;
@@ -131,10 +128,8 @@ const GET_CONVERSATIONS_BY_AD_ID = gql`
       sellerName
       customStatus
       manualUpdatedDate
-      Messages(order_by: { receivedDate: asc }) {
-        viewed
-        receivedDate
-      }
+      customLastUpdate
+      customUnread
     }
   }
 `;
@@ -194,20 +189,8 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
       sellerName
       customStatus
       manualUpdatedDate
-      Messages(order_by: { receivedDate: asc }) {
-        viewed
-        active
-        boundness
-        messageId
-        paymentAndShippingMessageType
-        paymentMethod
-        receivedDate
-        text
-        textShort
-        title
-        totalInEuroCent
-        type
-      }
+      customLastUpdate
+      customUnread
     }
   }
 `;
@@ -246,6 +229,7 @@ const GET_CONVERSATION_BY_ID = gql`
       sellerName
       customStatus
       manualUpdatedDate
+      customUnread
     }
   }
 `;
@@ -264,10 +248,8 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
       customStatus
       manualUpdatedDate
       customStatus
-      Messages(order_by: { receivedDate: asc }) {
-        viewed
-        receivedDate
-      }
+      customLastUpdate
+      customUnread
     }
   }
 `;
@@ -307,6 +289,17 @@ const MARK_MESSAGES_AS_VIEWED = gql`
       _set: { viewed: true }
     ) {
       affected_rows
+    }
+  }
+`;
+
+const MARK_CONV_AS_VIEWED = gql`
+  mutation UpdateConvReceivedDate($id: String!) {
+    update_Conversations_by_pk(
+      pk_columns: { id: $id }
+      _set: { customUnread: false }
+    ) {
+      id
     }
   }
 `;
@@ -572,6 +565,19 @@ class ApiService {
       });
     } catch (err) {
       console.log('ERROR markMessagesInConvViewed:', err);
+    }
+  };
+
+  markConvViewed = async (id) => {
+    try {
+      await this.client.mutate({
+        mutation: MARK_CONV_AS_VIEWED,
+        variables: {
+          id,
+        },
+      });
+    } catch (err) {
+      console.log('ERROR markConvViewed:', err);
     }
   };
 

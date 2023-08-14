@@ -42,10 +42,8 @@ const Search = () => {
     // console.log(arrayForSort[0]);
     if (arrayForSort.length > 1)
       arrayForSort.sort((conv1, conv2) => {
-        const firstDate =
-          conv1.Messages[conv1.Messages.length - 1].receivedDate;
-        const secondDate =
-          conv2.Messages[conv2.Messages.length - 1].receivedDate;
+        const firstDate = conv1.customLastUpdate;
+        const secondDate = conv2.customLastUpdate;
         if (firstDate > secondDate) return -1;
         else return 1;
       });
@@ -104,7 +102,7 @@ const Search = () => {
   };
 
   const openConversation = async (convId, status) => {
-    await apiService.markMessagesInConvViewed(convId);
+    await apiService.markConvViewed(convId);
     const messages = await apiService.getMessagesByConvId(convId);
     setConvChosen(false);
     setMessages(messages);
@@ -174,18 +172,13 @@ const Search = () => {
                   <div
                     className={
                       'message' +
-                      (conv.Messages.filter((msg) => msg.viewed == false)
-                        .length > 0
-                        ? '-unread'
-                        : '') +
+                      (conv.customUnread ? '-unread' : '') +
                       (conv.id == convChosenId ? '-active' : '')
                     }
                     key={conv.id}
                     onClick={() => openConversation(conv.id, conv.customStatus)}
                   >
-                    <div className="date">
-                      {conv.Messages[conv.Messages.length - 1].receivedDate}
-                    </div>
+                    <div className="date">{conv.customLastUpdate}</div>
                     <div className="from">
                       {conv.sellerName +
                         (conv.adStatus == 'DELETED' ? ' (Удалено)' : '')}

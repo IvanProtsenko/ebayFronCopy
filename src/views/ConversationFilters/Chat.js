@@ -29,7 +29,7 @@ export default class Chat extends Component {
   }
 
   async openConversation(convId) {
-    await apiService.markMessagesInConvViewed(convId);
+    await apiService.markConvViewed(convId);
     const messages = await apiService.getMessagesByConvId(convId);
     this.setState(() => {
       return { convChosen: false };
@@ -55,10 +55,8 @@ export default class Chat extends Component {
     let arrayForSort = [...conversations];
     if (arrayForSort.length > 1)
       arrayForSort.sort((conv1, conv2) => {
-        const firstDate =
-          conv1.Messages[conv1.Messages.length - 1].receivedDate;
-        const secondDate =
-          conv2.Messages[conv2.Messages.length - 1].receivedDate;
+        const firstDate = conv1.customLastUpdate;
+        const secondDate = conv2.customLastUpdate;
         if (firstDate > secondDate) return -1;
         else return 1;
       });
@@ -106,17 +104,13 @@ export default class Chat extends Component {
               <div
                 className={
                   'message' +
-                  (conv.Messages.filter((msg) => msg.viewed == false).length > 0
-                    ? '-unread'
-                    : '') +
+                  (conv.customUnread ? '-unread' : '') +
                   (conv.id == this.state.convChosenId ? '-active' : '')
                 }
                 key={conv.id}
                 onClick={() => this.openConversation(conv.id)}
               >
-                <div className="date">
-                  {conv.Messages[conv.Messages.length - 1].receivedDate}
-                </div>
+                <div className="date">{conv.customLastUpdate}</div>
                 <div className="from">
                   {conv.sellerName +
                     (conv.adStatus == 'DELETED' ? ' (Удалено)' : '')}
