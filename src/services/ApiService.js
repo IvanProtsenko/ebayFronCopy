@@ -110,6 +110,9 @@ const GET_CONVERSATIONS = gql`
       customStatus
       manualUpdatedDate
       customLastUpdate
+      Account {
+        email
+      }
     }
   }
 `;
@@ -130,6 +133,9 @@ const GET_CONVERSATIONS_BY_AD_ID = gql`
       manualUpdatedDate
       customLastUpdate
       customUnread
+      Account {
+        email
+      }
     }
   }
 `;
@@ -171,6 +177,9 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
       customStatus
       manualUpdatedDate
       customUnread
+      Account {
+        email
+      }
     }
   }
 `;
@@ -191,6 +200,9 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
       manualUpdatedDate
       customLastUpdate
       customUnread
+      Account {
+        email
+      }
     }
   }
 `;
@@ -230,6 +242,9 @@ const GET_CONVERSATION_BY_ID = gql`
       customStatus
       manualUpdatedDate
       customUnread
+      Account {
+        email
+      }
     }
   }
 `;
@@ -250,6 +265,9 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
       customStatus
       customLastUpdate
       customUnread
+      Account {
+        email
+      }
     }
   }
 `;
