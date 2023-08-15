@@ -282,27 +282,27 @@ const NavsLeft = () => {
           Диалог ({dialog} / {dialogUnread})
         </Nav.Link>
       </Nav.Item>
-      <Nav.Item>
+      {/* <Nav.Item>
         <Nav.Link href="waiting_answer">
           Ждем ответа продавца ({waitingAnswer} / {waitingAnswerUnread})
         </Nav.Link>
-      </Nav.Item>
+      </Nav.Item> */}
       <Nav.Item>
         <Nav.Link href="dialogProcessed">
           Диалог (обработано) ({dialogProcessed} / {dialogProcessedUnread})
         </Nav.Link>
       </Nav.Item>
-      <Nav.Item>
+      {/* <Nav.Item>
         <Nav.Link href="offer_made">
           Запрос отправлен ({offerMade} / {offerMadeUnread})
         </Nav.Link>
-      </Nav.Item>
+      </Nav.Item> */}
       <Nav.Item>
         <Nav.Link href="rejected_offer">
           Запрос отклонён ({rejectedOffer} / {rejectedOfferUnread})
         </Nav.Link>
       </Nav.Item>
-      <Nav.Item>
+      {/* <Nav.Item>
         <Nav.Link href="offer_accepted">
           Запрос принят ({offerAccepted} / {offerAcceptedUnread})
         </Nav.Link>
@@ -311,7 +311,7 @@ const NavsLeft = () => {
         <Nav.Link href="outdated_offer">
           Запрос просрочен ({outdatedOffer} / {outdatedOfferUnread})
         </Nav.Link>
-      </Nav.Item>
+      </Nav.Item> */}
       <Nav.Item>
         <Nav.Link href="transaction_reserved">
           Оплачено ({transactionReserved} / {transactionReservedUnread})
@@ -322,7 +322,7 @@ const NavsLeft = () => {
           Посылка отправлена ({itemShipped} / {itemShippedUnread})
         </Nav.Link>
       </Nav.Item>
-      <Nav.Item>
+      {/* <Nav.Item>
         <Nav.Link href="outdated_shipping">
           Посылка не доставлена ({outdatedShipping} / {outdatedShippingUnread})
         </Nav.Link>
@@ -336,13 +336,13 @@ const NavsLeft = () => {
         <Nav.Link href="item_marked_as_received">
           Получено ({itemReceived} / {itemReceivedUnread})
         </Nav.Link>
-      </Nav.Item>
+      </Nav.Item> */}
       <Nav.Item>
         <Nav.Link href="charged_back">
           Возврат средств ({chargedBack} / {chargedBackUnread})
         </Nav.Link>
       </Nav.Item>
-      <Nav.Item>
+      {/* <Nav.Item>
         <Nav.Link href="transaction_expired">
           Платеж не прошел ({transactionExpired} / {transactionExpiredUnread})
         </Nav.Link>
@@ -356,7 +356,7 @@ const NavsLeft = () => {
         <Nav.Link href="later">
           Отложенные ({delayed} / {delayedUnread})
         </Nav.Link>
-      </Nav.Item>
+      </Nav.Item> */}
       <Nav.Item>
         <Nav.Link href="blacklist">
           Черный список ({blacklist} / {blacklistUnread})

@@ -94,23 +94,23 @@ export default class ChatFooter extends Component {
             >
               <option value="Диалог">Диалог</option>
               <option value="Диалог (обработано)">Диалог (обработано)</option>
-              <option value="Запрос отправлен">Запрос отправлен</option>
+              {/* <option value="Запрос отправлен">Запрос отправлен</option> */}
               <option value="Запрос отклонён">Запрос отклонён</option>
-              <option value="Запрос принят">Запрос принят</option>
+              {/* <option value="Запрос принят">Запрос принят</option> */}
               <option value="Оплачено">Оплачено</option>
               <option value="Посылка отправлена">Посылка отправлена</option>
-              <option value="Запрос просрочен">Запрос просрочен</option>
+              {/* <option value="Запрос просрочен">Запрос просрочен</option>
               <option value="Посылка не доставлена">
                 Посылка не доставлена
               </option>
               <option value="Подтвердите получение">
                 Подтвердите получение
               </option>
-              <option value="Получено">Получено</option>
+              <option value="Получено">Получено</option> */}
               <option value="Возврат средств">Возврат средств</option>
-              <option value="Платеж не прошел">Платеж не прошел</option>
+              {/* <option value="Платеж не прошел">Платеж не прошел</option>
               <option value="Нераспределенные">Нераспределенные</option>
-              <option value="Отложенные">Отложенные</option>
+              <option value="Отложенные">Отложенные</option> */}
               <option value="Черный список">Черный список</option>
             </Form.Control>
           </Form.Group>
