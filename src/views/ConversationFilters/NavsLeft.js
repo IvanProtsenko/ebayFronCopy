@@ -161,7 +161,7 @@ const NavsLeft = () => {
       transactionExpiredUnreadFunc++;
     } else if (status == 'Нераспределенные') {
       undecidedUnreadFunc++;
-    } else if (status == 'Отложенные') {
+    } else if (status == 'Проблема') {
       delayedUnreadFunc++;
     } else if (status == 'Черный список') {
       blacklistUnreadFunc++;
@@ -241,7 +241,7 @@ const NavsLeft = () => {
         transactionExpiredToUpdate.push(conv.id);
       } else if (status == 'Нераспределенные') {
         undecidedToUpdate.push(conv.id);
-      } else if (status == 'Отложенные') {
+      } else if (status == 'Проблема') {
         delayedToUpdate.push(conv.id);
       } else if (status == 'Черный список') {
         blacklistToUpdate.push(conv.id);
@@ -351,12 +351,12 @@ const NavsLeft = () => {
         <Nav.Link href="undecided">
           Нераспределенные ({undecided} / {undecidedUnread})
         </Nav.Link>
-      </Nav.Item>
+      </Nav.Item> */}
       <Nav.Item>
         <Nav.Link href="later">
-          Отложенные ({delayed} / {delayedUnread})
+          Проблема ({delayed} / {delayedUnread})
         </Nav.Link>
-      </Nav.Item> */}
+      </Nav.Item>
       <Nav.Item>
         <Nav.Link href="blacklist">
           Черный список ({blacklist} / {blacklistUnread})

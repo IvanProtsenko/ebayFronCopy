@@ -109,8 +109,8 @@ export default class ChatFooter extends Component {
               <option value="Получено">Получено</option> */}
               <option value="Возврат средств">Возврат средств</option>
               {/* <option value="Платеж не прошел">Платеж не прошел</option>
-              <option value="Нераспределенные">Нераспределенные</option>
-              <option value="Отложенные">Отложенные</option> */}
+              <option value="Нераспределенные">Нераспределенные</option> */}
+              <option value="Проблема">Проблема</option>
               <option value="Черный список">Черный список</option>
             </Form.Control>
           </Form.Group>
@@ -130,6 +130,7 @@ export default class ChatFooter extends Component {
                 { value: 'Самовывоз', label: 'Самовывоз' },
                 { value: 'Оплата Ебей', label: 'Оплата Ебей' },
                 { value: 'Оплата нал', label: 'Оплата нал' },
+                { value: 'Продано', label: 'Продано' },
                 { value: 'Без причины', label: 'Без причины' },
               ]}
             />
