@@ -32,6 +32,9 @@ export default class MessageSender extends Component {
       url: `https://www.kleinanzeigen.de/m-nachrichten.html?conversationId=${this.state.convChosenId}`,
     };
     console.log(messageToAdd);
+    this.setState(() => {
+      return { messageResponse: 'Отправляется...' };
+    });
     const response = await apiServiceCustomResolvers.sendMessage(messageToAdd);
     if (response && response.send_success) {
       this.setState(() => {
@@ -60,6 +63,9 @@ export default class MessageSender extends Component {
 
         <Col sm={2}>
           <Button
+            disabled={
+              this.state.messageResponse == 'Отправляется...' ? true : false
+            }
             className="modalButtonConv"
             onClick={() => this.sendMessage()}
             variant="primary"
