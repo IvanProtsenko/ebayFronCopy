@@ -19,8 +19,8 @@ export default class ChatFooter extends Component {
   }
 
   async componentDidMount() {
-    const conv = await apiService.getConversationById(this.state.convChosenId);
-    const advert = await apiService.getAdvertById(conv.adId);
+    // const conv = await apiService.getConversationById(this.state.convChosenId);
+    const advert = await apiService.getAdvertById(this.state.convChosenId);
     this.setState(() => {
       return { advertLink: advert.link };
     });

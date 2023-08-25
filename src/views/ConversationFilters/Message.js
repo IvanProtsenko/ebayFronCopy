@@ -12,13 +12,13 @@ export default class Message extends Component {
   async componentDidMount() {}
 
   render() {
-    const attachment = this.state.msg.attachments;
+    // const attachment = this.state.msg.attachments;
 
-    const renderAttachments = () => {
-      if (attachment && attachment.length > 0 && attachment[0].url) {
-        return <div className="subject">Прикрепленная фотография</div>;
-      }
-    };
+    // const renderAttachments = () => {
+    //   if (attachment && attachment.length > 0 && attachment[0].url) {
+    //     return <div className="subject">Прикрепленная фотография</div>;
+    //   }
+    // };
 
     return (
       <div
@@ -28,9 +28,9 @@ export default class Message extends Component {
         key={this.state.msg.messageId}
       >
         <div className="date">{this.state.msg.receivedDate}</div>
-        <div className="from">{this.state.msg.title}</div>
-        <div className="subject">{this.state.msg.textShort}</div>
-        {renderAttachments()}
+        {/* <div className="from">{this.state.msg.title}</div> */}
+        <div className="subject">{this.state.msg.text}</div>
+        {/* {renderAttachments()} */}
       </div>
     );
   }

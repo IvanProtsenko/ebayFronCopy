@@ -58,6 +58,7 @@ const Search = () => {
     const sellerConversations = await apiService.getConversationsBySellerName(
       nameToSearch
     );
+    console.log(sellerConversations);
     if (sellerConversations) operateConversations(sellerConversations);
   };
 
@@ -176,7 +177,9 @@ const Search = () => {
                       (conv.id == convChosenId ? '-active' : '')
                     }
                     key={conv.id}
-                    onClick={() => openConversation(conv.id, conv.customStatus)}
+                    onClick={() =>
+                      openConversation(conv.adId, conv.customStatus)
+                    }
                   >
                     <div className="date">{conv.customLastUpdate}</div>
                     <div className="from">

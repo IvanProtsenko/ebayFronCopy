@@ -3,6 +3,7 @@ import {
   apiService,
   client,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
+  SUBSCRIBE_EMAIL_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
 } from '../../services/ApiService';
 import Card from 'react-bootstrap/Card';
 
@@ -75,7 +76,7 @@ export default class Chat extends Component {
     );
     this.operateConversations(conversations);
     const observer = client.subscribe({
-      query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
+      query: SUBSCRIBE_EMAIL_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
       variables: {
         status: this.state.status,
       },
@@ -83,7 +84,7 @@ export default class Chat extends Component {
 
     this.subscription = observer.subscribe({
       next(data) {
-        changeRowData(data.data.Conversations);
+        changeRowData(data.data.EmailConversations);
       },
       error(err) {
         console.log(err);
@@ -105,10 +106,10 @@ export default class Chat extends Component {
                 className={
                   'message' +
                   (conv.customUnread ? '-unread' : '') +
-                  (conv.id == this.state.convChosenId ? '-active' : '')
+                  (conv.adId == this.state.convChosenId ? '-active' : '')
                 }
                 key={conv.id}
-                onClick={() => this.openConversation(conv.id)}
+                onClick={() => this.openConversation(conv.adId)}
               >
                 <div className="date">{conv.customLastUpdate}</div>
                 <div className="from">

@@ -29,20 +29,20 @@ export default class MessageSender extends Component {
   async sendMessage() {
     const messageToAdd = {
       text: this.state.messageText,
-      url: `https://www.kleinanzeigen.de/m-nachrichten.html?conversationId=${this.state.convChosenId}`,
+      adId: this.props.convId,
     };
     console.log(messageToAdd);
     this.setState(() => {
       return { messageResponse: 'Отправляется...' };
     });
     const response = await apiServiceCustomResolvers.sendMessage(messageToAdd);
-    if (response && response.send_success) {
+    if (response && response.error) {
       this.setState(() => {
-        return { messageResponse: 'Успешно отправлено' };
+        return { messageResponse: 'Ошибка отправки' };
       });
     } else {
       this.setState(() => {
-        return { messageResponse: 'Ошибка отправки' };
+        return { messageResponse: 'Успешно отправлено' };
       });
     }
   }

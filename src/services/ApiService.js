@@ -117,6 +117,22 @@ const GET_CONVERSATIONS = gql`
   }
 `;
 
+const GET_EMAIL_CONVERSATIONS = gql`
+  query GetConversations($status: String) {
+    EmailConversations(where: { customStatus: { _eq: $status } }) {
+      adId
+      id
+      sellerName
+      customStatus
+      manualUpdatedDate
+      customLastUpdate
+      Account {
+        email
+      }
+    }
+  }
+`;
+
 const GET_CONVERSATIONS_BY_AD_ID = gql`
   query GetConversations($adId: String) {
     Conversations(where: { adId: { _eq: $adId } }) {
@@ -128,6 +144,23 @@ const GET_CONVERSATIONS_BY_AD_ID = gql`
       id
       numUnread
       role
+      sellerName
+      customStatus
+      manualUpdatedDate
+      customLastUpdate
+      customUnread
+      Account {
+        email
+      }
+    }
+  }
+`;
+
+const GET_EMAIL_CONVERSATIONS_BY_AD_ID = gql`
+  query GetConversations($adId: String) {
+    EmailConversations(where: { adId: { _eq: $adId } }) {
+      adId
+      id
       sellerName
       customStatus
       manualUpdatedDate
@@ -162,6 +195,21 @@ const GET_MESSAGES_BY_CONV_ID = gql`
   }
 `;
 
+const GET_EMAIL_MESSAGES_BY_CONV_ID = gql`
+  query GetMessagesByConvId($convId: String) {
+    EmailMessages(
+      where: { adId: { _eq: $convId } }
+      order_by: { receivedDate: asc }
+    ) {
+      boundness
+      messageId
+      receivedDate
+      text
+      type
+    }
+  }
+`;
+
 const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
   subscription ConversationsWithMessages {
     Conversations {
@@ -184,6 +232,22 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
   }
 `;
 
+const SUBSCRIBE_EMAIL_CONVERSATIONS_WITH_MESSAGES = gql`
+  subscription ConversationsWithMessages {
+    EmailConversations {
+      adId
+      id
+      sellerName
+      customStatus
+      manualUpdatedDate
+      customUnread
+      Account {
+        email
+      }
+    }
+  }
+`;
+
 const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
   subscription ConversationsWithMessages($status: String) {
     Conversations(where: { customStatus: { _eq: $status } }) {
@@ -195,6 +259,23 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
       id
       numUnread
       role
+      sellerName
+      customStatus
+      manualUpdatedDate
+      customLastUpdate
+      customUnread
+      Account {
+        email
+      }
+    }
+  }
+`;
+
+const SUBSCRIBE_EMAIL_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
+  subscription ConversationsWithMessages($status: String) {
+    EmailConversations(where: { customStatus: { _eq: $status } }) {
+      adId
+      id
       sellerName
       customStatus
       manualUpdatedDate
@@ -249,6 +330,22 @@ const GET_CONVERSATION_BY_ID = gql`
   }
 `;
 
+const GET_EMAIL_CONVERSATION_BY_ID = gql`
+  query GetConversationById($adId: String!) {
+    EmailConversations_by_pk(adId: $adId) {
+      adId
+      id
+      sellerName
+      customStatus
+      manualUpdatedDate
+      customUnread
+      Account {
+        email
+      }
+    }
+  }
+`;
+
 const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
   query GetConversationsBySellerName($sellerName: String) {
     Conversations(where: { sellerName: { _eq: $sellerName } }) {
@@ -272,6 +369,22 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
   }
 `;
 
+const GET_EMAIL_CONVERSATIONS_BY_SELLER_NAME = gql`
+  query GetConversationsBySellerName($sellerName: String) {
+    EmailConversations(where: { sellerName: { _eq: $sellerName } }) {
+      adId
+      id
+      sellerName
+      customStatus
+      manualUpdatedDate
+      customUnread
+      Account {
+        email
+      }
+    }
+  }
+`;
+
 const GET_CONVERSATIONS_WITH_MESSAGES = gql`
   query ConversationsWithMessages {
     Conversations {
@@ -282,6 +395,19 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
       id
       numUnread
       role
+      sellerName
+      customStatus
+      manualUpdatedDate
+      customUnread
+    }
+  }
+`;
+
+const GET_EMAIL_CONVERSATIONS_WITH_MESSAGES = gql`
+  query ConversationsWithMessages {
+    EmailConversations {
+      adId
+      id
       sellerName
       customStatus
       manualUpdatedDate
@@ -344,6 +470,17 @@ const UPDATE_CUSTOM_STATUS = gql`
   }
 `;
 
+const UPDATE_EMAIL_CUSTOM_STATUS = gql`
+  mutation UpdateCustomStatus($id: String!, $status: String, $date: String) {
+    update_EmailConversations_by_pk(
+      pk_columns: { adId: $id }
+      _set: { customStatus: $status, manualUpdatedDate: $date }
+    ) {
+      id
+    }
+  }
+`;
+
 const UPDATE_CUSTOM_STATUS_AND_REASON = gql`
   mutation UpdateCustomStatus(
     $id: String!
@@ -353,6 +490,26 @@ const UPDATE_CUSTOM_STATUS_AND_REASON = gql`
   ) {
     update_Conversations_by_pk(
       pk_columns: { id: $id }
+      _set: {
+        customStatus: $status
+        manualUpdatedDate: $date
+        deny_reason: $reason
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+const UPDATE_EMAIL_CUSTOM_STATUS_AND_REASON = gql`
+  mutation UpdateCustomStatus(
+    $id: String!
+    $status: String
+    $date: String
+    $reason: String
+  ) {
+    update_EmailConversations_by_pk(
+      pk_columns: { adId: $id }
       _set: {
         customStatus: $status
         manualUpdatedDate: $date
@@ -470,12 +627,12 @@ class ApiService {
   getConversationsByStatus = async (status) => {
     try {
       const result = await this.client.query({
-        query: GET_CONVERSATIONS,
+        query: GET_EMAIL_CONVERSATIONS,
         variables: {
           status,
         },
       });
-      return result.data.Conversations;
+      return result.data.EmailConversations;
     } catch (err) {
       console.log('ERROR getConversationsByStatus:', err);
     }
@@ -484,26 +641,26 @@ class ApiService {
   getConversationByAdId = async (adId) => {
     try {
       const result = await this.client.query({
-        query: GET_CONVERSATIONS_BY_AD_ID,
+        query: GET_EMAIL_CONVERSATIONS_BY_AD_ID,
         variables: {
           adId,
         },
       });
-      return result.data.Conversations;
+      return result.data.EmailConversations;
     } catch (err) {
       console.log('ERROR getConversationsByAdId:', err);
     }
   };
 
-  getConversationById = async (id) => {
+  getConversationById = async (adId) => {
     try {
       const result = await this.client.query({
-        query: GET_CONVERSATION_BY_ID,
+        query: GET_EMAIL_CONVERSATION_BY_ID,
         variables: {
-          id,
+          adId,
         },
       });
-      return result.data.Conversations_by_pk;
+      return result.data.EmailConversations_by_pk;
     } catch (err) {
       console.log('ERROR getConversationById:', err);
     }
@@ -523,12 +680,12 @@ class ApiService {
   getMessagesByConvId = async (convId) => {
     try {
       const result = await this.client.query({
-        query: GET_MESSAGES_BY_CONV_ID,
+        query: GET_EMAIL_MESSAGES_BY_CONV_ID,
         variables: {
           convId,
         },
       });
-      return result.data.Messages;
+      return result.data.EmailMessages;
     } catch (err) {
       console.log('ERROR getMessagesByConvId:', err);
     }
@@ -537,9 +694,9 @@ class ApiService {
   getConversationsWithMessages = async () => {
     try {
       const result = await this.client.query({
-        query: GET_CONVERSATIONS_WITH_MESSAGES,
+        query: GET_EMAIL_CONVERSATIONS_WITH_MESSAGES,
       });
-      return result.data.Conversations;
+      return result.data.EmailConversations;
     } catch (err) {
       console.log('ERROR getConversationsWithMessage:', err);
     }
@@ -548,12 +705,12 @@ class ApiService {
   getConversationsBySellerName = async (sellerName) => {
     try {
       const result = await this.client.query({
-        query: GET_CONVERSATIONS_BY_SELLER_NAME,
+        query: GET_EMAIL_CONVERSATIONS_BY_SELLER_NAME,
         variables: {
           sellerName,
         },
       });
-      return result.data.Conversations;
+      return result.data.EmailConversations;
     } catch (err) {
       console.log('ERROR getConversationsBySellerName:', err);
     }
@@ -630,7 +787,7 @@ class ApiService {
       const date = new Date();
       const dateInFormat = date.toISOString();
       const result = await this.client.mutate({
-        mutation: UPDATE_CUSTOM_STATUS,
+        mutation: UPDATE_EMAIL_CUSTOM_STATUS,
         variables: {
           id: convId,
           status,
@@ -648,7 +805,7 @@ class ApiService {
       const date = new Date();
       const dateInFormat = date.toISOString();
       const result = await this.client.mutate({
-        mutation: UPDATE_CUSTOM_STATUS_AND_REASON,
+        mutation: UPDATE_EMAIL_CUSTOM_STATUS_AND_REASON,
         variables: {
           id: convId,
           status,
@@ -703,4 +860,6 @@ export {
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
   SUBSCRIBE_MESSAGES,
+  SUBSCRIBE_EMAIL_CONVERSATIONS_WITH_MESSAGES,
+  SUBSCRIBE_EMAIL_CONVERSATIONS_WITH_MESSAGES_BY_STATUS,
 };

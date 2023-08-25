@@ -5,6 +5,7 @@ import {
   apiService,
   client,
   SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
+  SUBSCRIBE_EMAIL_CONVERSATIONS_WITH_MESSAGES,
 } from '../../services/ApiService';
 
 // DIALOG = 'Диалог',
@@ -258,12 +259,12 @@ const NavsLeft = () => {
     const conversations = await apiService.getConversationsWithMessages();
     calculateUnreadMessages(conversations);
     const observer = client.subscribe({
-      query: SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES,
+      query: SUBSCRIBE_EMAIL_CONVERSATIONS_WITH_MESSAGES,
     });
     observer.subscribe({
       next(data) {
         clearAll();
-        calculateUnreadMessages(data.data.Conversations);
+        calculateUnreadMessages(data.data.EmailConversations);
       },
       error(err) {
         console.log(err);
