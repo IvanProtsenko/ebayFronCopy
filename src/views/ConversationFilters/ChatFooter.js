@@ -8,6 +8,7 @@ import CreatableSelect from 'react-select/creatable';
 export default class ChatFooter extends Component {
   state = {
     convChosenId: this.props.convChosenId,
+    convId: null,
     type: this.props.type,
     choosingDenyReason: false,
     denyReason: {},
@@ -19,7 +20,12 @@ export default class ChatFooter extends Component {
   }
 
   async componentDidMount() {
-    // const conv = await apiService.getConversationById(this.state.convChosenId);
+    const conversation = await apiService.getConversationByAdId(
+      this.state.convChosenId
+    );
+    this.setState(() => {
+      return { convId: conversation[0].id };
+    });
     const advert = await apiService.getAdvertById(this.state.convChosenId);
     this.setState(() => {
       return { advertLink: advert.link };
@@ -29,7 +35,7 @@ export default class ChatFooter extends Component {
   async updateCustomStatus() {
     if (this.state.type == 'Черный список') {
       const conversation = await apiService.getConversationById(
-        this.state.convChosenId
+        this.state.convId
       );
       const sellerName = conversation.sellerName;
       await apiService.addSellerToBlacklist(sellerName);
@@ -55,7 +61,7 @@ export default class ChatFooter extends Component {
             <a
               target="_blank"
               className="conversationLink"
-              href={`https://www.kleinanzeigen.de/m-nachrichten.html?conversationId=${this.state.convChosenId}`}
+              href={`https://www.kleinanzeigen.de/m-nachrichten.html?conversationId=${this.state.convId}`}
             >
               В диалог
             </a>
