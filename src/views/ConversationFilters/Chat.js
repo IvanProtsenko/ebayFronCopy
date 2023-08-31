@@ -114,7 +114,13 @@ export default class Chat extends Component {
                 <div className="date">{conv.customLastUpdate}</div>
                 <div className="from">
                   {conv.sellerName +
-                    (conv.adStatus == 'DELETED' ? ' (Удалено)' : '') +
+                    (conv.adStatus == 'ACTIVE'
+                      ? ' (Активно)'
+                      : conv.adStatus == 'DELETED'
+                      ? ' (Удалено)'
+                      : conv.adStatus == 'BANNED'
+                      ? ' (Забанен)'
+                      : '') +
                     ` (${conv.Account.email})`}
                 </div>
                 <div className="subject">{conv.adTitle}</div>
