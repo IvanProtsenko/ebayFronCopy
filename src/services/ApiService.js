@@ -126,6 +126,7 @@ const GET_EMAIL_CONVERSATIONS = gql`
       customStatus
       manualUpdatedDate
       customLastUpdate
+      adStatus
       Account {
         email
       }
@@ -281,6 +282,7 @@ const SUBSCRIBE_EMAIL_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
       manualUpdatedDate
       customLastUpdate
       customUnread
+      adStatus
       Account {
         email
       }
@@ -339,6 +341,7 @@ const GET_EMAIL_CONVERSATION_BY_ID = gql`
       customStatus
       manualUpdatedDate
       customUnread
+      adStatus
       Account {
         email
       }
@@ -378,6 +381,7 @@ const GET_EMAIL_CONVERSATIONS_BY_SELLER_NAME = gql`
       customStatus
       manualUpdatedDate
       customUnread
+      adStatus
       Account {
         email
       }
@@ -412,6 +416,7 @@ const GET_EMAIL_CONVERSATIONS_WITH_MESSAGES = gql`
       customStatus
       manualUpdatedDate
       customUnread
+      adStatus
     }
   }
 `;
