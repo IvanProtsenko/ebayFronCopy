@@ -207,6 +207,10 @@ const GET_EMAIL_MESSAGES_BY_CONV_ID = gql`
       receivedDate
       text
       type
+      emailId
+      EmailMessages_Attachments {
+        base64FileContents
+      }
     }
   }
 `;
@@ -449,6 +453,17 @@ const MARK_CONV_AS_VIEWED = gql`
       _set: { customUnread: false }
     ) {
       id
+    }
+  }
+`;
+
+const MARK_EMAIL_CONV_AS_VIEWED = gql`
+  mutation UpdateEmailConvReceivedDate($adId: String) {
+    update_EmailConversations(
+      where: { adId: { _eq: $adId } }
+      _set: { customUnread: false }
+    ) {
+      affected_rows
     }
   }
 `;
@@ -748,12 +763,12 @@ class ApiService {
     }
   };
 
-  markConvViewed = async (id) => {
+  markConvViewed = async (adId) => {
     try {
       await this.client.mutate({
-        mutation: MARK_CONV_AS_VIEWED,
+        mutation: MARK_EMAIL_CONV_AS_VIEWED,
         variables: {
-          id,
+          adId,
         },
       });
     } catch (err) {

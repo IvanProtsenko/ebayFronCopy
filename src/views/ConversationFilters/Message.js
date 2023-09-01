@@ -12,13 +12,25 @@ export default class Message extends Component {
   async componentDidMount() {}
 
   render() {
-    // const attachment = this.state.msg.attachments;
+    const attachment = this.state.msg.EmailMessages_Attachments;
 
-    // const renderAttachments = () => {
-    //   if (attachment && attachment.length > 0 && attachment[0].url) {
-    //     return <div className="subject">Прикрепленная фотография</div>;
-    //   }
-    // };
+    const renderAttachments = () => {
+      if (
+        attachment &&
+        attachment.length > 0 &&
+        attachment[0].base64FileContents
+      ) {
+        const data = attachment[0].base64FileContents;
+        return (
+          <div className="subject">
+            <img
+              className="messageImage"
+              src={`data:image/jpeg;base64,${data}`}
+            />
+          </div>
+        );
+      }
+    };
 
     return (
       <div
@@ -30,7 +42,7 @@ export default class Message extends Component {
         <div className="date">{this.state.msg.receivedDate}</div>
         {/* <div className="from">{this.state.msg.title}</div> */}
         <div className="subject">{this.state.msg.text}</div>
-        {/* {renderAttachments()} */}
+        {renderAttachments()}
       </div>
     );
   }
