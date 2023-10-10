@@ -51,25 +51,24 @@ export default class ChatFooter extends Component {
     return (
       <Row className="chatFooter">
         <Col sm={2}>
-          <Button className="modalButtonConv" variant="primary" type="submit">
-            <a
-              target="_blank"
-              className="conversationLink"
-              href={`https://www.kleinanzeigen.de/m-nachrichten.html?conversationId=${this.state.convChosenId}`}
-            >
+          <Button 
+            className="modalButtonConv" 
+            variant="primary" 
+            type="submit" 
+            onClick={() => {
+              navigator.clipboard.writeText(`https://www.kleinanzeigen.de/m-nachrichten.html?conversationId=${this.state.convChosenId}`);
+            }}>
               В диалог
-            </a>
           </Button>
         </Col>
         <Col sm={2}>
-          <Button variant="primary" type="submit">
-            <a
-              target="_blank"
-              className="conversationLink"
-              href={`${this.state.advertLink}`}
-            >
+          <Button 
+            variant="primary" 
+            type="submit" 
+            onClick={() => {
+              navigator.clipboard.writeText(this.state.advertLink);
+            }}>
               К консоли
-            </a>
           </Button>
         </Col>
         <Col sm={3}>
