@@ -22,7 +22,7 @@ export default class ChatFooter extends Component {
     const conv = await apiService.getConversationById(this.state.convChosenId);
     const advert = await apiService.getAdvertById(conv.adId);
     this.setState(() => {
-      return { advertLink: advert.link };
+      return { advertLink: advert ? advert.link : '' };
     });
   }
 
