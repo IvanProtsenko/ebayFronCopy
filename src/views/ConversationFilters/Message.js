@@ -16,7 +16,12 @@ export default class Message extends Component {
 
     const renderAttachments = () => {
       if (attachment && attachment.length > 0 && attachment[0].url) {
-        return <div className="subject">Прикрепленная фотография</div>;
+        const data = attachment[0].url;
+        return (
+          <div className="subject">
+            прикрепленное фото
+          </div>
+        );
       }
     };
 
