@@ -11,6 +11,7 @@ import Message from './Message';
 import ChatFooter from './ChatFooter';
 import ShippingAndPaymentMessage from './ShippingAndPaymentMessage';
 import NavsLeft from './NavsLeft';
+import formatDate from '../../services/utils/dateFormatter';
 
 export default class Chat extends Component {
   subscription = null;
@@ -110,7 +111,7 @@ export default class Chat extends Component {
                 key={conv.id}
                 onClick={() => this.openConversation(conv.id)}
               >
-                <div className="date">{conv.customLastUpdate}</div>
+                <div className="date">{formatDate(conv.customLastUpdate.toString())}</div>
                 <div className="from">
                   {conv.sellerName +
                     (conv.adStatus == 'DELETED' ? ' (Удалено)' : '') +

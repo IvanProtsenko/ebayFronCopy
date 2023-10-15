@@ -10,6 +10,7 @@ import Message from './ConversationFilters/Message';
 import ShippingAndPaymentMessage from './ConversationFilters/ShippingAndPaymentMessage';
 import ChatFooter from './ConversationFilters/ChatFooter';
 import MessageSender from '../views/ConversationFilters/MessageSender';
+import formatDate from '../services/utils/dateFormatter';
 
 import {
   apiService,
@@ -178,7 +179,7 @@ const Search = () => {
                     key={conv.id}
                     onClick={() => openConversation(conv.id, conv.customStatus)}
                   >
-                    <div className="date">{conv.customLastUpdate}</div>
+                    <div className="date">{formatDate(conv.customLastUpdate.toString())}</div>
                     <div className="from">
                       {conv.sellerName +
                         (conv.adStatus == 'DELETED' ? ' (Удалено)' : '') +

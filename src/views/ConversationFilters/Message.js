@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import formatDate from '../../services/utils/dateFormatter';
 
 export default class Message extends Component {
   state = {
@@ -32,7 +33,7 @@ export default class Message extends Component {
         }
         key={this.state.msg.messageId}
       >
-        <div className="date">{this.state.msg.receivedDate}</div>
+        <div className="date">{formatDate(this.state.msg.receivedDate.toString())}</div>
         <div className="from">{this.state.msg.title}</div>
         <div className="subject">{this.state.msg.textShort}</div>
         {renderAttachments()}
