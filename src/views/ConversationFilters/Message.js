@@ -34,7 +34,7 @@ export default class Message extends Component {
         key={this.state.msg.messageId}
       >
         <div className="date">{formatDate(this.state.msg.receivedDate.toString())}</div>
-        <div className="from">{this.state.msg.title}</div>
+        {/* <div className="from">{this.state.msg.title}</div> */}
         <div className="subject">{this.state.msg.textShort}</div>
         {renderAttachments()}
       </div>

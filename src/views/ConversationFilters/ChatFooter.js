@@ -104,8 +104,8 @@ export default class ChatFooter extends Component {
               </option>
               <option value="Подтвердите получение">
                 Подтвердите получение
-              </option>
-              <option value="Получено">Получено</option> */}
+              </option> */}
+              <option value="Посылка получена">Посылка получена</option>
               <option value="Возврат средств">Возврат средств</option>
               {/* <option value="Платеж не прошел">Платеж не прошел</option>
               <option value="Нераспределенные">Нераспределенные</option> */}

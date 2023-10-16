@@ -153,7 +153,7 @@ const NavsLeft = () => {
       outdatedShippingUnreadFunc++;
     } else if (status == 'Подтвердите получение') {
       itemDeliveredUnreadFunc++;
-    } else if (status == 'Получено') {
+    } else if (status == 'Посылка получена') {
       itemReceivedUnreadFunc++;
     } else if (status == 'Возврат средств') {
       chargedBackUnreadFunc++;
@@ -233,7 +233,7 @@ const NavsLeft = () => {
         outdatedShippingUpdate.push(conv.id);
       } else if (status == 'Подтвердите получение') {
         itemDeliveredToUpdate.push(conv.id);
-      } else if (status == 'Получено') {
+      } else if (status == 'Посылка получена') {
         itemReceivedToUpdate.push(conv.id);
       } else if (status == 'Возврат средств') {
         chargedBackToUpdate.push(conv.id);
@@ -331,12 +331,12 @@ const NavsLeft = () => {
         <Nav.Link href="item_delivered">
           Подтвердите получение ({itemDelivered} / {itemDeliveredUnread})
         </Nav.Link>
-      </Nav.Item>
+      </Nav.Item> */}
       <Nav.Item>
         <Nav.Link href="item_marked_as_received">
-          Получено ({itemReceived} / {itemReceivedUnread})
+          Посылка получена ({itemReceived} / {itemReceivedUnread})
         </Nav.Link>
-      </Nav.Item> */}
+      </Nav.Item>
       <Nav.Item>
         <Nav.Link href="charged_back">
           Возврат средств ({chargedBack} / {chargedBackUnread})

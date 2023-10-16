@@ -99,6 +99,7 @@ const GET_CONVERSATIONS = gql`
   query GetConversations($status: String) {
     Conversations(where: { customStatus: { _eq: $status } }) {
       adId
+      adTitle
       adStatus
       attachmentsEnabled
       buyNowPossible
@@ -121,6 +122,7 @@ const GET_CONVERSATIONS_BY_AD_ID = gql`
   query GetConversations($adId: String) {
     Conversations(where: { adId: { _eq: $adId } }) {
       adId
+      adTitle
       adStatus
       attachmentsEnabled
       buyNowPossible
@@ -158,6 +160,7 @@ const GET_MESSAGES_BY_CONV_ID = gql`
       title
       totalInEuroCent
       type
+      attachments
     }
   }
 `;
@@ -166,6 +169,7 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES = gql`
   subscription ConversationsWithMessages {
     Conversations {
       adId
+      adTitle
       adStatus
       attachmentsEnabled
       buyNowPossible
@@ -188,6 +192,7 @@ const SUBSCRIBE_CONVERSATIONS_WITH_MESSAGES_BY_STATUS = gql`
   subscription ConversationsWithMessages($status: String) {
     Conversations(where: { customStatus: { _eq: $status } }) {
       adId
+      adTitle
       adStatus
       attachmentsEnabled
       buyNowPossible
@@ -215,6 +220,7 @@ const SUBSCRIBE_MESSAGES = gql`
       boundness
       messageId
       paymentAndShippingMessageType
+      attachments
       paymentMethod
       receivedDate
       text
@@ -230,6 +236,7 @@ const GET_CONVERSATION_BY_ID = gql`
   query GetConversationById($id: String!) {
     Conversations_by_pk(id: $id) {
       adId
+      adTitle
       adTitle
       adStatus
       attachmentsEnabled
@@ -253,6 +260,7 @@ const GET_CONVERSATIONS_BY_SELLER_NAME = gql`
   query GetConversationsBySellerName($sellerName: String) {
     Conversations(where: { sellerName: { _eq: $sellerName } }) {
       adId
+      adTitle
       adStatus
       attachmentsEnabled
       buyNowPossible
@@ -276,6 +284,7 @@ const GET_CONVERSATIONS_WITH_MESSAGES = gql`
   query ConversationsWithMessages {
     Conversations {
       adId
+      adTitle
       adStatus
       attachmentsEnabled
       buyNowPossible

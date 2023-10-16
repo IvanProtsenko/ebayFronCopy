@@ -179,13 +179,12 @@ const Search = () => {
                     key={conv.id}
                     onClick={() => openConversation(conv.id, conv.customStatus)}
                   >
-                    <div className="date">{formatDate(conv.customLastUpdate.toString())}</div>
+                    <div className="date">{formatDate(conv.customLastUpdate.toString())} <b>{conv.adTitle}</b></div>
                     <div className="from">
                       {conv.sellerName +
                         (conv.adStatus == 'DELETED' ? ' (Удалено)' : '') +
                         ` (${conv.Account.email})`}
                     </div>
-                    <div className="subject">{conv.adTitle}</div>
                   </div>
                 ))}
               </div>

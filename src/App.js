@@ -59,7 +59,7 @@ export default class App extends Component {
           />
           <Route
             path="/item_marked_as_received"
-            element={<JustifiedExample status="Получено" />}
+            element={<JustifiedExample status="Посылка получена" />}
           />
           <Route
             path="/charged_back"

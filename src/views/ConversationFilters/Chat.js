@@ -111,13 +111,12 @@ export default class Chat extends Component {
                 key={conv.id}
                 onClick={() => this.openConversation(conv.id)}
               >
-                <div className="date">{formatDate(conv.customLastUpdate.toString())}</div>
+                <div className="date">{formatDate(conv.customLastUpdate.toString())} <b>{conv.adTitle}</b></div>
                 <div className="from">
                   {conv.sellerName +
                     (conv.adStatus == 'DELETED' ? ' (Удалено)' : '') +
                     ` (${conv.Account.email})`}
                 </div>
-                <div className="subject">{conv.adTitle}</div>
               </div>
             ))}
           </div>
