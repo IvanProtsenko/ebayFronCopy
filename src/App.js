@@ -70,8 +70,8 @@ export default class App extends Component {
             element={<JustifiedExample status="Платеж не прошел" />}
           />
           <Route
-            path="/undecided"
-            element={<JustifiedExample status="Нераспределенные" />}
+            path="/wrongValidation"
+            element={<JustifiedExample status="Неправильная валидация" />}
           />
           <Route
             path="/later"

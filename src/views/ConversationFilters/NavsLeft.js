@@ -32,7 +32,7 @@ const NavsLeft = () => {
   const [itemReceived, setItemReceived] = useState(0);
   const [chargedBack, setChargedBack] = useState(0);
   const [transactionExpired, setTransactionExpired] = useState(0);
-  const [undecided, setUndecided] = useState(0);
+  const [wrongValidation, setWrongValidation] = useState(0);
   const [delayed, setDelayed] = useState(0);
   const [blacklist, setBlacklist] = useState(0);
 
@@ -50,7 +50,7 @@ const NavsLeft = () => {
   const [itemReceivedUnread, setItemReceivedUnread] = useState(0);
   const [chargedBackUnread, setChargedBackUnread] = useState(0);
   const [transactionExpiredUnread, setTransactionExpiredUnread] = useState(0);
-  const [undecidedUnread, setUndecidedUnread] = useState(0);
+  const [wrongValidationUnread, setWrongValidationUnread] = useState(0);
   const [delayedUnread, setDelayedUnread] = useState(0);
   const [blacklistUnread, setBlacklistUnread] = useState(0);
 
@@ -68,7 +68,7 @@ const NavsLeft = () => {
   let itemReceivedUnreadFunc = 0;
   let chargedBackUnreadFunc = 0;
   let transactionExpiredUnreadFunc = 0;
-  let undecidedUnreadFunc = 0;
+  let wrongValidationUnreadFunc = 0;
   let delayedUnreadFunc = 0;
   let blacklistUnreadFunc = 0;
 
@@ -86,7 +86,7 @@ const NavsLeft = () => {
   let itemReceivedToUpdate = [];
   let chargedBackToUpdate = [];
   let transactionExpiredToUpdate = [];
-  let undecidedToUpdate = [];
+  let wrongValidationToUpdate = [];
   let delayedToUpdate = [];
   let blacklistToUpdate = [];
 
@@ -105,7 +105,7 @@ const NavsLeft = () => {
     setItemReceived(itemReceivedToUpdate.length);
     setChargedBack(chargedBackToUpdate.length);
     setTransactionExpired(transactionExpiredToUpdate.length);
-    setUndecided(undecidedToUpdate.length);
+    setWrongValidation(wrongValidationToUpdate.length);
     setDelayed(delayedToUpdate.length);
     setBlacklist(blacklistToUpdate.length);
   };
@@ -125,7 +125,7 @@ const NavsLeft = () => {
     setItemReceivedUnread(itemReceivedUnreadFunc);
     setChargedBackUnread(chargedBackUnreadFunc);
     setTransactionExpiredUnread(transactionExpiredUnreadFunc);
-    setUndecidedUnread(undecidedUnreadFunc);
+    setWrongValidationUnread(wrongValidationUnreadFunc);
     setDelayedUnread(delayedUnreadFunc);
     setBlacklistUnread(blacklistUnreadFunc);
   };
@@ -159,10 +159,10 @@ const NavsLeft = () => {
       chargedBackUnreadFunc++;
     } else if (status == 'Платеж не прошел') {
       transactionExpiredUnreadFunc++;
-    } else if (status == 'Нераспределенные') {
-      undecidedUnreadFunc++;
     } else if (status == 'Проблема') {
       delayedUnreadFunc++;
+    } else if (status == 'Неправильная валидация') {
+      wrongValidationUnreadFunc++;
     } else if (status == 'Черный список') {
       blacklistUnreadFunc++;
     }
@@ -183,7 +183,7 @@ const NavsLeft = () => {
     itemReceivedToUpdate = [];
     chargedBackToUpdate = [];
     transactionExpiredToUpdate = [];
-    undecidedToUpdate = [];
+    wrongValidationToUpdate = [];
     delayedToUpdate = [];
     blacklistToUpdate = [];
     markAllStatuses();
@@ -202,7 +202,7 @@ const NavsLeft = () => {
     itemReceivedUnreadFunc = 0;
     chargedBackUnreadFunc = 0;
     transactionExpiredUnreadFunc = 0;
-    undecidedUnreadFunc = 0;
+    wrongValidationUnreadFunc = 0;
     delayedUnreadFunc = 0;
     blacklistUnreadFunc = 0;
     markAllStatusesUnread();
@@ -239,10 +239,10 @@ const NavsLeft = () => {
         chargedBackToUpdate.push(conv.id);
       } else if (status == 'Платеж не прошел') {
         transactionExpiredToUpdate.push(conv.id);
-      } else if (status == 'Нераспределенные') {
-        undecidedToUpdate.push(conv.id);
       } else if (status == 'Проблема') {
         delayedToUpdate.push(conv.id);
+      } else if (status == 'Неправильная валидация') {
+        wrongValidationToUpdate.push(conv.id);
       } else if (status == 'Черный список') {
         blacklistToUpdate.push(conv.id);
       }
@@ -346,12 +346,12 @@ const NavsLeft = () => {
         <Nav.Link href="transaction_expired">
           Платеж не прошел ({transactionExpired} / {transactionExpiredUnread})
         </Nav.Link>
-      </Nav.Item>
+      </Nav.Item>*/}
       <Nav.Item>
-        <Nav.Link href="undecided">
-          Нераспределенные ({undecided} / {undecidedUnread})
+        <Nav.Link href="wrongValidation">
+          Неправильная валидация ({wrongValidation} / {wrongValidationUnread})
         </Nav.Link>
-      </Nav.Item> */}
+      </Nav.Item> 
       <Nav.Item>
         <Nav.Link href="later">
           Проблема ({delayed} / {delayedUnread})
