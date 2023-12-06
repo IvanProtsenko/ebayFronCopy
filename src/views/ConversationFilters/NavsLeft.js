@@ -347,11 +347,11 @@ const NavsLeft = () => {
           Платеж не прошел ({transactionExpired} / {transactionExpiredUnread})
         </Nav.Link>
       </Nav.Item>*/}
-      <Nav.Item>
+      {/* <Nav.Item>
         <Nav.Link href="wrongValidation">
           Неправильная валидация ({wrongValidation} / {wrongValidationUnread})
         </Nav.Link>
-      </Nav.Item> 
+      </Nav.Item>  */}
       <Nav.Item>
         <Nav.Link href="later">
           Проблема ({delayed} / {delayedUnread})

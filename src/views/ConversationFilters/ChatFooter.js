@@ -110,7 +110,7 @@ export default class ChatFooter extends Component {
               {/* <option value="Платеж не прошел">Платеж не прошел</option>
               <option value="Нераспределенные">Нераспределенные</option> */}
               <option value="Проблема">Проблема</option>
-              <option value="Неправильная валидация">Неправильная валидация</option>
+              {/* <option value="Неправильная валидация">Неправильная валидация</option> */}
               <option value="Черный список">Черный список</option>
             </Form.Control>
           </Form.Group>
@@ -132,6 +132,7 @@ export default class ChatFooter extends Component {
                 { value: 'Оплата нал', label: 'Оплата нал' },
                 { value: 'Продано', label: 'Продано' },
                 { value: 'Без причины', label: 'Без причины' },
+                { value: 'Неправильная валидация', label: 'Неправильная валидация' },
               ]}
             />
           </Col>
