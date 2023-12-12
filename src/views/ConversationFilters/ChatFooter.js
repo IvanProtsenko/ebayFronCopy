@@ -127,12 +127,11 @@ export default class ChatFooter extends Component {
               }}
               options={[
                 { value: 'Цена', label: 'Цена' },
-                { value: 'Самовывоз', label: 'Самовывоз' },
-                { value: 'Оплата Ебей', label: 'Оплата Ебей' },
-                { value: 'Оплата нал', label: 'Оплата нал' },
+                { value: 'Ебей', label: 'Ебей' },
+                { value: 'Нал', label: 'Нал' },
                 { value: 'Продано', label: 'Продано' },
-                { value: 'Без причины', label: 'Без причины' },
-                { value: 'Неправильная валидация', label: 'Неправильная валидация' },
+                { value: 'X причины', label: 'X причины' },
+                { value: 'X валидация', label: 'X валидация' },
               ]}
             />
           </Col>
