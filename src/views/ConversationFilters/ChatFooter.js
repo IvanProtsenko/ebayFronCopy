@@ -96,6 +96,7 @@ export default class ChatFooter extends Component {
               {/* <option value="Запрос отправлен">Запрос отправлен</option> */}
               <option value="Запрос отклонён">Запрос отклонён</option>
               {/* <option value="Запрос принят">Запрос принят</option> */}
+              <option value="На оплату">На оплату</option>
               <option value="Оплачено">Оплачено</option>
               <option value="Посылка отправлена">Посылка отправлена</option>
               {/* <option value="Запрос просрочен">Запрос просрочен</option>

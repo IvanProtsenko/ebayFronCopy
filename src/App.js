@@ -42,6 +42,10 @@ export default class App extends Component {
             element={<JustifiedExample status="Запрос просрочен" />}
           />
           <Route
+            path="/to_pay"
+            element={<JustifiedExample status="На оплату" />}
+          />
+          <Route
             path="/transaction_reserved"
             element={<JustifiedExample status="Оплачено" />}
           />

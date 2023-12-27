@@ -19,38 +19,24 @@ import {
 
 const NavsLeft = () => {
   const [dialog, setDialog] = useState(0);
-  const [waitingAnswer, setWaitingAnswer] = useState(0);
   const [dialogProcessed, setDialogProcessed] = useState(0);
-  const [offerMade, setOfferMade] = useState(0);
   const [rejectedOffer, setRejectedOffer] = useState(0);
-  const [offerAccepted, setOfferAccepted] = useState(0);
-  const [outdatedOffer, setOutdatedOffer] = useState(0);
+  const [toPay, setToPay] = useState(0);
   const [transactionReserved, setTransactionReserved] = useState(0);
   const [itemShipped, setItemShipped] = useState(0);
-  const [outdatedShipping, setOutdatedShipping] = useState(0);
-  const [itemDelivered, setItemDelivered] = useState(0);
   const [itemReceived, setItemReceived] = useState(0);
   const [chargedBack, setChargedBack] = useState(0);
-  const [transactionExpired, setTransactionExpired] = useState(0);
-  const [wrongValidation, setWrongValidation] = useState(0);
   const [delayed, setDelayed] = useState(0);
   const [blacklist, setBlacklist] = useState(0);
 
   const [dialogUnread, setDialogUnread] = useState(0);
-  const [waitingAnswerUnread, setWaitingAnswerUnread] = useState(0);
   const [dialogProcessedUnread, setDialogProcessedUnread] = useState(0);
-  const [offerMadeUnread, setOfferMadeUnread] = useState(0);
+  const [toPayUnread, setToPayUnread] = useState(0);
   const [rejectedOfferUnread, setRejectedOfferUnread] = useState(0);
-  const [offerAcceptedUnread, setOfferAcceptedUnread] = useState(0);
-  const [outdatedOfferUnread, setOutdatedOfferUnread] = useState(0);
   const [transactionReservedUnread, setTransactionReservedUnread] = useState(0);
   const [itemShippedUnread, setItemShippedUnread] = useState(0);
-  const [outdatedShippingUnread, setOutdatedShippingUnread] = useState(0);
-  const [itemDeliveredUnread, setItemDeliveredUnread] = useState(0);
   const [itemReceivedUnread, setItemReceivedUnread] = useState(0);
   const [chargedBackUnread, setChargedBackUnread] = useState(0);
-  const [transactionExpiredUnread, setTransactionExpiredUnread] = useState(0);
-  const [wrongValidationUnread, setWrongValidationUnread] = useState(0);
   const [delayedUnread, setDelayedUnread] = useState(0);
   const [blacklistUnread, setBlacklistUnread] = useState(0);
 
@@ -71,6 +57,7 @@ const NavsLeft = () => {
   let wrongValidationUnreadFunc = 0;
   let delayedUnreadFunc = 0;
   let blacklistUnreadFunc = 0;
+  let toPayUnreadFunc = 0;
 
   let dialogToUpdate = [];
   let waitingAnswerToUpdate = [];
@@ -89,45 +76,32 @@ const NavsLeft = () => {
   let wrongValidationToUpdate = [];
   let delayedToUpdate = [];
   let blacklistToUpdate = [];
+  let toPayToUpdate = [];
 
   const markAllStatuses = () => {
     setDialog(dialogToUpdate.length);
-    setWaitingAnswer(waitingAnswerToUpdate.length);
     setDialogProcessed(dialogProcessedToUpdate.length);
-    setOfferMade(offerMadeToUpdate.length);
     setRejectedOffer(rejectedOfferToUpdate.length);
-    setOfferAccepted(offerAcceptedToUpdate.length);
     setTransactionReserved(transactionReservedToUpdate.length);
     setItemShipped(itemShippedToUpdate.length);
-    setOutdatedOffer(outdatedOfferToUpdate.length);
-    setOutdatedShipping(outdatedShippingUpdate.length);
-    setItemDelivered(itemDeliveredToUpdate.length);
     setItemReceived(itemReceivedToUpdate.length);
     setChargedBack(chargedBackToUpdate.length);
-    setTransactionExpired(transactionExpiredToUpdate.length);
-    setWrongValidation(wrongValidationToUpdate.length);
     setDelayed(delayedToUpdate.length);
     setBlacklist(blacklistToUpdate.length);
+    setToPay(toPayToUpdate.length);
   };
 
   const markAllStatusesUnread = () => {
     setDialogUnread(dialogUnreadFunc);
-    setWaitingAnswerUnread(waitingAnswerUnreadFunc);
     setDialogProcessedUnread(dialogProcessedUnreadFunc);
-    setOfferMadeUnread(offerMadeUnreadFunc);
     setRejectedOfferUnread(rejectedOfferUnreadFunc);
-    setOfferAcceptedUnread(offerAcceptedUnreadFunc);
     setTransactionReservedUnread(transactionReservedUnreadFunc);
     setItemShippedUnread(itemShippedUnreadFunc);
-    setOutdatedOfferUnread(outdatedOfferUnreadFunc);
-    setOutdatedShippingUnread(outdatedShippingUnreadFunc);
-    setItemDeliveredUnread(itemDeliveredUnreadFunc);
     setItemReceivedUnread(itemReceivedUnreadFunc);
     setChargedBackUnread(chargedBackUnreadFunc);
-    setTransactionExpiredUnread(transactionExpiredUnreadFunc);
-    setWrongValidationUnread(wrongValidationUnreadFunc);
     setDelayedUnread(delayedUnreadFunc);
     setBlacklistUnread(blacklistUnreadFunc);
+    setToPayUnread(toPayUnreadFunc);
   };
 
   const setUnread = async (status) => {
@@ -143,6 +117,8 @@ const NavsLeft = () => {
       rejectedOfferUnreadFunc++;
     } else if (status == 'Запрос принят') {
       offerAcceptedUnreadFunc++;
+    } else if (status == 'На оплату') {
+      toPayUnreadFunc++;
     } else if (status == 'Оплачено') {
       transactionReservedUnreadFunc++;
     } else if (status == 'Посылка отправлена') {
@@ -186,6 +162,7 @@ const NavsLeft = () => {
     wrongValidationToUpdate = [];
     delayedToUpdate = [];
     blacklistToUpdate = [];
+    toPayToUpdate = [];
     markAllStatuses();
 
     dialogUnreadFunc = 0;
@@ -205,6 +182,7 @@ const NavsLeft = () => {
     wrongValidationUnreadFunc = 0;
     delayedUnreadFunc = 0;
     blacklistUnreadFunc = 0;
+    toPayUnreadFunc = 0;
     markAllStatusesUnread();
   };
 
@@ -223,6 +201,8 @@ const NavsLeft = () => {
         rejectedOfferToUpdate.push(conv.id);
       } else if (status == 'Запрос принят') {
         offerAcceptedToUpdate.push(conv.id);
+      } else if (status == 'На оплату') {
+        toPayToUpdate.push(conv.id);
       } else if (status == 'Оплачено') {
         transactionReservedToUpdate.push(conv.id);
       } else if (status == 'Посылка отправлена') {
@@ -300,6 +280,11 @@ const NavsLeft = () => {
       <Nav.Item>
         <Nav.Link href="rejected_offer">
           Запрос отклонён ({rejectedOffer} / {rejectedOfferUnread})
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="to_pay">
+          На оплату ({toPay} / {toPayUnread})
         </Nav.Link>
       </Nav.Item>
       {/* <Nav.Item>
