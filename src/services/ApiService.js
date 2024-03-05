@@ -59,6 +59,58 @@ const GET_ADVERTS_WITH_DATE = gql`
   }
 `;
 
+const GET_CONVERSATIONS_STATUSES = gql`
+  query Conversations($where: Conversations_bool_exp, $limit: Int) {
+    Conversations(where: $where, limit: $limit) {
+      adId
+      deny_reason
+      customStatus
+      Messages {
+        receivedDate
+      }
+    }
+  }
+`;
+
+const ADVERTS_BY_STATUS = gql`
+  query Query_root($limit: Int, $where: Adverts_bool_exp) {
+    Adverts(limit: $limit, where: $where) {
+      adItemId
+      publishDate
+      title
+      description
+      price
+      link
+      buyNowAllowed
+      deliveryAllowed
+      offerAllowed
+      tradeAllowed
+      location
+      status
+      statusDescription
+      consoleGeneration
+      consoleGenerationGPT
+      consoleGenerationRecognizer
+      controllersCount
+      hasDefect
+      initialResponse
+      recommendedPrice
+      previewImageUrl
+      created_at
+      received_at
+      publicshed_at
+      clasificated_at
+      imageUrls
+      sellerAcviveSince
+      controllersCountGPT
+      gamesGPT
+      defect_levelGPT
+      defect_descriptionGPT
+      russian_translationGPT
+    }
+  }
+`;
+
 const GET_ADVERT_BY_ID = gql`
   query GetAdvertById($adItemId: bigint!) {
     Adverts_by_pk(adItemId: $adItemId) {
@@ -502,6 +554,83 @@ class ApiService {
     } catch (err) {
       console.log('ERROR getConversationsByAdId:', err);
     }
+  };
+
+  // _lte?: Date,
+  // _gte?: Date,
+  // limit: number,
+  // status?: AdvertStatus,
+  // deliveryAllowed?: boolean,
+  // offerAllowed?: boolean,
+  getAdvertsByCreatedAt = async (params) => {
+    const { _lte, _gte, status, limit, offerAllowed, deliveryAllowed } = params;
+    const variables = {
+      limit,
+      where: {
+        created_at: {
+          _gte: _gte || null,
+          _lte: _lte || null,
+        },
+        // status: {
+        //   _eq: status || null,
+        // },
+        // offerAllowed: {
+        //   _eq: offerAllowed,
+        // },
+        // deliveryAllowed: {
+        //   _eq: deliveryAllowed,
+        // },
+      },
+    };
+
+    const result = await this.client.query({
+      query: ADVERTS_BY_STATUS,
+      variables,
+    });
+
+    const adverts = result.data.Adverts;
+
+    return adverts;
+  };
+
+  // limit: number,
+  // _lte?: Date,
+  // _gte?: Date,
+  // customStatus?: CustomStatus[],
+  // deny_reason?: string[]
+  getConversationsnStatuses = async (params) => {
+    const { limit, _lte, _gte, customStatus, deny_reason } = params;
+    const variables = {
+      limit,
+      where: {
+        // customStatus: {
+        //   _in: customStatus,
+        // },
+        // deny_reason: {
+        //   _in: deny_reason,
+        // },
+        Messages: {
+          receivedDate: {
+            _gte,
+            _lte,
+          },
+        },
+      },
+    };
+    // logger.debug('getConversations');
+
+    const result = await this.client.query({
+      query: GET_CONVERSATIONS_STATUSES,
+      variables,
+    });
+
+    const conversations = result.data.Conversations;
+
+    // logger.debug('getConversations result', {
+    //   meta: { conversations: conversations.length }
+    // });
+
+    return conversations;
   };
 
   getConversationById = async (id) => {

@@ -7,6 +7,7 @@ import Table from './Table';
 import NavsLeft from './ConversationFilters/NavsLeft';
 import Search from './Search';
 import Chat from './ConversationFilters/Chat';
+import Stats from './Stats';
 
 function JustifiedExample(props) {
   return (
@@ -31,6 +32,9 @@ function JustifiedExample(props) {
       </Tab>
       <Tab eventKey="search" title="Поиск">
         <Search />
+      </Tab>
+      <Tab eventKey="stats" title="Статистика">
+        <Stats />
       </Tab>
     </Tabs>
   );
