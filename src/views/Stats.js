@@ -229,7 +229,7 @@ const Stats = () => {
             </Form.Group> */}
             <div className="d-grid gap-2">
               <Button className="modalButton" variant="primary" type="submit">
-                Найти
+                Статистика
               </Button>
             </div>
           </Form>
