@@ -33,6 +33,10 @@ export default class ChatFooter extends Component {
       );
       const sellerName = conversation.sellerName;
       await apiService.addSellerToBlacklist(sellerName);
+      await apiService.updateCustomStatus(
+        this.state.convChosenId,
+        this.state.type
+      );
     } else if (this.state.type == 'Запрос отклонён') {
       await apiService.updateCustomStatusAndDenyReason(
         this.state.convChosenId,
