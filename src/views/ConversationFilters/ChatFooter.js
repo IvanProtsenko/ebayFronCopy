@@ -131,7 +131,9 @@ export default class ChatFooter extends Component {
                 });
               }}
               options={[
-                { value: 'Цена', label: 'Цена' },
+                { value: 'Цена до 10', label: 'Цена до 10' },
+                { value: 'Цена 10-20', label: 'Цена 10-20' },
+                { value: 'Цена больше 20', label: 'Цена больше 20' },
                 { value: 'Самовывоз', label: 'Самовывоз' },
                 { value: 'Ебей', label: 'Ебей' },
                 { value: 'Нал', label: 'Нал' },
